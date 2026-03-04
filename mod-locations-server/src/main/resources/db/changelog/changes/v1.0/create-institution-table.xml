@@ -4,29 +4,27 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-  <changeSet id="create-locations-storage-table-locinstitution" author="copilot">
-    <createTable tableName="locinstitution">
+  <changeSet id="MODLOCS-1@@schema-create-table-institution" author="copilot">
+    <createTable tableName="institution">
       <column name="id" type="uuid">
         <constraints primaryKey="true" nullable="false"/>
       </column>
-      <column name="name" type="text">
+      <column name="name" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
-      <column name="code" type="text">
+      <column name="code" type="varchar(255)">
         <constraints nullable="false"/>
       </column>
       <column name="is_shadow" type="boolean" defaultValueBoolean="false"/>
       <column name="created_date" type="timestamp"/>
       <column name="created_by_user_id" type="uuid"/>
-      <column name="created_by_username" type="text"/>
       <column name="updated_date" type="timestamp"/>
       <column name="updated_by_user_id" type="uuid"/>
-      <column name="updated_by_username" type="text"/>
     </createTable>
-    <createIndex indexName="locinstitution_name_idx_unique" tableName="locinstitution" unique="true">
+    <createIndex indexName="institution_name_idx_unique" tableName="institution" unique="true">
       <column name="lower(f_unaccent(name))" computed="true"/>
     </createIndex>
-    <createIndex indexName="locinstitution_code_idx_unique" tableName="locinstitution" unique="true">
+    <createIndex indexName="institution_code_idx_unique" tableName="institution" unique="true">
       <column name="lower(f_unaccent(code))" computed="true"/>
     </createIndex>
   </changeSet>
