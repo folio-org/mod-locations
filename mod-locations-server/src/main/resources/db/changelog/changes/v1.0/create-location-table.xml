@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="create-locations-storage-table-location" author="copilot">
+    <createTable tableName="location">
+      <column name="id" type="uuid">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="text">
+        <constraints nullable="false"/>
+      </column>
+      <column name="code" type="text">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="text"/>
+      <column name="discovery_display_name" type="text"/>
+      <column name="is_active" type="boolean"/>
+      <column name="institution_id" type="uuid">
+        <constraints nullable="false" referencedTableName="locinstitution" referencedColumnNames="id" foreignKeyName="location_institution_fkey"/>
+      </column>
+      <column name="campus_id" type="uuid">
+        <constraints nullable="false" referencedTableName="loccampus" referencedColumnNames="id" foreignKeyName="location_campus_fkey"/>
+      </column>
+      <column name="library_id" type="uuid">
+        <constraints nullable="false" referencedTableName="loclibrary" referencedColumnNames="id" foreignKeyName="location_library_fkey"/>
+      </column>
+      <column name="details" type="json"/>
+      <column name="primary_service_point" type="uuid">
+        <constraints nullable="false"/>
+      </column>
+      <column name="service_point_ids" type="uuid[]"/>
+      <column name="is_floating_collection" type="boolean"/>
+      <column name="is_shadow" type="boolean" defaultValueBoolean="false"/>
+      <column name="created_date" type="timestamp"/>
+      <column name="created_by_user_id" type="uuid"/>
+      <column name="created_by_username" type="text"/>
+      <column name="updated_date" type="timestamp"/>
+      <column name="updated_by_user_id" type="uuid"/>
+      <column name="updated_by_username" type="text"/>
+    </createTable>
+    <createIndex indexName="location_name_idx_unique" tableName="location" unique="true">
+      <column name="lower(f_unaccent(name))" computed="true"/>
+    </createIndex>
+    <createIndex indexName="location_code_idx_unique" tableName="location" unique="true">
+      <column name="lower(f_unaccent(code))" computed="true"/>
+    </createIndex>
+    <createIndex indexName="location_primaryservicepoint_idx" tableName="location">
+      <column name="primary_service_point"/>
+    </createIndex>
+    <createIndex indexName="location_institutionid_idx" tableName="location">
+      <column name="institution_id"/>
+    </createIndex>
+    <createIndex indexName="location_campusid_idx" tableName="location">
+      <column name="campus_id"/>
+    </createIndex>
+    <createIndex indexName="location_libraryid_idx" tableName="location">
+      <column name="library_id"/>
+    </createIndex>
+  </changeSet>
+
+</databaseChangeLog>

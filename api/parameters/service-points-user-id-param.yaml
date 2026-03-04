@@ -1,0 +1,7 @@
+in: path
+name: servicePointsUserId
+description: Service points user identifier.
+required: true
+schema:
+  type: string
+  format: uuid

@@ -1,0 +1,6 @@
+in: query
+name: query
+description: CQL query expression.
+required: false
+schema:
+  type: string

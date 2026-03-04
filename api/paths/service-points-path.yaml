@@ -1,0 +1,47 @@
+get:
+  summary: Get service points
+  description: Return a list of service points.
+  operationId: getServicePoints
+  tags: [service-points]
+  parameters:
+    - $ref: '../parameters/query-param.yaml'
+    - $ref: '../parameters/limit-param.yaml'
+    - $ref: '../parameters/offset-param.yaml'
+    - in: query
+      name: includeRoutingServicePoints
+      description: Should ECS request routing service points be included in the response.
+      required: false
+      schema:
+        type: boolean
+        default: false
+  responses:
+    '200':
+      description: Collection of service points.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/servicePointsCollection.yaml'
+post:
+  summary: Create service point
+  operationId: createServicePoint
+  tags: [service-points]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/servicePoint.yaml'
+  responses:
+    '201':
+      description: Created service point.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/servicePoint.yaml'
+delete:
+  summary: Delete service points
+  operationId: deleteServicePoints
+  tags: [service-points]
+  responses:
+    '204':
+      description: All service points deleted.

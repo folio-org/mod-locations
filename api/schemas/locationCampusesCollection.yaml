@@ -1,0 +1,11 @@
+type: object
+properties:
+  loccamps:
+    type: array
+    items:
+      $ref: 'locationCampus.yaml'
+  totalRecords:
+    type: integer
+required:
+  - loccamps
+  - totalRecords

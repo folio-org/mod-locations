@@ -1,0 +1,40 @@
+get:
+  summary: Get libraries
+  description: Return a list of libraries.
+  operationId: getLocationLibraries
+  tags: [location-units]
+  parameters:
+    - $ref: '../parameters/query-param.yaml'
+    - $ref: '../parameters/limit-param.yaml'
+    - $ref: '../parameters/offset-param.yaml'
+  responses:
+    '200':
+      description: Collection of libraries.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/locationLibrariesCollection.yaml'
+post:
+  summary: Create library
+  operationId: createLocationLibrary
+  tags: [location-units]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/locationLibrary.yaml'
+  responses:
+    '201':
+      description: Created library.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/locationLibrary.yaml'
+delete:
+  summary: Delete libraries
+  operationId: deleteLocationLibraries
+  tags: [location-units]
+  responses:
+    '204':
+      description: All libraries deleted.

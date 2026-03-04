@@ -1,0 +1,11 @@
+type: object
+properties:
+  loclibs:
+    type: array
+    items:
+      $ref: 'locationLibrary.yaml'
+  totalRecords:
+    type: integer
+required:
+  - loclibs
+  - totalRecords

@@ -1,0 +1,11 @@
+type: object
+properties:
+  locinsts:
+    type: array
+    items:
+      $ref: 'locationInstitution.yaml'
+  totalRecords:
+    type: integer
+required:
+  - locinsts
+  - totalRecords

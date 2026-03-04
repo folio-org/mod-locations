@@ -1,0 +1,52 @@
+get:
+  summary: Get locations
+  description: Return a list of locations.
+  operationId: getLocations
+  tags: [locations]
+  parameters:
+    - $ref: '../parameters/query-param.yaml'
+    - $ref: '../parameters/limit-param.yaml'
+    - $ref: '../parameters/offset-param.yaml'
+  responses:
+    '200':
+      description: Collection of locations.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/locationsCollection.yaml'
+    '400':
+      $ref: '../responses/badRequestResponse.yaml'
+    '500':
+      $ref: '../responses/internalServerErrorResponse.yaml'
+post:
+  summary: Create location
+  description: Create a new location.
+  operationId: createLocation
+  tags: [locations]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/location.yaml'
+  responses:
+    '201':
+      description: Created location.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/location.yaml'
+    '400':
+      $ref: '../responses/badRequestResponse.yaml'
+    '500':
+      $ref: '../responses/internalServerErrorResponse.yaml'
+delete:
+  summary: Delete all locations
+  description: Delete all locations.
+  operationId: deleteLocations
+  tags: [locations]
+  responses:
+    '204':
+      description: All locations deleted.
+    '500':
+      $ref: '../responses/internalServerErrorResponse.yaml'

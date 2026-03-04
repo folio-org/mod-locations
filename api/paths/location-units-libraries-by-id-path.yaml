@@ -1,0 +1,37 @@
+get:
+  summary: Get library by id
+  operationId: getLocationLibraryById
+  tags: [location-units]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '200':
+      description: Library record.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/locationLibrary.yaml'
+put:
+  summary: Update library by id
+  operationId: updateLocationLibraryById
+  tags: [location-units]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/locationLibrary.yaml'
+  responses:
+    '204':
+      description: Updated.
+delete:
+  summary: Delete library by id
+  operationId: deleteLocationLibraryById
+  tags: [location-units]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '204':
+      description: Deleted.

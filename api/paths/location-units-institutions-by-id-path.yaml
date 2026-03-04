@@ -1,0 +1,39 @@
+get:
+  summary: Get institution by id
+  operationId: getLocationInstitutionById
+  tags: [location-units]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '200':
+      description: Institution record.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/locationInstitution.yaml'
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
+put:
+  summary: Update institution by id
+  operationId: updateLocationInstitutionById
+  tags: [location-units]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/locationInstitution.yaml'
+  responses:
+    '204':
+      description: Updated.
+delete:
+  summary: Delete institution by id
+  operationId: deleteLocationInstitutionById
+  tags: [location-units]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '204':
+      description: Deleted.

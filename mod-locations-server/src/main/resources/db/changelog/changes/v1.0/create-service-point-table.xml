@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="create-locations-storage-table-service-point" author="copilot">
+    <createTable tableName="service_point">
+      <column name="id" type="uuid">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="text">
+        <constraints nullable="false"/>
+      </column>
+      <column name="code" type="text">
+        <constraints nullable="false"/>
+      </column>
+      <column name="discovery_display_name" type="text">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="text"/>
+      <column name="shelving_lag_time" type="integer"/>
+      <column name="pickup_location" type="boolean"/>
+      <column name="hold_shelf_expiry_period_interval_id" type="text"/>
+      <column name="hold_shelf_expiry_period_duration" type="integer"/>
+      <column name="hold_shelf_closed_library_date_management" type="text"/>
+      <column name="default_check_in_action_for_use_at_location" type="text"/>
+      <column name="staff_slips" type="json"/>
+      <column name="ecs_request_routing" type="boolean" defaultValueBoolean="false"/>
+      <column name="created_date" type="timestamp"/>
+      <column name="created_by_user_id" type="uuid"/>
+      <column name="created_by_username" type="text"/>
+      <column name="updated_date" type="timestamp"/>
+      <column name="updated_by_user_id" type="uuid"/>
+      <column name="updated_by_username" type="text"/>
+    </createTable>
+    <createIndex indexName="service_point_name_idx_unique" tableName="service_point" unique="true">
+      <column name="lower(f_unaccent(name))" computed="true"/>
+    </createIndex>
+    <createIndex indexName="service_point_code_idx_unique" tableName="service_point" unique="true">
+      <column name="lower(f_unaccent(code))" computed="true"/>
+    </createIndex>
+    <createIndex indexName="service_point_pickuplocation_idx" tableName="service_point">
+      <column name="pickup_location"/>
+    </createIndex>
+  </changeSet>
+
+</databaseChangeLog>

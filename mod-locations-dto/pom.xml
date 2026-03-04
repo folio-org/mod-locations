@@ -65,7 +65,7 @@
             <configuration>
               <inputSpec>${project.parent.basedir}/${openapi.input.file}</inputSpec>
               <output>${project.build.directory}/generated-sources</output>
-              <modelPackage>${project.groupId}.rspec.domain.dto</modelPackage>
+              <modelPackage>${project.groupId}.locations.domain.dto</modelPackage>
               <generatorName>spring</generatorName>
               <generateApis>false</generateApis>
               <generateModels>true</generateModels>

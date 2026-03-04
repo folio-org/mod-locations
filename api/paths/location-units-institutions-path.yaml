@@ -1,0 +1,42 @@
+get:
+  summary: Get institutions
+  description: Return a list of institutions.
+  operationId: getLocationInstitutions
+  tags: [location-units]
+  parameters:
+    - $ref: '../parameters/query-param.yaml'
+    - $ref: '../parameters/limit-param.yaml'
+    - $ref: '../parameters/offset-param.yaml'
+  responses:
+    '200':
+      description: Collection of institutions.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/locationInstitutionsCollection.yaml'
+post:
+  summary: Create institution
+  description: Create a new institution.
+  operationId: createLocationInstitution
+  tags: [location-units]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/locationInstitution.yaml'
+  responses:
+    '201':
+      description: Created institution.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/locationInstitution.yaml'
+delete:
+  summary: Delete institutions
+  description: Delete all institutions.
+  operationId: deleteLocationInstitutions
+  tags: [location-units]
+  responses:
+    '204':
+      description: All institutions deleted.

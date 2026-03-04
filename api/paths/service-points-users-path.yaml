@@ -1,0 +1,40 @@
+get:
+  summary: Get service points users
+  description: Return a list of service points users.
+  operationId: getServicePointsUsers
+  tags: [service-points-users]
+  parameters:
+    - $ref: '../parameters/query-param.yaml'
+    - $ref: '../parameters/limit-param.yaml'
+    - $ref: '../parameters/offset-param.yaml'
+  responses:
+    '200':
+      description: Collection of service points users.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/servicePointsUsersCollection.yaml'
+post:
+  summary: Create service points user
+  operationId: createServicePointsUser
+  tags: [service-points-users]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/servicePointsUser.yaml'
+  responses:
+    '201':
+      description: Created service points user.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/servicePointsUser.yaml'
+delete:
+  summary: Delete service points users
+  operationId: deleteServicePointsUsers
+  tags: [service-points-users]
+  responses:
+    '204':
+      description: All service points users deleted.

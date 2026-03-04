@@ -1,0 +1,64 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+  code:
+    type: string
+  discoveryDisplayName:
+    type: string
+  description:
+    type: string
+  shelvingLagTime:
+    type: integer
+  pickupLocation:
+    type: boolean
+  holdShelfExpiryPeriod:
+    type: object
+    properties:
+      intervalId:
+        type: string
+      duration:
+        type: integer
+  holdShelfClosedLibraryDateManagement:
+    type: string
+    enum:
+      - Keep_the_current_due_date
+      - Move_to_the_end_of_the_previous_open_day
+      - Move_to_the_end_of_the_next_open_day
+      - Keep_the_current_due_date_time
+      - Move_to_end_of_current_service_point_hours
+      - Move_to_beginning_of_next_open_service_point_hours
+    default: Keep_the_current_due_date
+  defaultCheckInActionForUseAtLocation:
+    type: string
+    enum:
+      - Keep_on_hold_shelf
+      - Close_loan_and_return_item
+      - Ask_for_action
+  staffSlips:
+    type: array
+    items:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        printByDefault:
+          type: boolean
+      required:
+        - id
+        - printByDefault
+      additionalProperties: false
+  ecsRequestRouting:
+    type: boolean
+    default: false
+  metadata:
+    $ref: 'metadata.yaml'
+additionalProperties: false
+required:
+  - name
+  - code
+  - discoveryDisplayName

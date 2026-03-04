@@ -1,0 +1,11 @@
+type: object
+properties:
+  servicepoints:
+    type: array
+    items:
+      $ref: 'servicePoint.yaml'
+  totalRecords:
+    type: integer
+required:
+  - servicepoints
+  - totalRecords

@@ -1,0 +1,21 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+  userId:
+    type: string
+    format: uuid
+  servicePointsIds:
+    type: array
+    items:
+      type: string
+      format: uuid
+  defaultServicePointId:
+    type: string
+    format: uuid
+  metadata:
+    $ref: 'metadata.yaml'
+additionalProperties: false
+required:
+  - userId

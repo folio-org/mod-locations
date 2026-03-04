@@ -1,0 +1,22 @@
+type: object
+properties:
+  id:
+    type: string
+    format: uuid
+  name:
+    type: string
+  code:
+    type: string
+  campusId:
+    type: string
+    format: uuid
+  isShadow:
+    type: boolean
+    default: false
+  metadata:
+    $ref: 'metadata.yaml'
+additionalProperties: false
+required:
+  - name
+  - campusId
+  - code

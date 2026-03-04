@@ -22,7 +22,6 @@ This Docker Compose setup includes:
 - **pgAdmin**: Web-based database management tool
 - **Apache Kafka**: Message broker for event-driven communication
 - **Kafka UI**: Web interface for Kafka management
-- **Kafka Topic Initializer**: Automated Kafka topic creation
 
 ## 🚀 Quick Start
 
@@ -77,7 +76,7 @@ This Docker Compose setup includes:
 ## 🔧 Services
 
 ### mod-locations
-- **Purpose**: FOLIO module for managing and validating records against predefined specifications
+- **Purpose**: FOLIO module
 - **Access**: Dynamically assigned port (check with `docker compose ps`)
 - **Scaling**: Configurable via `MODULE_REPLICAS`
 - **Resource Limits**:
@@ -108,12 +107,6 @@ This Docker Compose setup includes:
 - **Purpose**: Web interface for Kafka management
 - **Access**: http://localhost:8090 (configurable via `KAFKA_UI_PORT`)
 - **Features**: Topic browsing, message viewing/producing, consumer group monitoring
-
-### Kafka Topic Initializer
-- **Purpose**: Automatically creates required Kafka topics on startup
-- **Topics Created**:
-    - `{ENV}.ALL.specification-storage.specification.update`
-    - `{ENV}.ALL.specification-storage.specification.updated`
 
 ## 📖 Usage
 
@@ -263,23 +256,6 @@ docker compose -f app-docker-compose.yml exec mod-locations sh
 docker compose -f app-docker-compose.yml exec postgres psql -U folio_admin -d folio -c "\dt"
 ```
 
-### Adding New Kafka Topics
-
-Edit `kafka-init.sh` and add topics to the `TOPICS` array:
-
-```bash
-TOPICS=(
-  "${ENV}.ALL.specification-storage.specification.update"
-  "${ENV}.ALL.specification-storage.specification.updated"
-  "${ENV}.ALL.your-new-topic-name"  # Add your new topic here
-)
-```
-
-After editing, restart the kafka-topic-init service:
-```bash
-docker compose -f infra-docker-compose.yml up -d kafka-topic-init
-```
-
 ### Troubleshooting
 
 #### Module won't start
@@ -291,14 +267,6 @@ docker compose -f infra-docker-compose.yml up -d kafka-topic-init
 - Verify PostgreSQL is running: `docker compose -f app-docker-compose.yml ps postgres`
 - Check database credentials in `.env`
 - Test connection: `docker compose -f app-docker-compose.yml exec postgres psql -U folio_admin -d folio -c "SELECT 1"`
-
-#### Kafka issues
-- Check Kafka logs: `docker compose -f app-docker-compose.yml logs kafka`
-- Verify topics were created: Use Kafka UI at http://localhost:8090
-- List topics manually:
-  ```bash
-  docker compose -f app-docker-compose.yml exec kafka /opt/kafka/bin/kafka-topics.sh --bootstrap-server localhost:9093 --list
-  ```
 
 #### Port conflicts
 - Check if ports are already in use: `netstat -tulpn | grep -E '5432|8081|8090|9093|5050|29092'`

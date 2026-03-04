@@ -26,5 +26,37 @@ servers:
           - etesting-sprint-fs09000000
 
 tags:
+  - name: locations
+    description: Manage locations.
+  - name: location-units
+    description: Manage institutions, campuses, and libraries.
+  - name: service-points
+    description: Manage service points.
+  - name: service-points-users
+    description: Manage service points users.
 
 paths:
+  /locations:
+    $ref: 'paths/locations-path.yaml'
+  /locations/{id}:
+    $ref: 'paths/locations-by-id-path.yaml'
+  /location-units/institutions:
+    $ref: 'paths/location-units-institutions-path.yaml'
+  /location-units/institutions/{id}:
+    $ref: 'paths/location-units-institutions-by-id-path.yaml'
+  /location-units/campuses:
+    $ref: 'paths/location-units-campuses-path.yaml'
+  /location-units/campuses/{id}:
+    $ref: 'paths/location-units-campuses-by-id-path.yaml'
+  /location-units/libraries:
+    $ref: 'paths/location-units-libraries-path.yaml'
+  /location-units/libraries/{id}:
+    $ref: 'paths/location-units-libraries-by-id-path.yaml'
+  /service-points:
+    $ref: 'paths/service-points-path.yaml'
+  /service-points/{servicepointId}:
+    $ref: 'paths/service-points-by-id-path.yaml'
+  /service-points-users:
+    $ref: 'paths/service-points-users-path.yaml'
+  /service-points-users/{servicePointsUserId}:
+    $ref: 'paths/service-points-users-by-id-path.yaml'
