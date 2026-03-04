@@ -1,0 +1,30 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Locations and Service Points API
+  description: API for managing locations and service points
+  contact:
+    name: Spitfire team
+
+servers:
+  - url: https://folio-{environment}.ci.folio.org/
+    description: Development environments.
+    variables:
+      environment:
+        default: edev-spitfire-diku
+        enum:
+          - edev-spitfire-diku
+          - edev-spitfire-consortium
+  - url: https://folio-{environment}.ci.folio.org/
+    description: Reference environments.
+    variables:
+      environment:
+        default: etesting-snapshot-diku
+        enum:
+          - etesting-snapshot-diku
+          - etesting-snapshot-2-diku
+          - etesting-sprint-fs09000000
+
+tags:
+
+paths:

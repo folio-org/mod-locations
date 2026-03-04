@@ -1,0 +1,4 @@
+*
+!Dockerfile
+!target/*.jar
+!mod-record-specifications-server/target/*.jar

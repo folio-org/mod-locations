@@ -1,0 +1,727 @@
+{
+  "id": "${artifactId}-${version}",
+  "name": "Locations Module",
+  "requires": [
+  ],
+  "provides": [
+    {
+      "id": "location-units",
+      "version": "3.0",
+      "handlers": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/location-units/institutions",
+          "permissionsRequired": [
+            "location-units.institutions.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/location-units/institutions/{id}",
+          "permissionsRequired": [
+            "location-units.institutions.item.get"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/location-units/institutions",
+          "permissionsRequired": [
+            "location-units.institutions.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "PUT"
+          ],
+          "pathPattern": "/location-units/institutions/{id}",
+          "permissionsRequired": [
+            "location-units.institutions.item.put"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/location-units/institutions/{id}",
+          "permissionsRequired": [
+            "location-units.institutions.item.delete"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/location-units/campuses",
+          "permissionsRequired": [
+            "location-units.campuses.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/location-units/campuses/{id}",
+          "permissionsRequired": [
+            "location-units.campuses.item.get"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/location-units/campuses",
+          "permissionsRequired": [
+            "location-units.campuses.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "PUT"
+          ],
+          "pathPattern": "/location-units/campuses/{id}",
+          "permissionsRequired": [
+            "location-units.campuses.item.put"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/location-units/campuses/{id}",
+          "permissionsRequired": [
+            "location-units.campuses.item.delete"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/location-units/libraries",
+          "permissionsRequired": [
+            "location-units.libraries.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/location-units/libraries/{id}",
+          "permissionsRequired": [
+            "location-units.libraries.item.get"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/location-units/libraries",
+          "permissionsRequired": [
+            "location-units.libraries.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "PUT"
+          ],
+          "pathPattern": "/location-units/libraries/{id}",
+          "permissionsRequired": [
+            "location-units.libraries.item.put"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/location-units/libraries/{id}",
+          "permissionsRequired": [
+            "location-units.libraries.item.delete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "locations",
+      "version": "4.0",
+      "handlers": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/locations",
+          "permissionsRequired": [
+            "locations.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/locations/{id}",
+          "permissionsRequired": [
+            "locations.item.get"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/locations",
+          "permissionsRequired": [
+            "locations.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "PUT"
+          ],
+          "pathPattern": "/locations/{id}",
+          "permissionsRequired": [
+            "locations.item.put"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/locations/{id}",
+          "permissionsRequired": [
+            "locations.item.delete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "service-points",
+      "version": "4.0",
+      "handlers": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/service-points",
+          "permissionsRequired": [
+            "service-points.collection.get"
+          ],
+          "modulePermissions": [
+            "user-tenants.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/service-points/{id}",
+          "permissionsRequired": [
+            "service-points.item.get"
+          ],
+          "modulePermissions": [
+            "user-tenants.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/service-points",
+          "permissionsRequired": [
+            "service-points.item.post"
+          ],
+          "modulePermissions": [
+            "user-tenants.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "PUT"
+          ],
+          "pathPattern": "/service-points/{id}",
+          "permissionsRequired": [
+            "service-points.item.put"
+          ],
+          "modulePermissions": [
+            "user-tenants.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/service-points/{id}",
+          "permissionsRequired": [
+            "service-points.item.delete"
+          ],
+          "modulePermissions": [
+            "user-tenants.collection.get"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "service-points-users",
+      "version": "2.0",
+      "handlers": [
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/service-points-users",
+          "permissionsRequired": [
+            "service-points-users.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/service-points-users/{id}",
+          "permissionsRequired": [
+            "service-points-users.item.get"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/service-points-users",
+          "permissionsRequired": [
+            "service-points-users.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "PUT"
+          ],
+          "pathPattern": "/service-points-users/{id}",
+          "permissionsRequired": [
+            "service-points-users.item.put"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/service-points-users/{id}",
+          "permissionsRequired": [
+            "service-points-users.item.delete"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "_tenant",
+      "version": "2.0",
+      "interfaceType": "system",
+      "handlers": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/_/tenant",
+          "modulePermissions": [
+            "user-tenants.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE",
+            "GET"
+          ],
+          "pathPattern": "/_/tenant/{id}"
+        }
+      ]
+    }
+  ],
+  "optional": [
+    {
+      "id": "consortia",
+      "version": "1.0"
+    },
+    {
+      "id": "user-tenants",
+      "version": "1.0"
+    }
+  ],
+  "permissionSets": [
+    {
+      "permissionName": "location-units.institutions.collection.get",
+      "displayName": "location units - get institution collection",
+      "description": "Get institution collection",
+      "replaces": [
+        "inventory-storage.location-units.institutions.collection.get"
+      ]
+    },
+    {
+      "permissionName": "location-units.institutions.item.get",
+      "displayName": "location units - get individual institution",
+      "description": "get individual institution",
+      "replaces": [
+        "inventory-storage.location-units.institutions.item.get"
+      ]
+    },
+    {
+      "permissionName": "location-units.institutions.item.post",
+      "displayName": "location units - create individual institution",
+      "description": "create individual instution",
+      "replaces": [
+        "inventory-storage.location-units.institutions.item.post"
+      ]
+    },
+    {
+      "permissionName": "location-units.institutions.item.put",
+      "displayName": "location units - modify institution",
+      "description": "modify institution",
+      "replaces": [
+        "inventory-storage.location-units.institutions.item.put"
+      ]
+    },
+    {
+      "permissionName": "location-units.institutions.item.delete",
+      "displayName": "location units - delete individual institution",
+      "description": "delete individual institution",
+      "replaces": [
+        "inventory-storage.location-units.institutions.item.delete"
+      ]
+    },
+    {
+      "permissionName": "location-units.campuses.collection.get",
+      "displayName": "location units - get campus collection",
+      "description": "Get campus collection",
+      "replaces": [
+        "inventory-storage.location-units.campuses.collection.get"
+      ]
+    },
+    {
+      "permissionName": "location-units.campuses.item.get",
+      "displayName": "location units - get individual campus",
+      "description": "get individual campus",
+      "replaces": [
+        "inventory-storage.location-units.campuses.item.get"
+      ]
+    },
+    {
+      "permissionName": "location-units.campuses.item.post",
+      "displayName": "location units - create individual campus",
+      "description": "create individual instution",
+      "replaces": [
+        "inventory-storage.location-units.campuses.item.post"
+      ]
+    },
+    {
+      "permissionName": "location-units.campuses.item.put",
+      "displayName": "location units - modify campus",
+      "description": "modify campus",
+      "replaces": [
+        "inventory-storage.location-units.campuses.item.put"
+      ]
+    },
+    {
+      "permissionName": "location-units.campuses.item.delete",
+      "displayName": "location units - delete individual campus",
+      "description": "delete individual campus",
+      "replaces": [
+        "inventory-storage.location-units.campuses.item.delete"
+      ]
+    },
+    {
+      "permissionName": "location-units.libraries.collection.get",
+      "displayName": "location units - get library collection",
+      "description": "Get library collection",
+      "replaces": [
+        "inventory-storage.location-units.libraries.collection.get"
+      ]
+    },
+    {
+      "permissionName": "location-units.libraries.item.get",
+      "displayName": "location units - get individual library",
+      "description": "get individual library",
+      "replaces": [
+        "inventory-storage.location-units.libraries.item.get"
+      ]
+    },
+    {
+      "permissionName": "location-units.libraries.item.post",
+      "displayName": "location units - create individual library",
+      "description": "create individual instution",
+      "replaces": [
+        "inventory-storage.location-units.libraries.item.post"
+      ]
+    },
+    {
+      "permissionName": "location-units.libraries.item.put",
+      "displayName": "location units - modify library",
+      "description": "modify library",
+      "replaces": [
+        "inventory-storage.location-units.libraries.item.put"
+      ]
+    },
+    {
+      "permissionName": "location-units.libraries.item.delete",
+      "displayName": "location units - delete individual library",
+      "description": "delete individual library",
+      "replaces": [
+        "inventory-storage.location-units.libraries.item.delete"
+      ]
+    },
+    {
+      "permissionName": "locations.collection.get",
+      "displayName": "locations - get location collection",
+      "description": "get location collection",
+      "replaces": [
+        "inventory-storage.locations.collection.get"
+      ]
+    },
+    {
+      "permissionName": "locations.item.get",
+      "displayName": "locations - get individual location",
+      "description": "get individual location",
+      "replaces": [
+        "inventory-storage.locations.item.get"
+      ]
+    },
+    {
+      "permissionName": "locations.item.post",
+      "displayName": "locations - create individual location",
+      "description": "create individual location",
+      "replaces": [
+        "inventory-storage.locations.item.post"
+      ]
+    },
+    {
+      "permissionName": "locations.item.put",
+      "displayName": "locations - modify location",
+      "description": "modify location",
+      "replaces": [
+        "inventory-storage.locations.item.put"
+      ]
+    },
+    {
+      "permissionName": "locations.item.delete",
+      "displayName": "locations - delete individual location",
+      "description": "delete individual location",
+      "replaces": [
+        "inventory-storage.locations.item.delete"
+      ]
+    },
+    {
+      "permissionName": "service-points.collection.get",
+      "displayName": "get service-point collection",
+      "description": "get service-point collection from storage",
+      "replaces": [
+        "inventory-storage.service-points.collection.get"
+      ]
+    },
+    {
+      "permissionName": "service-points.item.get",
+      "displayName": "get individual service-point",
+      "description": "get individual service-point from storage",
+      "replaces": [
+        "inventory-storage.service-points.item.get"
+      ]
+    },
+    {
+      "permissionName": "service-points.item.post",
+      "displayName": "create individual service-point",
+      "description": "create individual service-point in storage",
+      "replaces": [
+        "inventory-storage.service-points.item.post"
+      ]
+    },
+    {
+      "permissionName": "service-points.item.put",
+      "displayName": "modify service-point",
+      "description": "modify service-point in storage",
+      "replaces": [
+        "inventory-storage.service-points.item.put"
+      ]
+    },
+    {
+      "permissionName": "service-points.item.delete",
+      "displayName": "delete individual service-point",
+      "description": "delete individual service-point from storage",
+      "replaces": [
+        "inventory-storage.service-points.item.delete"
+      ]
+    },
+    {
+      "permissionName": "service-points-users.collection.get",
+      "displayName": "get service-point-users collection",
+      "description": "get service-point-users collection from storage",
+      "replaces": [
+        "inventory-storage.service-points-users.collection.get"
+      ]
+    },
+    {
+      "permissionName": "service-points-users.item.get",
+      "displayName": "get individual service-points-user",
+      "description": "get individual service-points-user from storage",
+      "replaces": [
+        "inventory-storage.service-points-users.item.get"
+      ]
+    },
+    {
+      "permissionName": "service-points-users.item.post",
+      "displayName": "create individual service-points-user",
+      "description": "create individual service-points-user in storage",
+      "replaces": [
+        "inventory-storage.service-points-users.item.post"
+      ]
+    },
+    {
+      "permissionName": "service-points-users.item.put",
+      "displayName": "modify service-points-user",
+      "description": "modify service-points-user in storage",
+      "replaces": [
+        "inventory-storage.service-points-users.item.put"
+      ]
+    },
+    {
+      "permissionName": "service-points-users.item.delete",
+      "displayName": "delete individual service-points-user",
+      "description": "delete individual service-points-user from storage",
+      "replaces": [
+        "inventory-storage.service-points-users.item.delete"
+      ]
+    },
+    {
+      "permissionName": "inventory-storage.all",
+      "displayName": "inventory storage module - all permissions",
+      "description": "Entire set of permissions needed to use the inventory storage module",
+      "subPermissions": [
+        "location-units.institutions.collection.get",
+        "location-units.institutions.item.get",
+        "location-units.institutions.item.post",
+        "location-units.institutions.item.put",
+        "location-units.institutions.item.delete",
+        "location-units.campuses.collection.get",
+        "location-units.campuses.item.get",
+        "location-units.campuses.item.post",
+        "location-units.campuses.item.put",
+        "location-units.campuses.item.delete",
+        "location-units.libraries.collection.get",
+        "location-units.libraries.item.get",
+        "location-units.libraries.item.post",
+        "location-units.libraries.item.put",
+        "location-units.libraries.item.delete",
+        "locations.collection.get",
+        "locations.item.get",
+        "locations.item.post",
+        "locations.item.put",
+        "locations.item.delete",
+        "service-points.collection.get",
+        "service-points.item.get",
+        "service-points.item.post",
+        "service-points.item.put",
+        "service-points.item.delete",
+        "service-points-users.collection.get",
+        "service-points-users.item.get",
+        "service-points-users.item.post",
+        "service-points-users.item.put",
+        "service-points-users.item.delete"
+      ]
+    }
+  ],
+  "launchDescriptor": {
+    "dockerImage": "${artifactId}:${version}",
+    "dockerPull": false,
+    "dockerArgs": {
+      "HostConfig": {
+        "Memory": 715827883,
+        "PortBindings": {
+          "8081/tcp": [
+            {
+              "HostPort": "%p"
+            }
+          ]
+        }
+      }
+    },
+    "env": [
+      {
+        "name": "JAVA_OPTIONS",
+        "value": "-XX:MaxRAMPercentage=66.0"
+      },
+      {
+        "name": "ENV",
+        "value": "folio"
+      },
+      {
+        "name": "DB_HOST",
+        "value": "postgres"
+      },
+      {
+        "name": "DB_PORT",
+        "value": "5432"
+      },
+      {
+        "name": "DB_USERNAME",
+        "value": "folio_admin"
+      },
+      {
+        "name": "DB_PASSWORD",
+        "value": "folio_admin"
+      },
+      {
+        "name": "DB_DATABASE",
+        "value": "folio"
+      },
+      {
+        "name": "DB_QUERYTIMEOUT",
+        "value": "60000"
+      },
+      {
+        "name": "DB_CHARSET",
+        "value": "UTF-8"
+      },
+      {
+        "name": "DB_MAXPOOLSIZE",
+        "value": "5"
+      },
+      {
+        "name": "DB_MAXSHAREDPOOLSIZE",
+        "value": "3"
+      },
+      {
+        "name": "DB_CONNECTIONRELEASEDELAY",
+        "value": "60000"
+      },
+      {
+        "name": "KAFKA_HOST",
+        "value": "kafka"
+      },
+      {
+        "name": "KAFKA_PORT",
+        "value": "9092"
+      },
+      {
+        "name": "REPLICATION_FACTOR",
+        "value": "1"
+      },
+      {
+        "name": "KAFKA_LOCATION_TOPIC_NUM_PARTITIONS",
+        "value": "1"
+      },
+      {
+        "name": "KAFKA_LIBRARY_TOPIC_NUM_PARTITIONS",
+        "value": "1"
+      },
+      {
+        "name": "KAFKA_CAMPUS_TOPIC_NUM_PARTITIONS",
+        "value": "1"
+      },
+      {
+        "name": "KAFKA_INSTITUTION_TOPIC_NUM_PARTITIONS",
+        "value": "1"
+      },
+      {
+        "name": "ECS_TLR_FEATURE_ENABLED",
+        "value": "false"
+      }
+    ]
+  }
+}
