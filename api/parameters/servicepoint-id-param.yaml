@@ -1,7 +1,0 @@
-in: path
-name: servicepointId
-description: Service point identifier.
-required: true
-schema:
-  type: string
-  format: uuid

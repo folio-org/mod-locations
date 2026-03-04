@@ -2,7 +2,7 @@ get:
   summary: Get location by id
   description: Retrieve a location by id.
   operationId: getLocationById
-  tags: [locations]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:
@@ -18,7 +18,7 @@ put:
   summary: Update location by id
   description: Update a location by id.
   operationId: updateLocationById
-  tags: [locations]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   requestBody:
@@ -38,7 +38,7 @@ delete:
   summary: Delete location by id
   description: Delete a location by id.
   operationId: deleteLocationById
-  tags: [locations]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:

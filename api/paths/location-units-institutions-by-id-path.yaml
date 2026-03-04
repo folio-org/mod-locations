@@ -10,7 +10,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/locationInstitution.yaml'
+            $ref: '../schemas/institution.yaml'
     '404':
       $ref: '../responses/notFoundResponse.yaml'
 put:
@@ -24,7 +24,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: '../schemas/locationInstitution.yaml'
+          $ref: '../schemas/institution.yaml'
   responses:
     '204':
       description: Updated.

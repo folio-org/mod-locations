@@ -54,9 +54,9 @@ paths:
     $ref: 'paths/location-units-libraries-by-id-path.yaml'
   /service-points:
     $ref: 'paths/service-points-path.yaml'
-  /service-points/{servicepointId}:
+  /service-points/{id}:
     $ref: 'paths/service-points-by-id-path.yaml'
   /service-points-users:
     $ref: 'paths/service-points-users-path.yaml'
-  /service-points-users/{servicePointsUserId}:
+  /service-points-users/{id}:
     $ref: 'paths/service-points-users-by-id-path.yaml'

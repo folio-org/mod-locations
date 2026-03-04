@@ -13,7 +13,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/locationLibrariesCollection.yaml'
+            $ref: '../schemas/librariesCollection.yaml'
 post:
   summary: Create library
   operationId: createLocationLibrary
@@ -23,14 +23,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../schemas/locationLibrary.yaml'
+          $ref: '../schemas/library.yaml'
   responses:
     '201':
       description: Created library.
       content:
         application/json:
           schema:
-            $ref: '../schemas/locationLibrary.yaml'
+            $ref: '../schemas/library.yaml'
 delete:
   summary: Delete libraries
   operationId: deleteLocationLibraries

@@ -10,7 +10,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/locationCampus.yaml'
+            $ref: '../schemas/campus.yaml'
 put:
   summary: Update campus by id
   operationId: updateLocationCampusById
@@ -22,7 +22,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: '../schemas/locationCampus.yaml'
+          $ref: '../schemas/campus.yaml'
   responses:
     '204':
       description: Updated.

@@ -2,7 +2,7 @@ get:
   summary: Get service points users
   description: Return a list of service points users.
   operationId: getServicePointsUsers
-  tags: [service-points-users]
+  tags: [ service-points-users ]
   parameters:
     - $ref: '../parameters/query-param.yaml'
     - $ref: '../parameters/limit-param.yaml'
@@ -17,7 +17,7 @@ get:
 post:
   summary: Create service points user
   operationId: createServicePointsUser
-  tags: [service-points-users]
+  tags: [ service-points-users ]
   requestBody:
     required: true
     content:
@@ -34,7 +34,7 @@ post:
 delete:
   summary: Delete service points users
   operationId: deleteServicePointsUsers
-  tags: [service-points-users]
+  tags: [ service-points-users ]
   responses:
     '204':
       description: All service points users deleted.

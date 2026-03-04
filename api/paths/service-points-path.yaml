@@ -2,7 +2,7 @@ get:
   summary: Get service points
   description: Return a list of service points.
   operationId: getServicePoints
-  tags: [service-points]
+  tags: [ service-points ]
   parameters:
     - $ref: '../parameters/query-param.yaml'
     - $ref: '../parameters/limit-param.yaml'
@@ -24,7 +24,7 @@ get:
 post:
   summary: Create service point
   operationId: createServicePoint
-  tags: [service-points]
+  tags: [ service-points ]
   requestBody:
     required: true
     content:
@@ -41,7 +41,7 @@ post:
 delete:
   summary: Delete service points
   operationId: deleteServicePoints
-  tags: [service-points]
+  tags: [ service-points ]
   responses:
     '204':
       description: All service points deleted.

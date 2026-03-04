@@ -1,10 +1,13 @@
+description: "Collection of service points users"
 type: object
 properties:
   servicePointsUsers:
+    description: "List of service points users"
     type: array
     items:
       $ref: 'servicePointsUser.yaml'
   totalRecords:
+    description: "Total number of records"
     type: integer
 required:
   - servicePointsUsers

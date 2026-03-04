@@ -2,4 +2,4 @@ description: Internal server error.
 content:
   application/json:
     schema:
-      $ref: '../schemas/errorResponse.yaml'
+      $ref: '../schemas/common/errorCollection.yaml'

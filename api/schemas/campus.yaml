@@ -1,0 +1,28 @@
+description: "Campus: second-level location unit"
+type: object
+properties:
+  id:
+    description: "ID of the campus"
+    type: string
+    format: uuid
+  name:
+    description: "Name of the campus"
+    type: string
+  code:
+    description: "Distinct code for the campus"
+    type: string
+  institutionId:
+    description: "ID of the institution that the campus unit belongs to"
+    type: string
+    format: uuid
+  isShadow:
+    description: "Whether this is a shadow location. Shadow locations are used to represent virtual locations that no items are assignable to them. They only relate to external libraries and virtual items."
+    type: boolean
+    default: false
+  metadata:
+    $ref: common/metadata.yaml
+additionalProperties: false
+required:
+  - name
+  - institutionId
+  - code

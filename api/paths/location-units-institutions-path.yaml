@@ -13,7 +13,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/locationInstitutionsCollection.yaml'
+            $ref: '../schemas/institutionsCollection.yaml'
 post:
   summary: Create institution
   description: Create a new institution.
@@ -24,14 +24,14 @@ post:
     content:
       application/json:
         schema:
-          $ref: '../schemas/locationInstitution.yaml'
+          $ref: '../schemas/institution.yaml'
   responses:
     '201':
       description: Created institution.
       content:
         application/json:
           schema:
-            $ref: '../schemas/locationInstitution.yaml'
+            $ref: '../schemas/institution.yaml'
 delete:
   summary: Delete institutions
   description: Delete all institutions.

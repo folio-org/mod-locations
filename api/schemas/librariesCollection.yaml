@@ -1,0 +1,14 @@
+description: "A collection of libraries (third-level location units)"
+type: object
+properties:
+  loclibs:
+    description: "List of libraries"
+    type: array
+    items:
+      $ref: 'library.yaml'
+  totalRecords:
+    description: "Total number of records"
+    type: integer
+required:
+  - loclibs
+  - totalRecords

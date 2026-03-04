@@ -1,10 +1,13 @@
+description: "List of locations"
 type: object
 properties:
   locations:
+    description: "List of locations"
     type: array
     items:
       $ref: 'location.yaml'
   totalRecords:
+    description: "Total number of records"
     type: integer
 required:
   - locations

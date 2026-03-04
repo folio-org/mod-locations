@@ -2,7 +2,7 @@ get:
   summary: Get locations
   description: Return a list of locations.
   operationId: getLocations
-  tags: [locations]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/query-param.yaml'
     - $ref: '../parameters/limit-param.yaml'
@@ -22,7 +22,7 @@ post:
   summary: Create location
   description: Create a new location.
   operationId: createLocation
-  tags: [locations]
+  tags: [ locations ]
   requestBody:
     required: true
     content:
@@ -44,7 +44,7 @@ delete:
   summary: Delete all locations
   description: Delete all locations.
   operationId: deleteLocations
-  tags: [locations]
+  tags: [ locations ]
   responses:
     '204':
       description: All locations deleted.

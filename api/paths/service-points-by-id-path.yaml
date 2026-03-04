@@ -1,9 +1,9 @@
 get:
   summary: Get service point by id
   operationId: getServicePointById
-  tags: [service-points]
+  tags: [ service-points ]
   parameters:
-    - $ref: '../parameters/servicepoint-id-param.yaml'
+    - $ref: '../parameters/id-param.yaml'
   responses:
     '200':
       description: Service point record.
@@ -14,9 +14,9 @@ get:
 put:
   summary: Update service point by id
   operationId: updateServicePointById
-  tags: [service-points]
+  tags: [ service-points ]
   parameters:
-    - $ref: '../parameters/servicepoint-id-param.yaml'
+    - $ref: '../parameters/id-param.yaml'
   requestBody:
     required: true
     content:
@@ -29,9 +29,9 @@ put:
 delete:
   summary: Delete service point by id
   operationId: deleteServicePointById
-  tags: [service-points]
+  tags: [ service-points ]
   parameters:
-    - $ref: '../parameters/servicepoint-id-param.yaml'
+    - $ref: '../parameters/id-param.yaml'
   responses:
     '204':
       description: Deleted.

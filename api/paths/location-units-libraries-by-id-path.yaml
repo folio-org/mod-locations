@@ -10,7 +10,7 @@ get:
       content:
         application/json:
           schema:
-            $ref: '../schemas/locationLibrary.yaml'
+            $ref: '../schemas/library.yaml'
 put:
   summary: Update library by id
   operationId: updateLocationLibraryById
@@ -22,7 +22,7 @@ put:
     content:
       application/json:
         schema:
-          $ref: '../schemas/locationLibrary.yaml'
+          $ref: '../schemas/library.yaml'
   responses:
     '204':
       description: Updated.

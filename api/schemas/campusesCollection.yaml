@@ -1,0 +1,14 @@
+description: "A collection of campuses (second-level location units)"
+type: object
+properties:
+  loccamps:
+    description: "List of campuses"
+    type: array
+    items:
+      $ref: 'campus.yaml'
+  totalRecords:
+    description: "Total number of records"
+    type: integer
+required:
+  - loccamps
+  - totalRecords

@@ -1,0 +1,23 @@
+description: "Metadata about creation and changes to records"
+type: object
+properties:
+  createdDate:
+    description: "Date and time when the record was created"
+    type: string
+    format: date-time
+  createdByUserId:
+    description: "ID of the user who created the record (when available)"
+    type: string
+    format: uuid
+  updatedDate:
+    description: "Date and time when the record was last updated"
+    type: string
+    format: date-time
+  updatedByUserId:
+    description: "ID of the user who last updated the record (when available)"
+    type: string
+    format: uuid
+additionalProperties: false
+required:
+  - createdDate
+  - createdByUserId

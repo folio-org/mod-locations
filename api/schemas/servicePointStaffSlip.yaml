@@ -1,0 +1,14 @@
+description: "Service point staff slip"
+type: object
+properties:
+  id:
+    description: "The ID of the staff slip"
+    type: string
+    format: uuid
+  printByDefault:
+    description: "Whether or not to print the staff slip by default"
+    type: boolean
+additionalProperties: false
+required:
+  - id
+  - printByDefault
