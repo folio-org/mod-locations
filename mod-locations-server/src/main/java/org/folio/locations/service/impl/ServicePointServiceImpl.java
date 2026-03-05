@@ -10,8 +10,8 @@ import org.folio.locations.domain.entity.ServicePointStaffSlipId;
 import org.folio.locations.exception.ServicePointNotFoundException;
 import org.folio.locations.mapper.ServicePointMapper;
 import org.folio.locations.repository.ServicePointRepository;
-import org.folio.locations.service.validator.ServicePointValidator;
 import org.folio.locations.service.ServicePointService;
+import org.folio.locations.service.validator.ServicePointValidator;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.data.OffsetRequest;
 import org.jspecify.annotations.Nullable;
@@ -102,6 +102,4 @@ public class ServicePointServiceImpl implements ServicePointService {
     var base = query != null ? "(" + query + ")" : ALL_RECORDS_CQL;
     return includeRoutingServicePoints ? base : base + ECS_ROUTING_FILTER;
   }
-
-
 }

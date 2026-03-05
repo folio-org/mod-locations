@@ -20,13 +20,13 @@ public abstract class AbstractEntity<I> {
     if (o == null) {
       return false;
     }
-    Class<?> oEffectiveClass = o instanceof HibernateProxy proxy
+    Class<?> effectiveClass = o instanceof HibernateProxy proxy
                                ? proxy.getHibernateLazyInitializer().getPersistentClass()
                                : o.getClass();
     Class<?> thisEffectiveClass = this instanceof HibernateProxy proxy
                                   ? proxy.getHibernateLazyInitializer().getPersistentClass()
                                   : this.getClass();
-    if (thisEffectiveClass != oEffectiveClass) {
+    if (thisEffectiveClass != effectiveClass) {
       return false;
     }
     ServicePointEntity that = (ServicePointEntity) o;
