@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-  <changeSet id="MODLOCS-1@@schema-create-table-location" author="copilot">
+  <changeSet id="MODLOCS-1@@schema-create-table-location" author="pavlo_smahin">
     <createTable tableName="location">
       <column name="id" type="uuid">
         <constraints primaryKey="true" nullable="false"/>
@@ -17,22 +17,33 @@
       </column>
       <column name="description" type="text"/>
       <column name="discovery_display_name" type="varchar(255)"/>
-      <column name="is_active" type="boolean"/>
+      <column name="is_active" type="boolean" defaultValueBoolean="true"/>
       <column name="institution_id" type="uuid">
-        <constraints nullable="false" referencedTableName="institution" referencedColumnNames="id" foreignKeyName="location_institution_fkey"/>
+        <constraints nullable="false"
+                     referencedTableName="institution"
+                     referencedColumnNames="id"
+                     foreignKeyName="location_institution_fkey"/>
       </column>
       <column name="campus_id" type="uuid">
-        <constraints nullable="false" referencedTableName="campus" referencedColumnNames="id" foreignKeyName="location_campus_fkey"/>
+        <constraints nullable="false"
+                     referencedTableName="campus"
+                     referencedColumnNames="id"
+                     foreignKeyName="location_campus_fkey"/>
       </column>
       <column name="library_id" type="uuid">
-        <constraints nullable="false" referencedTableName="library" referencedColumnNames="id" foreignKeyName="location_library_fkey"/>
+        <constraints nullable="false"
+                     referencedTableName="library"
+                     referencedColumnNames="id"
+                     foreignKeyName="location_library_fkey"/>
       </column>
       <column name="details" type="json"/>
       <column name="primary_service_point" type="uuid">
-        <constraints nullable="false"/>
+        <constraints nullable="false"
+                     referencedTableName="service_point"
+                     referencedColumnNames="id"
+                     foreignKeyName="location_primaryservicepoint_fkey"/>
       </column>
-      <column name="service_point_ids" type="uuid[]"/>
-      <column name="is_floating_collection" type="boolean"/>
+      <column name="is_floating_collection" type="boolean" defaultValueBoolean="false"/>
       <column name="is_shadow" type="boolean" defaultValueBoolean="false"/>
       <column name="created_date" type="timestamp"/>
       <column name="created_by_user_id" type="uuid"/>
@@ -45,7 +56,7 @@
     <createIndex indexName="location_code_idx_unique" tableName="location" unique="true">
       <column name="lower(f_unaccent(code))" computed="true"/>
     </createIndex>
-    <createIndex indexName="location_primaryservicepoint_idx" tableName="location">
+    <createIndex indexName="location_primary_service_point_idx" tableName="location">
       <column name="primary_service_point"/>
     </createIndex>
     <createIndex indexName="location_institutionid_idx" tableName="location">
@@ -56,6 +67,31 @@
     </createIndex>
     <createIndex indexName="location_libraryid_idx" tableName="location">
       <column name="library_id"/>
+    </createIndex>
+
+  </changeSet>
+
+  <changeSet id="MODLOCS-1@@schema-create-table-location_service_point" author="pavlo_smahin">
+    <createTable tableName="location_service_point">
+      <column name="location_id" type="uuid">
+        <constraints nullable="false"
+                     referencedTableName="location"
+                     referencedColumnNames="id"
+                     foreignKeyName="location_sp_location_fkey"
+                     deleteCascade="true"/>
+      </column>
+      <column name="service_point_id" type="uuid">
+        <constraints nullable="false"
+                     referencedTableName="service_point"
+                     referencedColumnNames="id"
+                     foreignKeyName="location_sp_servicepoint_fkey"/>
+      </column>
+    </createTable>
+    <addPrimaryKey tableName="location_service_point"
+                   columnNames="location_id, service_point_id"
+                   constraintName="location_service_point_pkey"/>
+    <createIndex indexName="location_sp_servicepointid_idx" tableName="location_service_point">
+      <column name="service_point_id"/>
     </createIndex>
   </changeSet>
 

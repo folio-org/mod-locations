@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-  <changeSet id="MODLOCS-1@@schema-create-table-service_point_user" author="copilot">
+  <changeSet id="MODLOCS-1@@schema-create-table-service_point_user" author="pavlo_smahin">
     <createTable tableName="service_point_user">
       <column name="id" type="uuid">
         <constraints primaryKey="true" nullable="false"/>
@@ -12,9 +12,10 @@
       <column name="user_id" type="uuid">
         <constraints nullable="false"/>
       </column>
-      <column name="service_points_ids" type="uuid[]"/>
       <column name="default_service_point_id" type="uuid">
-        <constraints referencedTableName="service_point" referencedColumnNames="id" foreignKeyName="service_point_user_defaultsp_fkey"/>
+        <constraints referencedTableName="service_point"
+                     referencedColumnNames="id"
+                     foreignKeyName="service_point_user_defaultsp_fkey"/>
       </column>
       <column name="created_date" type="timestamp"/>
       <column name="created_by_user_id" type="uuid"/>
@@ -26,6 +27,28 @@
     </createIndex>
     <createIndex indexName="service_point_user_defaultservicepointid_idx" tableName="service_point_user">
       <column name="default_service_point_id"/>
+    </createIndex>
+
+    <createTable tableName="service_point_user_service_point">
+      <column name="service_point_user_id" type="uuid">
+        <constraints nullable="false"
+                     referencedTableName="service_point_user"
+                     referencedColumnNames="id"
+                     foreignKeyName="spu_sp_servicepointuser_fkey"
+                     deleteCascade="true"/>
+      </column>
+      <column name="service_point_id" type="uuid">
+        <constraints nullable="false"
+                     referencedTableName="service_point"
+                     referencedColumnNames="id"
+                     foreignKeyName="spu_sp_servicepoint_fkey"/>
+      </column>
+    </createTable>
+    <addPrimaryKey tableName="service_point_user_service_point"
+                   columnNames="service_point_user_id, service_point_id"
+                   constraintName="service_point_user_service_point_pkey"/>
+    <createIndex indexName="spu_sp_servicepointid_idx" tableName="service_point_user_service_point">
+      <column name="service_point_id"/>
     </createIndex>
   </changeSet>
 

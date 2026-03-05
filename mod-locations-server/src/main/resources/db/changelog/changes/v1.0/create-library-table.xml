@@ -4,7 +4,7 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                    https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
 
-  <changeSet id="MODLOCS-1@@schema-create-table-library" author="copilot">
+  <changeSet id="MODLOCS-1@@schema-create-table-library" author="pavlo_smahin">
     <createTable tableName="library">
       <column name="id" type="uuid">
         <constraints primaryKey="true" nullable="false"/>
