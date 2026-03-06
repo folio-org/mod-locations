@@ -29,7 +29,7 @@ import org.springframework.data.domain.PageImpl;
 class ServicePointUserServiceImplTest {
 
   private static final UUID USER_RECORD_ID = UUID.fromString("11111111-1111-1111-1111-111111111111");
-  private static final UUID FOLIO_USER_ID = UUID.fromString("22222222-2222-2222-2222-222222222222");
+  private static final UUID USER_ID = UUID.fromString("22222222-2222-2222-2222-222222222222");
 
   @Mock
   private ServicePointUserRepository repository;
@@ -49,7 +49,7 @@ class ServicePointUserServiceImplTest {
   void getServicePointsUsers_positive_allRecords() {
     var service = newService();
     var entity = new ServicePointUserEntity();
-    var dto = new ServicePointsUser(FOLIO_USER_ID);
+    var dto = new ServicePointsUser(USER_ID);
     var page = new PageImpl<>(List.of(entity));
     when(repository.findByCql("cql.allRecords=1", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
@@ -64,12 +64,12 @@ class ServicePointUserServiceImplTest {
   void getServicePointsUsers_positive_customQuery() {
     var service = newService();
     var entity = new ServicePointUserEntity();
-    var dto = new ServicePointsUser(FOLIO_USER_ID);
+    var dto = new ServicePointsUser(USER_ID);
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("(userId==\"" + FOLIO_USER_ID + "\")", OffsetRequest.of(0, 5))).thenReturn(page);
+    when(repository.findByCql("(userId==\"" + USER_ID + "\")", OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getServicePointsUsers("userId==\"" + FOLIO_USER_ID + "\"", 5, 0);
+    var result = service.getServicePointsUsers("userId==\"" + USER_ID + "\"", 5, 0);
 
     assertThat(result.getServicePointsUsers()).containsExactly(dto);
   }
@@ -80,7 +80,7 @@ class ServicePointUserServiceImplTest {
   void getById_positive_returnsDto() {
     var service = newService();
     var entity = new ServicePointUserEntity();
-    var dto = new ServicePointsUser(FOLIO_USER_ID);
+    var dto = new ServicePointsUser(USER_ID);
     when(repository.findById(USER_RECORD_ID)).thenReturn(Optional.of(entity));
     when(mapper.toDto(entity)).thenReturn(dto);
 
@@ -103,12 +103,12 @@ class ServicePointUserServiceImplTest {
 
   @Test
   void create_positive_persistsAndReturnsDto() {
-    var dto = new ServicePointsUser(FOLIO_USER_ID).id(USER_RECORD_ID);
+    var dto = new ServicePointsUser(USER_ID).id(USER_RECORD_ID);
     var entity = new ServicePointUserEntity();
     entity.setId(USER_RECORD_ID); // mapper sets id from dto in production
     var savedEntity = new ServicePointUserEntity();
-    var resultDto = new ServicePointsUser(FOLIO_USER_ID);
-    when(context.getUserId()).thenReturn(FOLIO_USER_ID);
+    var resultDto = new ServicePointsUser(USER_ID);
+    when(context.getUserId()).thenReturn(USER_ID);
     when(mapper.toEntity(dto)).thenReturn(entity);
     when(repository.save(entity)).thenReturn(savedEntity);
     when(mapper.toDto(savedEntity)).thenReturn(resultDto);
@@ -118,19 +118,19 @@ class ServicePointUserServiceImplTest {
 
     assertThat(result).isSameAs(resultDto);
     assertThat(entity.getId()).isEqualTo(USER_RECORD_ID);
-    assertThat(entity.getCreatedByUserId()).isEqualTo(FOLIO_USER_ID);
+    assertThat(entity.getCreatedByUserId()).isEqualTo(USER_ID);
     assertThat(entity.getCreatedDate()).isNotNull();
   }
 
   @Test
   void create_positive_generatesIdWhenNotProvided() {
-    var dto = new ServicePointsUser(FOLIO_USER_ID);
+    var dto = new ServicePointsUser(USER_ID);
     var entity = new ServicePointUserEntity();
     var savedEntity = new ServicePointUserEntity();
-    when(context.getUserId()).thenReturn(FOLIO_USER_ID);
+    when(context.getUserId()).thenReturn(USER_ID);
     when(mapper.toEntity(dto)).thenReturn(entity);
     when(repository.save(entity)).thenReturn(savedEntity);
-    when(mapper.toDto(savedEntity)).thenReturn(new ServicePointsUser(FOLIO_USER_ID));
+    when(mapper.toDto(savedEntity)).thenReturn(new ServicePointsUser(USER_ID));
     var service = newService();
 
     service.create(dto);
@@ -144,14 +144,14 @@ class ServicePointUserServiceImplTest {
   void update_positive_updatesExistingEntity() {
     var entity = new ServicePointUserEntity();
     when(repository.findById(USER_RECORD_ID)).thenReturn(Optional.of(entity));
-    when(context.getUserId()).thenReturn(FOLIO_USER_ID);
+    when(context.getUserId()).thenReturn(USER_ID);
     when(repository.save(entity)).thenReturn(entity);
     var service = newService();
-    var dto = new ServicePointsUser(FOLIO_USER_ID);
+    var dto = new ServicePointsUser(USER_ID);
 
     service.update(USER_RECORD_ID, dto);
 
-    assertThat(entity.getUpdatedByUserId()).isEqualTo(FOLIO_USER_ID);
+    assertThat(entity.getUpdatedByUserId()).isEqualTo(USER_ID);
     assertThat(entity.getUpdatedDate()).isNotNull();
     verify(mapper).updateEntity(dto, entity);
   }
@@ -160,7 +160,7 @@ class ServicePointUserServiceImplTest {
   void update_negative_notFoundThrowsException() {
     when(repository.findById(USER_RECORD_ID)).thenReturn(Optional.empty());
     var service = newService();
-    var dto = new ServicePointsUser(FOLIO_USER_ID);
+    var dto = new ServicePointsUser(USER_ID);
 
     assertThatThrownBy(() -> service.update(USER_RECORD_ID, dto))
       .isInstanceOf(ServicePointUserNotFoundException.class)

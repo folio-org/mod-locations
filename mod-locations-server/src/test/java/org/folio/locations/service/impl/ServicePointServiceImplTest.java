@@ -2,7 +2,9 @@ package org.folio.locations.service.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import java.util.List;
@@ -42,7 +44,7 @@ class ServicePointServiceImplTest {
 
   @AfterEach
   void tearDown() {
-    org.mockito.Mockito.verifyNoMoreInteractions(repository, mapper, context, validator);
+    verifyNoMoreInteractions(repository, mapper, context, validator);
   }
 
   // ── getServicePoints ─────────────────────────────────────────────────────────
@@ -167,9 +169,10 @@ class ServicePointServiceImplTest {
 
   @Test
   void update_negative_notFoundThrowsException() {
+    var dto = new ServicePoint();
+    doNothing().when(validator).validate(dto);
     when(repository.findById(SERVICE_POINT_ID)).thenReturn(Optional.empty());
     var service = newService();
-    var dto = new ServicePoint();
 
     assertThatThrownBy(() -> service.update(SERVICE_POINT_ID, dto))
       .isInstanceOf(ServicePointNotFoundException.class)

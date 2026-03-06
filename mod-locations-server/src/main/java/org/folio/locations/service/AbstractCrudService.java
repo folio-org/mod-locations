@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.UUID;
 import org.folio.locations.domain.entity.AbstractEntity;
 import org.folio.locations.mapper.EntityMapper;
+import org.folio.locations.service.validator.DtoValidator;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.cql.JpaCqlRepository;
 import org.folio.spring.data.OffsetRequest;
@@ -20,12 +21,15 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
 
   protected final JpaCqlRepository<E, UUID> repository;
   protected final EntityMapper<D, E> mapper;
+  protected final DtoValidator<D> dtoValidator;
   protected final FolioExecutionContext context;
 
   protected AbstractCrudService(JpaCqlRepository<E, UUID> repository, EntityMapper<D, E> mapper,
+                                DtoValidator<D> dtoValidator,
                                 FolioExecutionContext context) {
     this.repository = repository;
     this.mapper = mapper;
+    this.dtoValidator = dtoValidator;
     this.context = context;
   }
 
@@ -38,6 +42,7 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
 
   @Transactional
   public D create(D dto) {
+    dtoValidator.validate(dto);
     var entity = mapper.toEntity(dto);
     if (entity.getId() == null) {
       entity.setId(UUID.randomUUID());
@@ -50,6 +55,7 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
 
   @Transactional
   public void update(UUID id, D dto) {
+    dtoValidator.validate(dto);
     var entity = repository.findById(id)
       .orElseThrow(() -> notFound(id));
     mapper.updateEntity(dto, entity);

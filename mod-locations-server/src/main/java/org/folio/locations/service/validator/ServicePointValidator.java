@@ -5,7 +5,7 @@ import org.folio.locations.exception.ValidationException;
 import org.springframework.stereotype.Component;
 
 @Component
-public class ServicePointValidator {
+public class ServicePointValidator implements DtoValidator<ServicePoint> {
 
   public static final String ERR_PICKUP_WITHOUT_HOLD_EXPIRY =
     "Hold shelf expiry period must be specified when service point can be used for pickup.";

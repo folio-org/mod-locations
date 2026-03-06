@@ -23,7 +23,7 @@ public class InstitutionServiceImpl
 
   public InstitutionServiceImpl(InstitutionRepository repository, InstitutionMapper mapper,
                                 FolioExecutionContext context) {
-    super(repository, mapper, context);
+    super(repository, mapper, i -> { }, context);
   }
 
   @Override

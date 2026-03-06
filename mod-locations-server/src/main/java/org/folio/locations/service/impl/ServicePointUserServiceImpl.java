@@ -23,13 +23,13 @@ public class ServicePointUserServiceImpl
 
   public ServicePointUserServiceImpl(ServicePointUserRepository repository, ServicePointUserMapper mapper,
                                      FolioExecutionContext context) {
-    super(repository, mapper, context);
+    super(repository, mapper, spu -> { }, context);
   }
 
   @Override
   @Transactional(readOnly = true)
   public ServicePointsUsersCollection getServicePointsUsers(@Nullable String query, Integer limit, Integer offset) {
-    var cql = query != null ? "(" + query + ")" : ALL_RECORDS_CQL;
+    var cql = buildCql(query, true);
     return getCollection(cql, limit, offset);
   }
 

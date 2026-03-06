@@ -11,6 +11,7 @@ public class ApiResourceUrls {
   private static final String INSTITUTIONS = "/location-units/institutions";
   private static final String CAMPUSES = "/location-units/campuses";
   private static final String LIBRARIES = "/location-units/libraries";
+  private static final String LOCATIONS = "/locations";
 
   public static String servicePointsResource() {
     return SERVICE_POINTS;
@@ -50,5 +51,13 @@ public class ApiResourceUrls {
 
   public static String libraryResource(UUID id) {
     return LIBRARIES + "/" + id;
+  }
+
+  public static String locationsResource() {
+    return LOCATIONS;
+  }
+
+  public static String locationResource(UUID id) {
+    return LOCATIONS + "/" + id;
   }
 }

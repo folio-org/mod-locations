@@ -25,12 +25,9 @@ public class ServicePointServiceImpl
 
   private static final String ECS_ROUTING_FILTER = " NOT ecsRequestRouting = true";
 
-  private final ServicePointValidator validator;
-
   public ServicePointServiceImpl(ServicePointRepository repository, ServicePointMapper mapper,
                                  FolioExecutionContext context, ServicePointValidator validator) {
-    super(repository, mapper, context);
-    this.validator = validator;
+    super(repository, mapper, validator, context);
   }
 
   @Override
@@ -54,13 +51,11 @@ public class ServicePointServiceImpl
 
   @Override
   protected void beforeCreate(ServicePoint dto, ServicePointEntity entity) {
-    validator.validate(dto);
     syncStaffSlipIds(entity);
   }
 
   @Override
   protected void beforeUpdate(ServicePoint dto, ServicePointEntity entity) {
-    validator.validate(dto);
     if (dto.getHoldShelfExpiryPeriod() == null) {
       entity.setHoldShelfExpiryPeriodDuration(null);
       entity.setHoldShelfExpiryPeriodIntervalId(null);

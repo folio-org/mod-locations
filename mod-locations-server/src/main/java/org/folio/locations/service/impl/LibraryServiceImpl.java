@@ -23,7 +23,7 @@ public class LibraryServiceImpl
 
   public LibraryServiceImpl(LibraryRepository repository, LibraryMapper mapper,
                             FolioExecutionContext context) {
-    super(repository, mapper, context);
+    super(repository, mapper, l -> {}, context);
   }
 
   @Override

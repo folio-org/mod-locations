@@ -1,5 +1,6 @@
 description: "Metadata about creation and changes to records"
 type: object
+readOnly: true
 properties:
   createdDate:
     description: "Date and time when the record was created"
@@ -18,6 +19,3 @@ properties:
     type: string
     format: uuid
 additionalProperties: false
-required:
-  - createdDate
-  - createdByUserId

@@ -21,9 +21,8 @@ public class CampusServiceImpl
   extends AbstractCrudService<Campus, CampusesCollection, CampusEntity>
   implements CampusService {
 
-  public CampusServiceImpl(CampusRepository repository, CampusMapper mapper,
-                           FolioExecutionContext context) {
-    super(repository, mapper, context);
+  public CampusServiceImpl(CampusRepository repository, CampusMapper mapper, FolioExecutionContext context) {
+    super(repository, mapper, c -> { }, context);
   }
 
   @Override
