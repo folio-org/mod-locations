@@ -18,7 +18,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
   injectionStrategy = InjectionStrategy.CONSTRUCTOR,
   builder = @Builder(disableBuilder = true)
 )
-public interface ServicePointUserMapper {
+public interface ServicePointUserMapper extends EntityMapper<ServicePointsUser, ServicePointUserEntity> {
 
   @Mapping(target = "createdDate", ignore = true)
   @Mapping(target = "createdByUserId", ignore = true)

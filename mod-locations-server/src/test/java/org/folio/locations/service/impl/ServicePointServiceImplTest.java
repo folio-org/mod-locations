@@ -106,8 +106,9 @@ class ServicePointServiceImplTest {
 
   @Test
   void create_positive_persistsAndReturnsDto() {
-    var dto = new ServicePoint().id(SERVICE_POINT_ID);
+    final var dto = new ServicePoint().id(SERVICE_POINT_ID);
     var entity = new ServicePointEntity();
+    entity.setId(SERVICE_POINT_ID); // mapper sets id from dto in production
     entity.setStaffSlips(List.of());
     var savedEntity = new ServicePointEntity();
     var resultDto = new ServicePoint();
@@ -173,8 +174,6 @@ class ServicePointServiceImplTest {
     assertThatThrownBy(() -> service.update(SERVICE_POINT_ID, dto))
       .isInstanceOf(ServicePointNotFoundException.class)
       .hasMessageContaining(SERVICE_POINT_ID.toString());
-
-    verify(validator).validate(dto);
   }
 
   // ── deleteById ───────────────────────────────────────────────────────────────

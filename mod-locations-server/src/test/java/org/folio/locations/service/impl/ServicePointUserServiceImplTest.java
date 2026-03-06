@@ -105,6 +105,7 @@ class ServicePointUserServiceImplTest {
   void create_positive_persistsAndReturnsDto() {
     var dto = new ServicePointsUser(FOLIO_USER_ID).id(USER_RECORD_ID);
     var entity = new ServicePointUserEntity();
+    entity.setId(USER_RECORD_ID); // mapper sets id from dto in production
     var savedEntity = new ServicePointUserEntity();
     var resultDto = new ServicePointsUser(FOLIO_USER_ID);
     when(context.getUserId()).thenReturn(FOLIO_USER_ID);

@@ -7,7 +7,6 @@ import jakarta.persistence.FetchType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -69,16 +68,4 @@ public class ServicePointEntity extends AbstractEntity<UUID> {
   @Builder.Default
   @OneToMany(mappedBy = "servicePoint", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
   private List<ServicePointStaffSlipEntity> staffSlips = new ArrayList<>();
-
-  @Column(name = "created_date")
-  private OffsetDateTime createdDate;
-
-  @Column(name = "created_by_user_id")
-  private UUID createdByUserId;
-
-  @Column(name = "updated_date")
-  private OffsetDateTime updatedDate;
-
-  @Column(name = "updated_by_user_id")
-  private UUID updatedByUserId;
 }

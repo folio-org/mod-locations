@@ -21,7 +21,7 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
   injectionStrategy = InjectionStrategy.CONSTRUCTOR,
   builder = @Builder(disableBuilder = true)
 )
-public interface ServicePointMapper {
+public interface ServicePointMapper extends EntityMapper<ServicePoint, ServicePointEntity> {
 
   @Mapping(target = "holdShelfExpiryPeriodDuration", source = "holdShelfExpiryPeriod.duration")
   @Mapping(target = "holdShelfExpiryPeriodIntervalId", source = "holdShelfExpiryPeriod.intervalId",

@@ -24,7 +24,7 @@ import lombok.ToString;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString(exclude = "servicePoint")
-public class ServicePointStaffSlipEntity extends AbstractEntity<ServicePointStaffSlipId> {
+public class ServicePointStaffSlipEntity {
 
   public static final String SERVICE_POINT_STAFF_SLIP_TABLE = "service_point_staff_slip";
 

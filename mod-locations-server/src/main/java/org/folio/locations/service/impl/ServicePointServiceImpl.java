@@ -1,8 +1,7 @@
 package org.folio.locations.service.impl;
 
-import java.time.OffsetDateTime;
+import java.util.List;
 import java.util.UUID;
-import lombok.RequiredArgsConstructor;
 import org.folio.locations.domain.dto.ServicePoint;
 import org.folio.locations.domain.dto.ServicePointsCollection;
 import org.folio.locations.domain.entity.ServicePointEntity;
@@ -10,86 +9,63 @@ import org.folio.locations.domain.entity.ServicePointStaffSlipId;
 import org.folio.locations.exception.ServicePointNotFoundException;
 import org.folio.locations.mapper.ServicePointMapper;
 import org.folio.locations.repository.ServicePointRepository;
+import org.folio.locations.service.AbstractCrudService;
 import org.folio.locations.service.ServicePointService;
 import org.folio.locations.service.validator.ServicePointValidator;
 import org.folio.spring.FolioExecutionContext;
-import org.folio.spring.data.OffsetRequest;
+import org.folio.spring.exception.NotFoundException;
 import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@RequiredArgsConstructor
-public class ServicePointServiceImpl implements ServicePointService {
+public class ServicePointServiceImpl
+  extends AbstractCrudService<ServicePoint, ServicePointsCollection, ServicePointEntity>
+  implements ServicePointService {
 
-  private static final String ALL_RECORDS_CQL = "cql.allRecords=1";
   private static final String ECS_ROUTING_FILTER = " NOT ecsRequestRouting = true";
 
-  private final ServicePointRepository repository;
-  private final ServicePointMapper mapper;
-  private final FolioExecutionContext context;
   private final ServicePointValidator validator;
+
+  public ServicePointServiceImpl(ServicePointRepository repository, ServicePointMapper mapper,
+                                 FolioExecutionContext context, ServicePointValidator validator) {
+    super(repository, mapper, context);
+    this.validator = validator;
+  }
 
   @Override
   @Transactional(readOnly = true)
   public ServicePointsCollection getServicePoints(@Nullable String query, Integer limit, Integer offset,
                                                   Boolean includeRoutingServicePoints) {
-    var cql = buildCqlQuery(query, includeRoutingServicePoints);
-    var page = repository.findByCql(cql, OffsetRequest.of(offset, limit));
-    var servicePoints = page.getContent().stream().map(mapper::toDto).toList();
-    return new ServicePointsCollection(servicePoints, (int) page.getTotalElements());
+    var base = query != null ? "(" + query + ")" : ALL_RECORDS_CQL;
+    var cql = Boolean.TRUE.equals(includeRoutingServicePoints) ? base : base + ECS_ROUTING_FILTER;
+    return getCollection(cql, limit, offset);
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public ServicePoint getById(UUID id) {
-    return repository.findById(id)
-      .map(mapper::toDto)
-      .orElseThrow(() -> new ServicePointNotFoundException(id));
+  protected ServicePointsCollection buildCollection(List<ServicePoint> dtos, int totalRecords) {
+    return new ServicePointsCollection(dtos, totalRecords);
   }
 
   @Override
-  @Transactional
-  public ServicePoint create(ServicePoint dto) {
+  protected NotFoundException notFound(UUID id) {
+    return new ServicePointNotFoundException(id);
+  }
+
+  @Override
+  protected void beforeCreate(ServicePoint dto, ServicePointEntity entity) {
     validator.validate(dto);
-    var entity = mapper.toEntity(dto);
-    entity.setId(dto.getId() != null ? dto.getId() : UUID.randomUUID());
-    entity.setCreatedDate(OffsetDateTime.now());
-    entity.setCreatedByUserId(context.getUserId());
     syncStaffSlipIds(entity);
-    return mapper.toDto(repository.save(entity));
   }
 
   @Override
-  @Transactional
-  public void update(UUID id, ServicePoint dto) {
+  protected void beforeUpdate(ServicePoint dto, ServicePointEntity entity) {
     validator.validate(dto);
-    var entity = repository.findById(id)
-      .orElseThrow(() -> new ServicePointNotFoundException(id));
-    mapper.updateEntity(dto, entity);
     if (dto.getHoldShelfExpiryPeriod() == null) {
       entity.setHoldShelfExpiryPeriodDuration(null);
       entity.setHoldShelfExpiryPeriodIntervalId(null);
     }
-    entity.setUpdatedDate(OffsetDateTime.now());
-    entity.setUpdatedByUserId(context.getUserId());
     syncStaffSlipIds(entity);
-    repository.save(entity);
-  }
-
-  @Override
-  @Transactional
-  public void deleteById(UUID id) {
-    if (!repository.existsById(id)) {
-      throw new ServicePointNotFoundException(id);
-    }
-    repository.deleteById(id);
-  }
-
-  @Override
-  @Transactional
-  public void deleteAll() {
-    repository.deleteAll();
   }
 
   private void syncStaffSlipIds(ServicePointEntity entity) {
@@ -100,10 +76,5 @@ public class ServicePointServiceImpl implements ServicePointService {
       slip.getId().setServicePointId(entity.getId());
       slip.setServicePoint(entity);
     });
-  }
-
-  private String buildCqlQuery(@Nullable String query, boolean includeRoutingServicePoints) {
-    var base = query != null ? "(" + query + ")" : ALL_RECORDS_CQL;
-    return includeRoutingServicePoints ? base : base + ECS_ROUTING_FILTER;
   }
 }
