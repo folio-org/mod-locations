@@ -7,9 +7,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class ServicePointValidator {
 
-  static final String ERR_PICKUP_WITHOUT_HOLD_EXPIRY =
+  public static final String ERR_PICKUP_WITHOUT_HOLD_EXPIRY =
     "Hold shelf expiry period must be specified when service point can be used for pickup.";
-  static final String ERR_HOLD_EXPIRY_WITHOUT_PICKUP =
+  public static final String ERR_HOLD_EXPIRY_WITHOUT_PICKUP =
     "Hold shelf expiry period cannot be specified when service point cannot be used for pickup";
 
   public void validate(ServicePoint servicePoint) {

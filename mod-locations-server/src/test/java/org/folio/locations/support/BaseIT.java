@@ -33,8 +33,8 @@ import tools.jackson.databind.ObjectMapper;
 @AutoConfigureMockMvc
 public abstract class BaseIT {
 
-  protected static final String TENANT_ID = "test_tenant";
-  protected static final String USER_ID = "11111111-1111-1111-1111-111111111111";
+  public static final String TENANT_ID = "test_tenant";
+  public static final String USER_ID = "11111111-1111-1111-1111-111111111111";
 
   protected static MockMvc mockMvc;
   protected static ObjectMapper objectMapper = new ObjectMapper();

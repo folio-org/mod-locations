@@ -67,6 +67,10 @@ public class ServicePointServiceImpl implements ServicePointService {
     var entity = repository.findById(id)
       .orElseThrow(() -> new ServicePointNotFoundException(id));
     mapper.updateEntity(dto, entity);
+    if (dto.getHoldShelfExpiryPeriod() == null) {
+      entity.setHoldShelfExpiryPeriodDuration(null);
+      entity.setHoldShelfExpiryPeriodIntervalId(null);
+    }
     entity.setUpdatedDate(OffsetDateTime.now());
     entity.setUpdatedByUserId(context.getUserId());
     syncStaffSlipIds(entity);
