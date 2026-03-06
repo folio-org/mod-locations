@@ -44,19 +44,20 @@ public class LocationUnitsController implements LocationUnitsApi {
 
   @Override
   public ResponseEntity<InstitutionsCollection> getLocationInstitutions(@Nullable String query, Integer limit,
-                                                                        Integer offset) {
-    return ResponseEntity.ok(institutionService.getAll(query, limit, offset));
+                                                                        Integer offset, Boolean includeShadow) {
+    return ResponseEntity.ok(institutionService.getAll(query, limit, offset, includeShadow));
   }
 
   @Override
-  public ResponseEntity<CampusesCollection> getLocationCampuses(@Nullable String query, Integer limit, Integer offset) {
-    return ResponseEntity.ok(campusService.getAll(query, limit, offset));
+  public ResponseEntity<CampusesCollection> getLocationCampuses(@Nullable String query, Integer limit, Integer offset,
+                                                                Boolean includeShadow) {
+    return ResponseEntity.ok(campusService.getAll(query, limit, offset, includeShadow));
   }
 
   @Override
   public ResponseEntity<LibrariesCollection> getLocationLibraries(@Nullable String query, Integer limit,
-                                                                  Integer offset) {
-    return ResponseEntity.ok(libraryService.getAll(query, limit, offset));
+                                                                  Integer offset, Boolean includeShadow) {
+    return ResponseEntity.ok(libraryService.getAll(query, limit, offset, includeShadow));
   }
 
   @Override

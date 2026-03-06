@@ -51,10 +51,10 @@ class CampusServiceImplTest {
     var entity = new CampusEntity();
     var dto = new Campus("City Campus", "CC", INSTITUTION_ID);
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("cql.allRecords=1", OffsetRequest.of(0, 10))).thenReturn(page);
+    when(repository.findByCql("isShadow==false", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll(null, 10, 0);
+    var result = service.getAll(null, 10, 0, false);
 
     assertThat(result.getLoccamps()).containsExactly(dto);
     assertThat(result.getTotalRecords()).isEqualTo(1);
@@ -67,10 +67,10 @@ class CampusServiceImplTest {
     var dto = new Campus("City Campus", "CC", INSTITUTION_ID);
     var page = new PageImpl<>(List.of(entity));
     when(repository.findByCql(
-      "(institutionId==\"" + INSTITUTION_ID + "\")", OffsetRequest.of(0, 5))).thenReturn(page);
+      "(institutionId==\"" + INSTITUTION_ID + "\") AND isShadow==false", OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll("institutionId==\"" + INSTITUTION_ID + "\"", 5, 0);
+    var result = service.getAll("institutionId==\"" + INSTITUTION_ID + "\"", 5, 0, false);
 
     assertThat(result.getLoccamps()).containsExactly(dto);
   }

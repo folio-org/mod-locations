@@ -7,7 +7,7 @@ import org.jspecify.annotations.Nullable;
 
 public interface LibraryService {
 
-  LibrariesCollection getAll(@Nullable String query, Integer limit, Integer offset);
+  LibrariesCollection getAll(@Nullable String query, Integer limit, Integer offset, Boolean includeShadow);
 
   Library getById(UUID id);
 

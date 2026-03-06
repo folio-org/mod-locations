@@ -28,8 +28,8 @@ public class LibraryServiceImpl
 
   @Override
   @Transactional(readOnly = true)
-  public LibrariesCollection getAll(@Nullable String query, Integer limit, Integer offset) {
-    var cql = query != null ? "(" + query + ")" : ALL_RECORDS_CQL;
+  public LibrariesCollection getAll(@Nullable String query, Integer limit, Integer offset, Boolean includeShadow) {
+    var cql = buildCql(query, includeShadow);
     return getCollection(cql, limit, offset);
   }
 

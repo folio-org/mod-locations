@@ -10,6 +10,7 @@ import org.folio.spring.cql.JpaCqlRepository;
 import org.folio.spring.data.OffsetRequest;
 import org.folio.spring.exception.NotFoundException;
 import org.jspecify.annotations.NullMarked;
+import org.jspecify.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 @NullMarked
@@ -75,6 +76,20 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
     var page = repository.findByCql(cql, OffsetRequest.of(offset, limit));
     var dtos = page.getContent().stream().map(mapper::toDto).toList();
     return buildCollection(dtos, (int) page.getTotalElements());
+  }
+
+  protected static String buildCql(@Nullable String query, boolean includeShadow) {
+    var shadowFilter = includeShadow ? null : "isShadow==false";
+    if (query != null && shadowFilter != null) {
+      return "(" + query + ") AND " + shadowFilter;
+    }
+    if (query != null) {
+      return "(" + query + ")";
+    }
+    if (shadowFilter != null) {
+      return shadowFilter;
+    }
+    return ALL_RECORDS_CQL;
   }
 
   protected abstract C buildCollection(List<D> dtos, int totalRecords);

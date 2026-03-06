@@ -7,7 +7,7 @@ import org.jspecify.annotations.Nullable;
 
 public interface CampusService {
 
-  CampusesCollection getAll(@Nullable String query, Integer limit, Integer offset);
+  CampusesCollection getAll(@Nullable String query, Integer limit, Integer offset, Boolean includeShadow);
 
   Campus getById(UUID id);
 

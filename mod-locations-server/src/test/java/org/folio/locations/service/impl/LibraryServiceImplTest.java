@@ -51,10 +51,10 @@ class LibraryServiceImplTest {
     var entity = new LibraryEntity();
     var dto = new Library("Main Library", "ML", CAMPUS_ID);
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("cql.allRecords=1", OffsetRequest.of(0, 10))).thenReturn(page);
+    when(repository.findByCql("isShadow==false", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll(null, 10, 0);
+    var result = service.getAll(null, 10, 0, false);
 
     assertThat(result.getLoclibs()).containsExactly(dto);
     assertThat(result.getTotalRecords()).isEqualTo(1);
@@ -66,10 +66,11 @@ class LibraryServiceImplTest {
     var entity = new LibraryEntity();
     var dto = new Library("Main Library", "ML", CAMPUS_ID);
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("(campusId==\"" + CAMPUS_ID + "\")", OffsetRequest.of(0, 5))).thenReturn(page);
+    when(repository.findByCql(
+      "(campusId==\"" + CAMPUS_ID + "\") AND isShadow==false", OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll("campusId==\"" + CAMPUS_ID + "\"", 5, 0);
+    var result = service.getAll("campusId==\"" + CAMPUS_ID + "\"", 5, 0, false);
 
     assertThat(result.getLoclibs()).containsExactly(dto);
   }
