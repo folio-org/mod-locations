@@ -17,7 +17,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "service_point_staff_slip")
+@Table(name = ServicePointStaffSlipEntity.SERVICE_POINT_STAFF_SLIP_TABLE)
 @Getter
 @Setter
 @Builder
@@ -25,6 +25,8 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString(exclude = "servicePoint")
 public class ServicePointStaffSlipEntity extends AbstractEntity<ServicePointStaffSlipId> {
+
+  public static final String SERVICE_POINT_STAFF_SLIP_TABLE = "service_point_staff_slip";
 
   @EmbeddedId
   private ServicePointStaffSlipId id;

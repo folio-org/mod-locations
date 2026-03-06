@@ -19,7 +19,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 @Entity
-@Table(name = "service_point")
+@Table(name = ServicePointEntity.SERVICE_POINT_TABLE)
 @Getter
 @Setter
 @Builder
@@ -28,6 +28,7 @@ import lombok.ToString;
 @ToString(exclude = "staffSlips")
 public class ServicePointEntity extends AbstractEntity<UUID> {
 
+  public static final String SERVICE_POINT_TABLE = "service_point";
   @Id
   @Column(updatable = false, nullable = false)
   private UUID id;
