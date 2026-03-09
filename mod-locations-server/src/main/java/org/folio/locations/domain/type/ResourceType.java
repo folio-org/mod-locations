@@ -1,6 +1,6 @@
 package org.folio.locations.domain.type;
 
-public enum RecordType {
+public enum ResourceType {
 
   CAMPUS,
   INSTITUTION,

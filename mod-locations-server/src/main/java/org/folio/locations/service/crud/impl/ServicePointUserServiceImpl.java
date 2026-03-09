@@ -1,15 +1,17 @@
-package org.folio.locations.service.impl;
+package org.folio.locations.service.crud.impl;
 
 import java.util.List;
 import java.util.UUID;
 import org.folio.locations.domain.dto.ServicePointsUser;
 import org.folio.locations.domain.dto.ServicePointsUsersCollection;
 import org.folio.locations.domain.entity.ServicePointUserEntity;
+import org.folio.locations.domain.type.ResourceType;
 import org.folio.locations.exception.ServicePointUserNotFoundException;
 import org.folio.locations.mapper.ServicePointUserMapper;
 import org.folio.locations.repository.ServicePointUserRepository;
-import org.folio.locations.service.AbstractCrudService;
-import org.folio.locations.service.ServicePointUserService;
+import org.folio.locations.service.crud.AbstractCrudService;
+import org.folio.locations.service.crud.ServicePointUserService;
+import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
 import org.jspecify.annotations.Nullable;
@@ -22,8 +24,8 @@ public class ServicePointUserServiceImpl
   implements ServicePointUserService {
 
   public ServicePointUserServiceImpl(ServicePointUserRepository repository, ServicePointUserMapper mapper,
-                                     FolioExecutionContext context) {
-    super(repository, mapper, spu -> { }, context);
+                                     FolioExecutionContext context, DomainEventPublisher publisher) {
+    super(repository, mapper, spu -> { }, context, publisher);
   }
 
   @Override
@@ -41,5 +43,10 @@ public class ServicePointUserServiceImpl
   @Override
   protected NotFoundException notFound(UUID id) {
     return new ServicePointUserNotFoundException(id);
+  }
+
+  @Override
+  protected ResourceType resourceType() {
+    return ResourceType.SERVICE_POINT_USER;
   }
 }

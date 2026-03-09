@@ -42,7 +42,9 @@ public interface InstitutionMapper extends EntityMapper<Institution, Institution
     if (entity.getCreatedDate() == null) {
       return null;
     }
-    return new Metadata(entity.getCreatedDate(), entity.getCreatedByUserId())
+    return new Metadata()
+      .createdDate(entity.getCreatedDate())
+      .createdByUserId(entity.getCreatedByUserId())
       .updatedDate(entity.getUpdatedDate())
       .updatedByUserId(entity.getUpdatedByUserId());
   }

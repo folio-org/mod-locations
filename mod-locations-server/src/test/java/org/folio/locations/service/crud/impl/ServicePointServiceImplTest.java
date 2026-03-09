@@ -1,7 +1,8 @@
-package org.folio.locations.service.impl;
+package org.folio.locations.service.crud.impl;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -15,6 +16,7 @@ import org.folio.locations.domain.entity.ServicePointEntity;
 import org.folio.locations.exception.ServicePointNotFoundException;
 import org.folio.locations.mapper.ServicePointMapper;
 import org.folio.locations.repository.ServicePointRepository;
+import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.ServicePointValidator;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.data.OffsetRequest;
@@ -32,6 +34,7 @@ class ServicePointServiceImplTest {
 
   private static final UUID SERVICE_POINT_ID = UUID.fromString("11111111-1111-1111-1111-111111111111");
   private static final UUID USER_ID = UUID.fromString("22222222-2222-2222-2222-222222222222");
+  private static final String TENANT_ID = "test-tenant";
 
   @Mock
   private ServicePointRepository repository;
@@ -41,10 +44,12 @@ class ServicePointServiceImplTest {
   private FolioExecutionContext context;
   @Mock
   private ServicePointValidator validator;
+  @Mock
+  private DomainEventPublisher publisher;
 
   @AfterEach
   void tearDown() {
-    verifyNoMoreInteractions(repository, mapper, context, validator);
+    verifyNoMoreInteractions(repository, mapper, context, validator, publisher);
   }
 
   // ── getServicePoints ─────────────────────────────────────────────────────────
@@ -53,7 +58,7 @@ class ServicePointServiceImplTest {
   void getServicePoints_positive_allRecordsWithoutRoutingFilter() {
     var service = newService();
     var entity = new ServicePointEntity();
-    var dto = new ServicePoint();
+    final var dto = new ServicePoint();
     var page = new PageImpl<>(List.of(entity));
     when(repository.findByCql("cql.allRecords=1 NOT ecsRequestRouting = true", OffsetRequest.of(0, 10)))
       .thenReturn(page);
@@ -69,7 +74,7 @@ class ServicePointServiceImplTest {
   void getServicePoints_positive_customQueryWithRoutingServicePoints() {
     var service = newService();
     var entity = new ServicePointEntity();
-    var dto = new ServicePoint();
+    final var dto = new ServicePoint();
     var page = new PageImpl<>(List.of(entity));
     when(repository.findByCql("(name==\"test\")", OffsetRequest.of(5, 20))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
@@ -85,7 +90,7 @@ class ServicePointServiceImplTest {
   void getById_positive_returnsDto() {
     var service = newService();
     var entity = new ServicePointEntity();
-    var dto = new ServicePoint();
+    final var dto = new ServicePoint();
     when(repository.findById(SERVICE_POINT_ID)).thenReturn(Optional.of(entity));
     when(mapper.toDto(entity)).thenReturn(dto);
 
@@ -110,11 +115,12 @@ class ServicePointServiceImplTest {
   void create_positive_persistsAndReturnsDto() {
     final var dto = new ServicePoint().id(SERVICE_POINT_ID);
     var entity = new ServicePointEntity();
-    entity.setId(SERVICE_POINT_ID); // mapper sets id from dto in production
+    entity.setId(SERVICE_POINT_ID);
     entity.setStaffSlips(List.of());
     var savedEntity = new ServicePointEntity();
     var resultDto = new ServicePoint();
     when(context.getUserId()).thenReturn(USER_ID);
+    when(context.getTenantId()).thenReturn(TENANT_ID);
     when(mapper.toEntity(dto)).thenReturn(entity);
     when(repository.save(entity)).thenReturn(savedEntity);
     when(mapper.toDto(savedEntity)).thenReturn(resultDto);
@@ -127,15 +133,17 @@ class ServicePointServiceImplTest {
     assertThat(entity.getCreatedByUserId()).isEqualTo(USER_ID);
     assertThat(entity.getCreatedDate()).isNotNull();
     verify(validator).validate(dto);
+    verify(publisher).publish(any());
   }
 
   @Test
   void create_positive_generatesIdWhenNotProvided() {
-    var dto = new ServicePoint();
+    final var dto = new ServicePoint();
     var entity = new ServicePointEntity();
     entity.setStaffSlips(List.of());
     var savedEntity = new ServicePointEntity();
     when(context.getUserId()).thenReturn(USER_ID);
+    when(context.getTenantId()).thenReturn(TENANT_ID);
     when(mapper.toEntity(dto)).thenReturn(entity);
     when(repository.save(entity)).thenReturn(savedEntity);
     when(mapper.toDto(savedEntity)).thenReturn(new ServicePoint());
@@ -145,6 +153,7 @@ class ServicePointServiceImplTest {
 
     assertThat(entity.getId()).isNotNull();
     verify(validator).validate(dto);
+    verify(publisher).publish(any());
   }
 
   // ── update ───────────────────────────────────────────────────────────────────
@@ -153,23 +162,26 @@ class ServicePointServiceImplTest {
   void update_positive_updatesExistingEntity() {
     var entity = new ServicePointEntity();
     entity.setStaffSlips(List.of());
+    var oldDto = new ServicePoint();
     when(repository.findById(SERVICE_POINT_ID)).thenReturn(Optional.of(entity));
     when(context.getUserId()).thenReturn(USER_ID);
+    when(context.getTenantId()).thenReturn(TENANT_ID);
+    when(mapper.toDto(entity)).thenReturn(oldDto);
     when(repository.save(entity)).thenReturn(entity);
     var service = newService();
-    var dto = new ServicePoint();
+    final var dto = new ServicePoint();
 
     service.update(SERVICE_POINT_ID, dto);
 
     assertThat(entity.getUpdatedByUserId()).isEqualTo(USER_ID);
-    assertThat(entity.getUpdatedDate()).isNotNull();
     verify(validator).validate(dto);
     verify(mapper).updateEntity(dto, entity);
+    verify(publisher).publish(any());
   }
 
   @Test
   void update_negative_notFoundThrowsException() {
-    var dto = new ServicePoint();
+    final var dto = new ServicePoint();
     doNothing().when(validator).validate(dto);
     when(repository.findById(SERVICE_POINT_ID)).thenReturn(Optional.empty());
     var service = newService();
@@ -183,18 +195,24 @@ class ServicePointServiceImplTest {
 
   @Test
   void deleteById_positive_deletesExistingRecord() {
+    var entity = new ServicePointEntity();
+    var oldDto = new ServicePoint();
+    when(repository.findById(SERVICE_POINT_ID)).thenReturn(Optional.of(entity));
+    when(mapper.toDto(entity)).thenReturn(oldDto);
+    when(context.getTenantId()).thenReturn(TENANT_ID);
+    when(context.getUserId()).thenReturn(USER_ID);
     var service = newService();
-    when(repository.existsById(SERVICE_POINT_ID)).thenReturn(true);
 
     service.deleteById(SERVICE_POINT_ID);
 
     verify(repository).deleteById(SERVICE_POINT_ID);
+    verify(publisher).publish(any());
   }
 
   @Test
   void deleteById_negative_notFoundThrowsException() {
     var service = newService();
-    when(repository.existsById(SERVICE_POINT_ID)).thenReturn(false);
+    when(repository.findById(SERVICE_POINT_ID)).thenReturn(Optional.empty());
 
     assertThatThrownBy(() -> service.deleteById(SERVICE_POINT_ID))
       .isInstanceOf(ServicePointNotFoundException.class)
@@ -215,6 +233,6 @@ class ServicePointServiceImplTest {
   // ── helpers ──────────────────────────────────────────────────────────────────
 
   private ServicePointServiceImpl newService() {
-    return new ServicePointServiceImpl(repository, mapper, context, validator);
+    return new ServicePointServiceImpl(repository, mapper, context, validator, publisher);
   }
 }

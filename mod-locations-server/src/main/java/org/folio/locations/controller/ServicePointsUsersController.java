@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.folio.locations.domain.dto.ServicePointsUser;
 import org.folio.locations.domain.dto.ServicePointsUsersCollection;
 import org.folio.locations.rest.resource.ServicePointsUsersApi;
-import org.folio.locations.service.ServicePointUserService;
+import org.folio.locations.service.crud.ServicePointUserService;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

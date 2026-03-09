@@ -1,15 +1,17 @@
-package org.folio.locations.service.impl;
+package org.folio.locations.service.crud.impl;
 
 import java.util.List;
 import java.util.UUID;
 import org.folio.locations.domain.dto.Campus;
 import org.folio.locations.domain.dto.CampusesCollection;
 import org.folio.locations.domain.entity.CampusEntity;
+import org.folio.locations.domain.type.ResourceType;
 import org.folio.locations.exception.CampusNotFoundException;
 import org.folio.locations.mapper.CampusMapper;
 import org.folio.locations.repository.CampusRepository;
-import org.folio.locations.service.AbstractCrudService;
-import org.folio.locations.service.CampusService;
+import org.folio.locations.service.crud.AbstractCrudService;
+import org.folio.locations.service.crud.CampusService;
+import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
 import org.jspecify.annotations.Nullable;
@@ -21,8 +23,9 @@ public class CampusServiceImpl
   extends AbstractCrudService<Campus, CampusesCollection, CampusEntity>
   implements CampusService {
 
-  public CampusServiceImpl(CampusRepository repository, CampusMapper mapper, FolioExecutionContext context) {
-    super(repository, mapper, c -> { }, context);
+  public CampusServiceImpl(CampusRepository repository, CampusMapper mapper,
+                           FolioExecutionContext context, DomainEventPublisher publisher) {
+    super(repository, mapper, c -> { }, context, publisher);
   }
 
   @Override
@@ -40,5 +43,10 @@ public class CampusServiceImpl
   @Override
   protected NotFoundException notFound(UUID id) {
     return new CampusNotFoundException(id);
+  }
+
+  @Override
+  protected ResourceType resourceType() {
+    return ResourceType.CAMPUS;
   }
 }

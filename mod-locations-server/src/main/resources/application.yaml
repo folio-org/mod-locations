@@ -39,33 +39,37 @@ spring:
       trust-store-location: ${KAFKA_SSL_TRUSTSTORE_LOCATION:}
     producer:
       acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
       properties:
         enable.idempotence: true
         max.in.flight.requests.per.connection: 5
         retries: 5
+        spring.json.add.type.headers: false
 
 folio:
   environment: ${ENV:folio}
   kafka:
+    topicPrefix: locations
     topics:
-      - name: authority.authority-source-file
-        numPartitions: ${KAFKA_AUTHORITY_SOURCE_FILE_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_AUTHORITY_SOURCE_FILE_TOPIC_REPLICATION_FACTOR:}
-      - name: authorities.authority
-        numPartitions: ${KAFKA_INSTANCE_AUTHORITY_TOPIC_PARTITIONS:50}
-        replicationFactor: ${KAFKA_INSTANCE_AUTHORITY_TOPIC_REPLICATION_FACTOR:}
-      - name: links.instance-authority
-        numPartitions: ${KAFKA_INSTANCE_AUTHORITY_TOPIC_PARTITIONS:10}
-        replicationFactor: ${KAFKA_INSTANCE_AUTHORITY_TOPIC_REPLICATION_FACTOR:}
-      - name: links.instance-authority-stats
-        numPartitions: ${KAFKA_INSTANCE_AUTHORITY_STATS_TOPIC_PARTITIONS:10}
-        replicationFactor: ${KAFKA_INSTANCE_AUTHORITY_STATS_TOPIC_REPLICATION_FACTOR:}
-      - name: DI_INVENTORY_AUTHORITY_UPDATED
-        numPartitions: ${KAFKA_DI_INVENTORY_AUTHORITY_UPDATED_PARTITIONS:8}
-        replicationFactor: ${KAFKA_DI_INVENTORY_AUTHORITY_UPDATED_REPLICATION_FACTOR:}
-      - name: DI_INVENTORY_AUTHORITY_CREATED_READY_FOR_POST_PROCESSING
-        numPartitions: ${KAFKA_DI_INVENTORY_AUTHORITY_CREATED_READY_FOR_POST_PROCESSING_PARTITIONS:8}
-        replicationFactor: ${KAFKA_DI_INVENTORY_AUTHORITY_CREATED_READY_FOR_POST_PROCESSING_REPLICATION_FACTOR:}
+      - name: location
+        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+      - name: service-point
+        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+      - name: service-point-user
+        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+      - name: institution
+        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+      - name: campus
+        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+      - name: library
+        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
 
   logging:
     request:

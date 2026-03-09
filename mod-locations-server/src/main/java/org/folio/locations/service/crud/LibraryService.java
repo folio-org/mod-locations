@@ -1,4 +1,4 @@
-package org.folio.locations.service;
+package org.folio.locations.service.crud;
 
 import java.util.UUID;
 import org.folio.locations.domain.dto.LibrariesCollection;

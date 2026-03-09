@@ -1,4 +1,4 @@
-package org.folio.locations.service.impl;
+package org.folio.locations.service.crud.impl;
 
 import java.util.List;
 import java.util.UUID;
@@ -6,11 +6,13 @@ import org.folio.locations.domain.dto.ServicePoint;
 import org.folio.locations.domain.dto.ServicePointsCollection;
 import org.folio.locations.domain.entity.ServicePointEntity;
 import org.folio.locations.domain.entity.ServicePointStaffSlipId;
+import org.folio.locations.domain.type.ResourceType;
 import org.folio.locations.exception.ServicePointNotFoundException;
 import org.folio.locations.mapper.ServicePointMapper;
 import org.folio.locations.repository.ServicePointRepository;
-import org.folio.locations.service.AbstractCrudService;
-import org.folio.locations.service.ServicePointService;
+import org.folio.locations.service.crud.AbstractCrudService;
+import org.folio.locations.service.crud.ServicePointService;
+import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.ServicePointValidator;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
@@ -26,8 +28,9 @@ public class ServicePointServiceImpl
   private static final String ECS_ROUTING_FILTER = " NOT ecsRequestRouting = true";
 
   public ServicePointServiceImpl(ServicePointRepository repository, ServicePointMapper mapper,
-                                 FolioExecutionContext context, ServicePointValidator validator) {
-    super(repository, mapper, validator, context);
+                                 FolioExecutionContext context, ServicePointValidator validator,
+                                 DomainEventPublisher publisher) {
+    super(repository, mapper, validator, context, publisher);
   }
 
   @Override
@@ -47,6 +50,11 @@ public class ServicePointServiceImpl
   @Override
   protected NotFoundException notFound(UUID id) {
     return new ServicePointNotFoundException(id);
+  }
+
+  @Override
+  protected ResourceType resourceType() {
+    return ResourceType.SERVICE_POINT;
   }
 
   @Override

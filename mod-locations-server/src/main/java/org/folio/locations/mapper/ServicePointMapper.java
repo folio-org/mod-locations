@@ -108,7 +108,9 @@ public interface ServicePointMapper extends EntityMapper<ServicePoint, ServicePo
     if (entity.getCreatedDate() == null) {
       return null;
     }
-    return new Metadata(entity.getCreatedDate(), entity.getCreatedByUserId())
+    return new Metadata()
+      .createdDate(entity.getCreatedDate())
+      .createdByUserId(entity.getCreatedByUserId())
       .updatedDate(entity.getUpdatedDate())
       .updatedByUserId(entity.getUpdatedByUserId());
   }

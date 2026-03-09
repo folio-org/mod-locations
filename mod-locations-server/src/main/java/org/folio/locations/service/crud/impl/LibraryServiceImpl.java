@@ -1,15 +1,17 @@
-package org.folio.locations.service.impl;
+package org.folio.locations.service.crud.impl;
 
 import java.util.List;
 import java.util.UUID;
 import org.folio.locations.domain.dto.LibrariesCollection;
 import org.folio.locations.domain.dto.Library;
 import org.folio.locations.domain.entity.LibraryEntity;
+import org.folio.locations.domain.type.ResourceType;
 import org.folio.locations.exception.LibraryNotFoundException;
 import org.folio.locations.mapper.LibraryMapper;
 import org.folio.locations.repository.LibraryRepository;
-import org.folio.locations.service.AbstractCrudService;
-import org.folio.locations.service.LibraryService;
+import org.folio.locations.service.crud.AbstractCrudService;
+import org.folio.locations.service.crud.LibraryService;
+import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
 import org.jspecify.annotations.Nullable;
@@ -22,8 +24,8 @@ public class LibraryServiceImpl
   implements LibraryService {
 
   public LibraryServiceImpl(LibraryRepository repository, LibraryMapper mapper,
-                            FolioExecutionContext context) {
-    super(repository, mapper, l -> {}, context);
+                            FolioExecutionContext context, DomainEventPublisher publisher) {
+    super(repository, mapper, l -> {}, context, publisher);
   }
 
   @Override
@@ -41,5 +43,10 @@ public class LibraryServiceImpl
   @Override
   protected NotFoundException notFound(UUID id) {
     return new LibraryNotFoundException(id);
+  }
+
+  @Override
+  protected ResourceType resourceType() {
+    return ResourceType.LIBRARY;
   }
 }

@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.folio.locations.domain.dto.Location;
 import org.folio.locations.domain.dto.LocationsCollection;
 import org.folio.locations.rest.resource.LocationsApi;
-import org.folio.locations.service.LocationService;
+import org.folio.locations.service.crud.LocationService;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

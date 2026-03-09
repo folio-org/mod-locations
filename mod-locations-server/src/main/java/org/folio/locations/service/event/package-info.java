@@ -1,4 +1,4 @@
 @NullMarked
-package org.folio.locations.service.impl;
+package org.folio.locations.service.event;
 
 import org.jspecify.annotations.NullMarked;
