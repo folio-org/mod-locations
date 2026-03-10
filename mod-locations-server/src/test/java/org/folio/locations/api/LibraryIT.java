@@ -18,9 +18,11 @@ import org.folio.locations.domain.entity.LibraryEntity;
 import org.folio.locations.support.ApiResourceUrls;
 import org.folio.locations.support.BaseIT;
 import org.folio.spring.testing.extension.DatabaseCleanup;
+import org.folio.spring.testing.type.IntegrationTest;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@IntegrationTest
 class LibraryIT extends BaseIT {
 
   private static UUID createInstitution() {

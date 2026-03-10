@@ -42,35 +42,46 @@ spring:
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
       properties:
-        enable.idempotence: true
-        max.in.flight.requests.per.connection: 5
-        retries: 5
+        linger.ms: 5
         spring.json.add.type.headers: false
+  cache:
+    cache-names:
+      - consortium-central-tenant-cache
+      - consortium-tenants-cache
+    caffeine:
+      spec: maximumSize=500,expireAfterWrite=3600s
+    type: caffeine
 
 folio:
   environment: ${ENV:folio}
+  exchange:
+    enabled: true
   kafka:
     topicPrefix: locations
     topics:
       - name: location
-        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
       - name: service-point
-        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
       - name: service-point-user
-        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
       - name: institution
-        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
       - name: campus
-        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
       - name: library
-        numPartitions: ${KAFKA_MOD_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_MOD_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
-
+        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+    listener:
+      service-point:
+        concurrency: ${KAFKA_SERVICE_POINT_CONSUMER_CONCURRENCY:1}
+        topic-pattern: (${folio.environment}\.)(.*\.)locations\.service-point
+        group-id: ${folio.environment}-mod-locations-service-point-group
   logging:
     request:
       enabled: true

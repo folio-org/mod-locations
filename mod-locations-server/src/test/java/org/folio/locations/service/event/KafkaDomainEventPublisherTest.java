@@ -8,16 +8,20 @@ import static org.mockito.Mockito.mockStatic;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.folio.locations.domain.event.DomainEvent;
 import org.folio.locations.domain.event.DomainEventType;
 import org.folio.locations.domain.type.ResourceType;
+import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.testing.type.UnitTest;
 import org.folio.spring.tools.kafka.FolioKafkaProperties;
 import org.junit.jupiter.api.AfterEach;
@@ -44,25 +48,29 @@ class KafkaDomainEventPublisherTest {
   private KafkaTemplate<String, Object> kafkaTemplate;
   @Mock
   private Validator validator;
+  @Mock
+  private FolioExecutionContext context;
 
   private KafkaDomainEventPublisher publisher;
 
   @BeforeEach
   void setUp() {
     var folioKafkaProperties = prepareFolioKafkaProperties();
-    publisher = new KafkaDomainEventPublisher(folioKafkaProperties, kafkaTemplate, validator);
+    publisher = new KafkaDomainEventPublisher(folioKafkaProperties, kafkaTemplate, validator, context);
     ReflectionTestUtils.setField(publisher, "environment", ENVIRONMENT);
   }
 
   @AfterEach
   void tearDown() {
-    verifyNoMoreInteractions(kafkaTemplate, validator);
+    verifyNoMoreInteractions(kafkaTemplate, validator, context);
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void publish_positive_withoutTransaction_sendsImmediately() {
     var event = buildEvent(ResourceType.CAMPUS, DomainEventType.CREATE);
     doReturn(Set.of()).when(validator).validate(event);
+    when(context.getOkapiHeaders()).thenReturn(Map.of());
 
     try (var tsmMock = mockStatic(TransactionSynchronizationManager.class)) {
       tsmMock.when(TransactionSynchronizationManager::isSynchronizationActive).thenReturn(false);
@@ -70,19 +78,22 @@ class KafkaDomainEventPublisherTest {
       publisher.publish(event);
     }
 
-    verify(kafkaTemplate).send(
-      ENVIRONMENT + "." + TENANT_ID + ".locations.campus",
-      RESOURCE_ID.toString(),
-      event
-    );
+    var recordCaptor = ArgumentCaptor.forClass(ProducerRecord.class);
+    verify(kafkaTemplate).send(recordCaptor.capture());
+    assertThat(recordCaptor.getValue().topic()).isEqualTo(ENVIRONMENT + "." + TENANT_ID + ".locations.campus");
+    assertThat(recordCaptor.getValue().key()).isEqualTo(RESOURCE_ID.toString());
+    assertThat(recordCaptor.getValue().value()).isEqualTo(event);
+    verify(context).getOkapiHeaders();
   }
 
   // ── publish without active transaction ───────────────────────────────────────
 
   @Test
+  @SuppressWarnings("unchecked")
   void publish_positive_withoutTransaction_buildsTopicFromUnderscoredResourceType() {
     var event = buildEvent(ResourceType.SERVICE_POINT_USER, DomainEventType.DELETE);
     doReturn(Set.of()).when(validator).validate(event);
+    when(context.getOkapiHeaders()).thenReturn(Map.of());
 
     try (var tsmMock = mockStatic(TransactionSynchronizationManager.class)) {
       tsmMock.when(TransactionSynchronizationManager::isSynchronizationActive).thenReturn(false);
@@ -90,11 +101,13 @@ class KafkaDomainEventPublisherTest {
       publisher.publish(event);
     }
 
-    verify(kafkaTemplate).send(
-      ENVIRONMENT + "." + TENANT_ID + ".locations.service-point-user",
-      RESOURCE_ID.toString(),
-      event
-    );
+    var recordCaptor = ArgumentCaptor.forClass(ProducerRecord.class);
+    verify(kafkaTemplate).send(recordCaptor.capture());
+    assertThat(recordCaptor.getValue().topic())
+      .isEqualTo(ENVIRONMENT + "." + TENANT_ID + ".locations.service-point-user");
+    assertThat(recordCaptor.getValue().key()).isEqualTo(RESOURCE_ID.toString());
+    assertThat(recordCaptor.getValue().value()).isEqualTo(event);
+    verify(context).getOkapiHeaders();
   }
 
   @Test
@@ -111,10 +124,12 @@ class KafkaDomainEventPublisherTest {
   }
 
   @Test
+  @SuppressWarnings("unchecked")
   void publish_positive_withinTransaction_defersUntilAfterCommit() {
     var event = buildEvent(ResourceType.CAMPUS, DomainEventType.CREATE);
     var syncCaptor = ArgumentCaptor.forClass(TransactionSynchronization.class);
     doReturn(Set.of()).when(validator).validate(event);
+    when(context.getOkapiHeaders()).thenReturn(Map.of());
 
     try (var tsmMock = mockStatic(TransactionSynchronizationManager.class)) {
       tsmMock.when(TransactionSynchronizationManager::isSynchronizationActive).thenReturn(true);
@@ -129,11 +144,12 @@ class KafkaDomainEventPublisherTest {
     }
 
     assertThat(syncCaptor.getValue()).isNotNull();
-    verify(kafkaTemplate).send(
-      ENVIRONMENT + "." + TENANT_ID + ".locations.campus",
-      RESOURCE_ID.toString(),
-      event
-    );
+    var recordCaptor = ArgumentCaptor.forClass(ProducerRecord.class);
+    verify(kafkaTemplate).send(recordCaptor.capture());
+    assertThat(recordCaptor.getValue().topic()).isEqualTo(ENVIRONMENT + "." + TENANT_ID + ".locations.campus");
+    assertThat(recordCaptor.getValue().key()).isEqualTo(RESOURCE_ID.toString());
+    assertThat(recordCaptor.getValue().value()).isEqualTo(event);
+    verify(context).getOkapiHeaders();
   }
 
   // ── publish within active transaction ────────────────────────────────────────
@@ -143,6 +159,7 @@ class KafkaDomainEventPublisherTest {
     var event = buildEvent(ResourceType.CAMPUS, DomainEventType.UPDATE);
     var syncCaptor = ArgumentCaptor.forClass(TransactionSynchronization.class);
     doReturn(Set.of()).when(validator).validate(event);
+    when(context.getOkapiHeaders()).thenReturn(Map.of());
 
     try (var tsmMock = mockStatic(TransactionSynchronizationManager.class)) {
       tsmMock.when(TransactionSynchronizationManager::isSynchronizationActive).thenReturn(true);

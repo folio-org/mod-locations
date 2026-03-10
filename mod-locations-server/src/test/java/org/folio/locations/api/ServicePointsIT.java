@@ -20,12 +20,14 @@ import org.folio.locations.domain.entity.ServicePointStaffSlipEntity;
 import org.folio.locations.support.ApiResourceUrls;
 import org.folio.locations.support.BaseIT;
 import org.folio.spring.testing.extension.DatabaseCleanup;
+import org.folio.spring.testing.type.IntegrationTest;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 
+@IntegrationTest
 class ServicePointsIT extends BaseIT {
 
   @BeforeAll

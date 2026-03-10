@@ -27,9 +27,11 @@ import org.folio.locations.domain.entity.ServicePointEntity;
 import org.folio.locations.support.ApiResourceUrls;
 import org.folio.locations.support.BaseIT;
 import org.folio.spring.testing.extension.DatabaseCleanup;
+import org.folio.spring.testing.type.IntegrationTest;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
+@IntegrationTest
 class LocationIT extends BaseIT {
 
   // ── Factory helpers ───────────────────────────────────────────────────────────

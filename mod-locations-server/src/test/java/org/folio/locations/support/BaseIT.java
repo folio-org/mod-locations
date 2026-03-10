@@ -51,23 +51,36 @@ public abstract class BaseIT {
   }
 
   protected static void setUpTenant() {
+    setUpTenant(TENANT_ID);
+  }
+
+  protected static void setUpTenant(String tenantId) {
     var attrs = new TenantAttributes().moduleTo("mod-locations");
-    doPost("/_/tenant", attrs, defaultHeaders());
+    doPost("/_/tenant", attrs, headersForTenant(tenantId));
   }
 
   @SneakyThrows
   protected static void removeTenant() {
+    removeTenant(TENANT_ID);
+  }
+
+  @SneakyThrows
+  protected static void removeTenant(String tenantId) {
     var attrs = new TenantAttributes().moduleFrom("mod-locations").purge(true);
     mockMvc.perform(post("/_/tenant")
         .content(asJson(attrs))
-        .headers(defaultHeaders()))
+        .headers(headersForTenant(tenantId)))
       .andDo(MockMvcResultHandlers.log());
   }
 
   protected static HttpHeaders defaultHeaders() {
+    return headersForTenant(TENANT_ID);
+  }
+
+  protected static HttpHeaders headersForTenant(String tenantId) {
     var headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
-    headers.add(XOkapiHeaders.TENANT, TENANT_ID);
+    headers.add(XOkapiHeaders.TENANT, tenantId);
     headers.add(XOkapiHeaders.USER_ID, USER_ID);
     return headers;
   }

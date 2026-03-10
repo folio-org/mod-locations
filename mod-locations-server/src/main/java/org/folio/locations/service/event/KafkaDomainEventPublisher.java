@@ -2,9 +2,13 @@ package org.folio.locations.service.event;
 
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Validator;
+import java.util.Collection;
+import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.kafka.clients.producer.ProducerRecord;
 import org.folio.locations.domain.event.DomainEvent;
+import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.tools.kafka.FolioKafkaProperties;
 import org.folio.spring.tools.kafka.KafkaUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +25,7 @@ public class KafkaDomainEventPublisher implements DomainEventPublisher {
   private final FolioKafkaProperties kafkaProperties;
   private final KafkaTemplate<String, Object> kafkaTemplate;
   private final Validator validator;
+  private final FolioExecutionContext context;
 
   @Value("${folio.environment:folio}")
   private String environment;
@@ -66,27 +71,31 @@ public class KafkaDomainEventPublisher implements DomainEventPublisher {
       throw new ConstraintViolationException(violations);
     }
     if (TransactionSynchronizationManager.isSynchronizationActive()) {
+      // Capture headers before the lambda — the execution context may be gone by the time afterCommit fires
+      var okapiHeaders = context.getOkapiHeaders();
       TransactionSynchronizationManager.registerSynchronization(new TransactionSynchronization() {
         @Override
         public void afterCommit() {
-          send(event);
+          send(event, okapiHeaders);
         }
       });
     } else {
-      send(event);
+      send(event, context.getOkapiHeaders());
     }
   }
 
-  private <T> void send(DomainEvent<T> event) {
+  private <T> void send(DomainEvent<T> event, Map<String, Collection<String>> okapiHeaders) {
     var topic = buildTopic(event);
     var key = event.getResourceId().toString();
     log.info("Publishing domain event: type={}, resourceType={}, resourceId={}",
       event.getType(), event.getResourceType(), key);
-    kafkaTemplate.send(topic, key, event);
+    var kafkaHeaders = KafkaUtils.toKafkaHeaders(okapiHeaders);
+    var producerRecord = new ProducerRecord<String, Object>(topic, null, null, key, event, kafkaHeaders);
+    kafkaTemplate.send(producerRecord);
   }
 
   private <T> String buildTopic(DomainEvent<T> event) {
-    var resourceSegment = event.getResourceType().name().toLowerCase().replace('_', '-');
+    var resourceSegment = event.getResourceType().getResourceName();
     for (var topic : kafkaProperties.getTopics()) {
       if (topic.getName().equals(resourceSegment)) {
         return KafkaUtils.getTenantTopicName(kafkaProperties.getTopicPrefix(), topic.getName(), environment,
