@@ -11,6 +11,7 @@ import org.folio.locations.client.ConsortiumTenantsClient;
 import org.folio.spring.FolioExecutionContext;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.HttpClientErrorException;
 
 @Log4j2
 @Service
@@ -37,9 +38,13 @@ public class ConsortiumTenantsService {
         .map(ConsortiumTenantsClient.ConsortiumTenants::tenants)
         .map(this::getTenantsList)
         .orElse(Collections.emptyList());
-    } catch (Exception e) {
-      log.debug("Unexpected exception occurred while trying to get consortium tenants", e);
+    } catch (HttpClientErrorException e) {
+      log.debug("Tenant {} is not part of a consortium or consortium API returned client error: {}",
+        tenantId, e.getMessage());
       return Collections.emptyList();
+    } catch (Exception e) {
+      log.error("Unexpected error while fetching consortium tenants for tenantId={}", tenantId, e);
+      throw new IllegalStateException("Failed to fetch consortium tenants for tenant: " + tenantId, e);
     }
   }
 

@@ -235,12 +235,36 @@ class LocationServiceImplTest {
   // ── deleteAll ────────────────────────────────────────────────────────────────
 
   @Test
-  void deleteAll_positive_delegatesToRepository() {
+  void deleteAll_positive_publishesDeleteEventForEachEntity() {
+    var entity1 = new LocationEntity();
+    entity1.setId(LOCATION_ID);
+    var entity2 = new LocationEntity();
+    var secondId = UUID.fromString("99999999-9999-9999-9999-999999999999");
+    entity2.setId(secondId);
+    var dto1 = location("Main", "MN");
+    var dto2 = location("Branch", "BR");
+    when(repository.findAll()).thenReturn(List.of(entity1, entity2));
+    when(mapper.toDto(entity1)).thenReturn(dto1);
+    when(mapper.toDto(entity2)).thenReturn(dto2);
+    when(context.getTenantId()).thenReturn(TENANT_ID);
+    when(context.getUserId()).thenReturn(USER_ID);
     var service = newService();
 
     service.deleteAll();
 
-    verify(repository).deleteAll();
+    verify(repository).deleteAll(List.of(entity1, entity2));
+    verify(publisher, Mockito.times(2)).publish(any());
+  }
+
+  @Test
+  void deleteAll_positive_emptyRepository_doesNotPublishEvents() {
+    when(repository.findAll()).thenReturn(List.of());
+    var service = newService();
+
+    service.deleteAll();
+
+    verify(repository).deleteAll(List.of());
+    verify(publisher, Mockito.never()).publish(any());
   }
 
   // ── helpers ──────────────────────────────────────────────────────────────────

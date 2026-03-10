@@ -87,7 +87,12 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
 
   @Transactional
   public void deleteAll() {
-    repository.deleteAll();
+    var entities = repository.findAll();
+    var snapshots = entities.stream()
+      .map(entity -> buildEvent(DomainEventType.DELETE, entity.getId(), mapper.toDto(entity), null))
+      .toList();
+    repository.deleteAll(entities);
+    snapshots.forEach(publisher::publish);
   }
 
   protected C getCollection(String cql, Integer limit, Integer offset) {
