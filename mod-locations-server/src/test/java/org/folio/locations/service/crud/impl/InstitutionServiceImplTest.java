@@ -211,11 +211,12 @@ class InstitutionServiceImplTest {
 
   @Test
   void deleteAll_positive_delegatesToRepository() {
+    when(repository.findAll()).thenReturn(List.of());
     var service = newService();
 
     service.deleteAll();
 
-    verify(repository).deleteAll();
+    verify(repository).deleteAll(List.of());
   }
 
   // ── helpers ──────────────────────────────────────────────────────────────────

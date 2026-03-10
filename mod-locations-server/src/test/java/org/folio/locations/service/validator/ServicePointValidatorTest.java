@@ -20,6 +20,7 @@ class ServicePointValidatorTest {
   @Test
   void validate_positive_pickupLocationWithHoldShelfExpiry() {
     var servicePoint = new ServicePoint()
+      .name("Desk 1").code("D1").discoveryDisplayName("Desk One")
       .pickupLocation(true)
       .holdShelfExpiryPeriod(new HoldShelfExpiryPeriod());
 
@@ -29,14 +30,45 @@ class ServicePointValidatorTest {
   @ParameterizedTest
   @MethodSource("nonPickupLocations")
   void validate_positive_nonPickupLocationWithoutHoldShelfExpiry(Boolean pickupLocation) {
-    var servicePoint = new ServicePoint().pickupLocation(pickupLocation);
+    var servicePoint = new ServicePoint()
+      .name("Desk 1").code("D1").discoveryDisplayName("Desk One")
+      .pickupLocation(pickupLocation);
 
     assertThatNoException().isThrownBy(() -> validator.validate(servicePoint));
   }
 
   @Test
+  void validate_negative_missingName() {
+    var servicePoint = new ServicePoint().code("D1").discoveryDisplayName("Desk One");
+
+    assertThatThrownBy(() -> validator.validate(servicePoint))
+      .isInstanceOf(ValidationException.class)
+      .hasMessage(ServicePointValidator.ERR_NAME_REQUIRED);
+  }
+
+  @Test
+  void validate_negative_missingCode() {
+    var servicePoint = new ServicePoint().name("Desk 1").discoveryDisplayName("Desk One");
+
+    assertThatThrownBy(() -> validator.validate(servicePoint))
+      .isInstanceOf(ValidationException.class)
+      .hasMessage(ServicePointValidator.ERR_CODE_REQUIRED);
+  }
+
+  @Test
+  void validate_negative_missingDiscoveryDisplayName() {
+    var servicePoint = new ServicePoint().name("Desk 1").code("D1");
+
+    assertThatThrownBy(() -> validator.validate(servicePoint))
+      .isInstanceOf(ValidationException.class)
+      .hasMessage(ServicePointValidator.ERR_DISCOVERY_DISPLAY_NAME_REQUIRED);
+  }
+
+  @Test
   void validate_negative_pickupLocationWithoutHoldShelfExpiry() {
-    var servicePoint = new ServicePoint().pickupLocation(true);
+    var servicePoint = new ServicePoint()
+      .name("Desk 1").code("D1").discoveryDisplayName("Desk One")
+      .pickupLocation(true);
 
     assertThatThrownBy(() -> validator.validate(servicePoint))
       .isInstanceOf(ValidationException.class)
@@ -47,6 +79,7 @@ class ServicePointValidatorTest {
   @MethodSource("nonPickupLocations")
   void validate_negative_holdShelfExpiryWithoutPickupLocation(Boolean pickupLocation) {
     var servicePoint = new ServicePoint()
+      .name("Desk 1").code("D1").discoveryDisplayName("Desk One")
       .pickupLocation(pickupLocation)
       .holdShelfExpiryPeriod(new HoldShelfExpiryPeriod());
 

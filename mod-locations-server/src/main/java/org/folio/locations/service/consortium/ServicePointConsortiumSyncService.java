@@ -63,8 +63,10 @@ public class ServicePointConsortiumSyncService {
 
     try (var ignored = new FolioExecutionContextSetter(context.getFolioModuleMetadata(), memberHeaders)) {
       switch (event.getType()) {
-        case CREATE -> servicePointService.create(requireNonNull(event.getNewResource()));
-        case UPDATE -> servicePointService.update(event.getResourceId(), requireNonNull(event.getNewResource()));
+        case CREATE -> servicePointService.create(
+          requireNonNull(event.getNewResource(), "CREATE event is missing newResource for resourceId: " + event.getResourceId()));
+        case UPDATE -> servicePointService.update(event.getResourceId(),
+          requireNonNull(event.getNewResource(), "UPDATE event is missing newResource for resourceId: " + event.getResourceId()));
         case DELETE -> servicePointService.deleteById(event.getResourceId());
         default -> log.warn("Unhandled event type for consortium sync: {}", event.getType());
       }

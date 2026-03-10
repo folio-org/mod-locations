@@ -290,9 +290,11 @@ class CampusServiceImplTest {
 
   @Test
   void deleteAll_positive_delegatesToRepository() {
+    when(repository.findAll()).thenReturn(List.of());
+
     newService().deleteAll();
 
-    verify(repository).deleteAll();
+    verify(repository).deleteAll(List.of());
   }
 
   // ── helpers ──────────────────────────────────────────────────────────────────
