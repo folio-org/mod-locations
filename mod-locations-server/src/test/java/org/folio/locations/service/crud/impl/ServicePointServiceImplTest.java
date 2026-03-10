@@ -8,11 +8,13 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import org.folio.locations.domain.dto.ServicePoint;
 import org.folio.locations.domain.entity.ServicePointEntity;
+import org.folio.locations.domain.entity.ServicePointStaffSlipEntity;
 import org.folio.locations.exception.ServicePointNotFoundException;
 import org.folio.locations.mapper.ServicePointMapper;
 import org.folio.locations.repository.ServicePointRepository;
@@ -161,7 +163,7 @@ class ServicePointServiceImplTest {
   @Test
   void update_positive_updatesExistingEntity() {
     var entity = new ServicePointEntity();
-    entity.setStaffSlips(List.of());
+    entity.setStaffSlips(new ArrayList<>());
     var oldDto = new ServicePoint();
     when(repository.findById(SERVICE_POINT_ID)).thenReturn(Optional.of(entity));
     when(context.getUserId()).thenReturn(USER_ID);
@@ -174,6 +176,29 @@ class ServicePointServiceImplTest {
     service.update(SERVICE_POINT_ID, dto);
 
     assertThat(entity.getUpdatedByUserId()).isEqualTo(USER_ID);
+    verify(validator).validate(dto);
+    verify(mapper).updateEntity(dto, entity);
+    verify(publisher).publish(any());
+  }
+
+  @Test
+  void update_positive_clearsStaffSlipsWhenDtoStaffSlipsIsNull() {
+    var slip = new ServicePointStaffSlipEntity();
+    var entity = new ServicePointEntity();
+    entity.setStaffSlips(new ArrayList<>(List.of(slip)));
+    var oldDto = new ServicePoint();
+    when(repository.findById(SERVICE_POINT_ID)).thenReturn(Optional.of(entity));
+    when(context.getUserId()).thenReturn(USER_ID);
+    when(context.getTenantId()).thenReturn(TENANT_ID);
+    when(mapper.toDto(entity)).thenReturn(oldDto);
+    when(repository.save(entity)).thenReturn(entity);
+    var service = newService();
+    final var dto = new ServicePoint();
+    dto.setStaffSlips(null); // explicit null: client sends "staffSlips": null
+
+    service.update(SERVICE_POINT_ID, dto);
+
+    assertThat(entity.getStaffSlips()).isEmpty();
     verify(validator).validate(dto);
     verify(mapper).updateEntity(dto, entity);
     verify(publisher).publish(any());

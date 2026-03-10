@@ -64,6 +64,9 @@ public class ServicePointServiceImpl
 
   @Override
   protected void beforeUpdate(ServicePoint dto, ServicePointEntity entity) {
+    if (dto.getStaffSlips() == null) {
+      entity.getStaffSlips().clear();
+    }
     if (dto.getHoldShelfExpiryPeriod() == null) {
       entity.setHoldShelfExpiryPeriodDuration(null);
       entity.setHoldShelfExpiryPeriodIntervalId(null);
