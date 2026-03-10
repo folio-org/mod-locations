@@ -60,4 +60,28 @@ public class ApiResourceUrls {
   public static String locationResource(UUID id) {
     return LOCATIONS + "/" + id;
   }
+
+  public static String migrateInstitutionsResource() {
+    return "/migrate/institutions";
+  }
+
+  public static String migrateCampusesResource() {
+    return "/migrate/campuses";
+  }
+
+  public static String migrateLibrariesResource() {
+    return "/migrate/libraries";
+  }
+
+  public static String migrateLocationsResource() {
+    return "/migrate/locations";
+  }
+
+  public static String migrateServicePointsResource() {
+    return "/migrate/service-points";
+  }
+
+  public static String migrateServicePointsUsersResource() {
+    return "/migrate/service-points-users";
+  }
 }

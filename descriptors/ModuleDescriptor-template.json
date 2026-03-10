@@ -314,6 +314,66 @@
       ]
     },
     {
+      "id": "migration",
+      "version": "1.0",
+      "handlers": [
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/migrate/institutions",
+          "permissionsRequired": [
+            "migration.institutions.collection.post"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/migrate/campuses",
+          "permissionsRequired": [
+            "migration.campuses.collection.post"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/migrate/libraries",
+          "permissionsRequired": [
+            "migration.libraries.collection.post"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/migrate/locations",
+          "permissionsRequired": [
+            "migration.locations.collection.post"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/migrate/service-points",
+          "permissionsRequired": [
+            "migration.service-points.collection.post"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/migrate/service-points-users",
+          "permissionsRequired": [
+            "migration.service-points-users.collection.post"
+          ]
+        }
+      ]
+    },
+    {
       "id": "_tenant",
       "version": "2.0",
       "interfaceType": "system",
@@ -589,9 +649,9 @@
       ]
     },
     {
-      "permissionName": "inventory-storage.all",
-      "displayName": "inventory storage module - all permissions",
-      "description": "Entire set of permissions needed to use the inventory storage module",
+      "permissionName": "locations.all",
+      "displayName": "locations - all permissions",
+      "description": "Entire set of permissions needed to manage location units and locations",
       "subPermissions": [
         "location-units.institutions.collection.get",
         "location-units.institutions.item.get",
@@ -612,7 +672,14 @@
         "locations.item.get",
         "locations.item.post",
         "locations.item.put",
-        "locations.item.delete",
+        "locations.item.delete"
+      ]
+    },
+    {
+      "permissionName": "service-points.all",
+      "displayName": "service points - all permissions",
+      "description": "Entire set of permissions needed to manage service points and service points users",
+      "subPermissions": [
         "service-points.collection.get",
         "service-points.item.get",
         "service-points.item.post",
@@ -623,6 +690,49 @@
         "service-points-users.item.post",
         "service-points-users.item.put",
         "service-points-users.item.delete"
+      ]
+    },
+    {
+      "permissionName": "migration.institutions.collection.post",
+      "displayName": "migration - migrate institutions",
+      "description": "Bulk upsert institutions from a legacy module"
+    },
+    {
+      "permissionName": "migration.campuses.collection.post",
+      "displayName": "migration - migrate campuses",
+      "description": "Bulk upsert campuses from a legacy module"
+    },
+    {
+      "permissionName": "migration.libraries.collection.post",
+      "displayName": "migration - migrate libraries",
+      "description": "Bulk upsert libraries from a legacy module"
+    },
+    {
+      "permissionName": "migration.locations.collection.post",
+      "displayName": "migration - migrate locations",
+      "description": "Bulk upsert locations from a legacy module"
+    },
+    {
+      "permissionName": "migration.service-points.collection.post",
+      "displayName": "migration - migrate service points",
+      "description": "Bulk upsert service points from a legacy module"
+    },
+    {
+      "permissionName": "migration.service-points-users.collection.post",
+      "displayName": "migration - migrate service points users",
+      "description": "Bulk upsert service points users from a legacy module"
+    },
+    {
+      "permissionName": "migration.all",
+      "displayName": "migration - all permissions",
+      "description": "Entire set of permissions needed to perform data migration",
+      "subPermissions": [
+        "migration.institutions.collection.post",
+        "migration.campuses.collection.post",
+        "migration.libraries.collection.post",
+        "migration.locations.collection.post",
+        "migration.service-points.collection.post",
+        "migration.service-points-users.collection.post"
       ]
     }
   ],
