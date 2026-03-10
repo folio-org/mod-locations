@@ -8,17 +8,20 @@ import java.util.List;
 import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.folio.locations.config.EcsTlrSyncConfiguration;
 import org.folio.locations.domain.dto.ServicePoint;
 import org.folio.locations.domain.event.DomainEvent;
 import org.folio.locations.service.crud.ServicePointService;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.integration.XOkapiHeaders;
 import org.folio.spring.scope.FolioExecutionContextSetter;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.stereotype.Service;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = EcsTlrSyncConfiguration.PROPERTY, havingValue = "true")
 public class ServicePointConsortiumSyncService {
 
   private final ConsortiumTenantsService consortiumTenantsService;
@@ -64,9 +67,11 @@ public class ServicePointConsortiumSyncService {
     try (var ignored = new FolioExecutionContextSetter(context.getFolioModuleMetadata(), memberHeaders)) {
       switch (event.getType()) {
         case CREATE -> servicePointService.create(
-          requireNonNull(event.getNewResource(), "CREATE event is missing newResource for resourceId: " + event.getResourceId()));
+          requireNonNull(event.getNewResource(),
+            "CREATE event is missing newResource for resourceId: " + event.getResourceId()));
         case UPDATE -> servicePointService.update(event.getResourceId(),
-          requireNonNull(event.getNewResource(), "UPDATE event is missing newResource for resourceId: " + event.getResourceId()));
+          requireNonNull(event.getNewResource(),
+            "UPDATE event is missing newResource for resourceId: " + event.getResourceId()));
         case DELETE -> servicePointService.deleteById(event.getResourceId());
         default -> log.warn("Unhandled event type for consortium sync: {}", event.getType());
       }

@@ -2,10 +2,12 @@ package org.folio.locations.service.event;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.folio.locations.config.EcsTlrSyncConfiguration;
 import org.folio.locations.domain.dto.ServicePoint;
 import org.folio.locations.domain.event.DomainEvent;
 import org.folio.locations.service.consortium.ServicePointConsortiumSyncService;
 import org.folio.spring.tools.kafka.KafkaScopedExecutionService;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.messaging.MessageHeaders;
 import org.springframework.stereotype.Component;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Component;
 @Log4j2
 @Component
 @RequiredArgsConstructor
+@ConditionalOnProperty(name = EcsTlrSyncConfiguration.PROPERTY, havingValue = "true")
 public class ServicePointEventListener {
 
   private final ServicePointConsortiumSyncService syncService;

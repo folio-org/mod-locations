@@ -61,6 +61,9 @@ folio:
   environment: ${ENV:folio}
   exchange:
     enabled: true
+  features:
+    ecs-tlr:
+      enabled: ${ECS_TLR_FEATURE_ENABLED:false}
   kafka:
     topicPrefix: locations
     topics:

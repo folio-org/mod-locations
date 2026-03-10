@@ -11,9 +11,9 @@ import org.folio.locations.client.UserTenantsClient;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
+@Log4j2
 @Service
 @RequiredArgsConstructor
-@Log4j2
 public class UserTenantsService {
 
   private final UserTenantsClient userTenantsClient;
@@ -22,7 +22,7 @@ public class UserTenantsService {
    * Get consortium id.
    *
    * @return consortium id if passed 'tenantId' is a part of a consortium
-   * */
+   **/
   public Optional<String> getConsortiumId(String tenantId) {
     if (StringUtils.isBlank(tenantId)) {
       return Optional.empty();
@@ -48,10 +48,10 @@ public class UserTenantsService {
     log.debug("getCentralTenant:  tenantId: {}, response: {}", tenantId, userTenants);
 
     return Optional.ofNullable(userTenants)
-        .map(UserTenantsClient.UserTenants::userTenants)
-        .orElse(List.of())
-        .stream()
-        .findFirst()
-        .map(UserTenantsClient.UserTenant::centralTenantId);
+      .map(UserTenantsClient.UserTenants::userTenants)
+      .orElse(List.of())
+      .stream()
+      .findFirst()
+      .map(UserTenantsClient.UserTenant::centralTenantId);
   }
 }
