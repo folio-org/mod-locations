@@ -6,12 +6,12 @@ import lombok.experimental.UtilityClass;
 @UtilityClass
 public class ApiResourceUrls {
 
-  private static final String SERVICE_POINTS = "/service-points";
-  private static final String SERVICE_POINTS_USERS = "/service-points-users";
-  private static final String INSTITUTIONS = "/location-units/institutions";
-  private static final String CAMPUSES = "/location-units/campuses";
-  private static final String LIBRARIES = "/location-units/libraries";
-  private static final String LOCATIONS = "/locations";
+  private static final String SERVICE_POINTS = "/service-point-storage/service-points";
+  private static final String SERVICE_POINTS_USERS = "/service-point-storage/service-points-users";
+  private static final String INSTITUTIONS = "/location-storage/institutions";
+  private static final String CAMPUSES = "/location-storage/campuses";
+  private static final String LIBRARIES = "/location-storage/libraries";
+  private static final String LOCATIONS = "/location-storage/locations";
 
   public static String servicePointsResource() {
     return SERVICE_POINTS;

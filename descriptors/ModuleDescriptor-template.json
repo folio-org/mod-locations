@@ -5,208 +5,202 @@
   ],
   "provides": [
     {
-      "id": "location-units",
-      "version": "3.0",
+      "id": "location-storage",
+      "version": "1.0",
       "handlers": [
         {
           "methods": [
             "GET"
           ],
-          "pathPattern": "/location-units/institutions",
+          "pathPattern": "/location-storage/locations",
           "permissionsRequired": [
-            "location-units.institutions.collection.get"
+            "location-storage.locations.collection.get"
           ]
         },
         {
           "methods": [
             "GET"
           ],
-          "pathPattern": "/location-units/institutions/{id}",
+          "pathPattern": "/location-storage/locations/{id}",
           "permissionsRequired": [
-            "location-units.institutions.item.get"
+            "location-storage.locations.item.get"
           ]
         },
         {
           "methods": [
             "POST"
           ],
-          "pathPattern": "/location-units/institutions",
+          "pathPattern": "/location-storage/locations",
           "permissionsRequired": [
-            "location-units.institutions.item.post"
+            "location-storage.locations.item.post"
           ]
         },
         {
           "methods": [
             "PUT"
           ],
-          "pathPattern": "/location-units/institutions/{id}",
+          "pathPattern": "/location-storage/locations/{id}",
           "permissionsRequired": [
-            "location-units.institutions.item.put"
+            "location-storage.locations.item.put"
           ]
         },
         {
           "methods": [
             "DELETE"
           ],
-          "pathPattern": "/location-units/institutions/{id}",
+          "pathPattern": "/location-storage/locations/{id}",
           "permissionsRequired": [
-            "location-units.institutions.item.delete"
+            "location-storage.locations.item.delete"
           ]
         },
         {
           "methods": [
             "GET"
           ],
-          "pathPattern": "/location-units/campuses",
+          "pathPattern": "/location-storage/institutions",
           "permissionsRequired": [
-            "location-units.campuses.collection.get"
+            "location-storage.institutions.collection.get"
           ]
         },
         {
           "methods": [
             "GET"
           ],
-          "pathPattern": "/location-units/campuses/{id}",
+          "pathPattern": "/location-storage/institutions/{id}",
           "permissionsRequired": [
-            "location-units.campuses.item.get"
+            "location-storage.institutions.item.get"
           ]
         },
         {
           "methods": [
             "POST"
           ],
-          "pathPattern": "/location-units/campuses",
+          "pathPattern": "/location-storage/institutions",
           "permissionsRequired": [
-            "location-units.campuses.item.post"
+            "location-storage.institutions.item.post"
           ]
         },
         {
           "methods": [
             "PUT"
           ],
-          "pathPattern": "/location-units/campuses/{id}",
+          "pathPattern": "/location-storage/institutions/{id}",
           "permissionsRequired": [
-            "location-units.campuses.item.put"
+            "location-storage.institutions.item.put"
           ]
         },
         {
           "methods": [
             "DELETE"
           ],
-          "pathPattern": "/location-units/campuses/{id}",
+          "pathPattern": "/location-storage/institutions/{id}",
           "permissionsRequired": [
-            "location-units.campuses.item.delete"
+            "location-storage.institutions.item.delete"
           ]
         },
         {
           "methods": [
             "GET"
           ],
-          "pathPattern": "/location-units/libraries",
+          "pathPattern": "/location-storage/campuses",
           "permissionsRequired": [
-            "location-units.libraries.collection.get"
+            "location-storage.campuses.collection.get"
           ]
         },
         {
           "methods": [
             "GET"
           ],
-          "pathPattern": "/location-units/libraries/{id}",
+          "pathPattern": "/location-storage/campuses/{id}",
           "permissionsRequired": [
-            "location-units.libraries.item.get"
+            "location-storage.campuses.item.get"
           ]
         },
         {
           "methods": [
             "POST"
           ],
-          "pathPattern": "/location-units/libraries",
+          "pathPattern": "/location-storage/campuses",
           "permissionsRequired": [
-            "location-units.libraries.item.post"
+            "location-storage.campuses.item.post"
           ]
         },
         {
           "methods": [
             "PUT"
           ],
-          "pathPattern": "/location-units/libraries/{id}",
+          "pathPattern": "/location-storage/campuses/{id}",
           "permissionsRequired": [
-            "location-units.libraries.item.put"
+            "location-storage.campuses.item.put"
           ]
         },
         {
           "methods": [
             "DELETE"
           ],
-          "pathPattern": "/location-units/libraries/{id}",
+          "pathPattern": "/location-storage/campuses/{id}",
           "permissionsRequired": [
-            "location-units.libraries.item.delete"
+            "location-storage.campuses.item.delete"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/location-storage/libraries",
+          "permissionsRequired": [
+            "location-storage.libraries.collection.get"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/location-storage/libraries/{id}",
+          "permissionsRequired": [
+            "location-storage.libraries.item.get"
+          ]
+        },
+        {
+          "methods": [
+            "POST"
+          ],
+          "pathPattern": "/location-storage/libraries",
+          "permissionsRequired": [
+            "location-storage.libraries.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "PUT"
+          ],
+          "pathPattern": "/location-storage/libraries/{id}",
+          "permissionsRequired": [
+            "location-storage.libraries.item.put"
+          ]
+        },
+        {
+          "methods": [
+            "DELETE"
+          ],
+          "pathPattern": "/location-storage/libraries/{id}",
+          "permissionsRequired": [
+            "location-storage.libraries.item.delete"
           ]
         }
       ]
     },
     {
-      "id": "locations",
-      "version": "4.0",
+      "id": "service-point-storage",
+      "version": "1.0",
       "handlers": [
         {
           "methods": [
             "GET"
           ],
-          "pathPattern": "/locations",
+          "pathPattern": "/service-point-storage/service-points",
           "permissionsRequired": [
-            "locations.collection.get"
-          ]
-        },
-        {
-          "methods": [
-            "GET"
-          ],
-          "pathPattern": "/locations/{id}",
-          "permissionsRequired": [
-            "locations.item.get"
-          ]
-        },
-        {
-          "methods": [
-            "POST"
-          ],
-          "pathPattern": "/locations",
-          "permissionsRequired": [
-            "locations.item.post"
-          ]
-        },
-        {
-          "methods": [
-            "PUT"
-          ],
-          "pathPattern": "/locations/{id}",
-          "permissionsRequired": [
-            "locations.item.put"
-          ]
-        },
-        {
-          "methods": [
-            "DELETE"
-          ],
-          "pathPattern": "/locations/{id}",
-          "permissionsRequired": [
-            "locations.item.delete"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "service-points",
-      "version": "4.0",
-      "handlers": [
-        {
-          "methods": [
-            "GET"
-          ],
-          "pathPattern": "/service-points",
-          "permissionsRequired": [
-            "service-points.collection.get"
+            "service-point-storage.service-points.collection.get"
           ],
           "modulePermissions": [
             "user-tenants.collection.get"
@@ -216,9 +210,9 @@
           "methods": [
             "GET"
           ],
-          "pathPattern": "/service-points/{id}",
+          "pathPattern": "/service-point-storage/service-points/{id}",
           "permissionsRequired": [
-            "service-points.item.get"
+            "service-point-storage.service-points.item.get"
           ],
           "modulePermissions": [
             "user-tenants.collection.get"
@@ -228,9 +222,9 @@
           "methods": [
             "POST"
           ],
-          "pathPattern": "/service-points",
+          "pathPattern": "/service-point-storage/service-points",
           "permissionsRequired": [
-            "service-points.item.post"
+            "service-point-storage.service-points.item.post"
           ],
           "modulePermissions": [
             "user-tenants.collection.get"
@@ -240,9 +234,9 @@
           "methods": [
             "PUT"
           ],
-          "pathPattern": "/service-points/{id}",
+          "pathPattern": "/service-point-storage/service-points/{id}",
           "permissionsRequired": [
-            "service-points.item.put"
+            "service-point-storage.service-points.item.put"
           ],
           "modulePermissions": [
             "user-tenants.collection.get"
@@ -252,69 +246,63 @@
           "methods": [
             "DELETE"
           ],
-          "pathPattern": "/service-points/{id}",
+          "pathPattern": "/service-point-storage/service-points/{id}",
           "permissionsRequired": [
-            "service-points.item.delete"
+            "service-point-storage.service-points.item.delete"
           ],
           "modulePermissions": [
             "user-tenants.collection.get"
-          ]
-        }
-      ]
-    },
-    {
-      "id": "service-points-users",
-      "version": "2.0",
-      "handlers": [
-        {
-          "methods": [
-            "GET"
-          ],
-          "pathPattern": "/service-points-users",
-          "permissionsRequired": [
-            "service-points-users.collection.get"
           ]
         },
         {
           "methods": [
             "GET"
           ],
-          "pathPattern": "/service-points-users/{id}",
+          "pathPattern": "/service-point-storage/service-points-users",
           "permissionsRequired": [
-            "service-points-users.item.get"
+            "service-point-storage.service-points-users.collection.get"
           ]
         },
         {
           "methods": [
             "POST"
           ],
-          "pathPattern": "/service-points-users",
+          "pathPattern": "/service-point-storage/service-points-users",
           "permissionsRequired": [
-            "service-points-users.item.post"
+            "service-point-storage.service-points-users.item.post"
+          ]
+        },
+        {
+          "methods": [
+            "GET"
+          ],
+          "pathPattern": "/service-point-storage/service-points-users/{id}",
+          "permissionsRequired": [
+            "service-point-storage.service-points-users.item.get"
           ]
         },
         {
           "methods": [
             "PUT"
           ],
-          "pathPattern": "/service-points-users/{id}",
+          "pathPattern": "/service-point-storage/service-points-users/{id}",
           "permissionsRequired": [
-            "service-points-users.item.put"
+            "service-point-storage.service-points-users.item.put"
           ]
         },
         {
           "methods": [
             "DELETE"
           ],
-          "pathPattern": "/service-points-users/{id}",
+          "pathPattern": "/service-point-storage/service-points-users/{id}",
           "permissionsRequired": [
-            "service-points-users.item.delete"
+            "service-point-storage.service-points-users.item.delete"
           ]
         }
       ]
     },
     {
-      "id": "migration",
+      "id": "locations-migration",
       "version": "1.0",
       "handlers": [
         {
@@ -323,7 +311,7 @@
           ],
           "pathPattern": "/migrate/institutions",
           "permissionsRequired": [
-            "migration.institutions.collection.post"
+            "location-storage.migration.institutions.collection.post"
           ]
         },
         {
@@ -332,7 +320,7 @@
           ],
           "pathPattern": "/migrate/campuses",
           "permissionsRequired": [
-            "migration.campuses.collection.post"
+            "location-storage.migration.campuses.collection.post"
           ]
         },
         {
@@ -341,7 +329,7 @@
           ],
           "pathPattern": "/migrate/libraries",
           "permissionsRequired": [
-            "migration.libraries.collection.post"
+            "location-storage.migration.libraries.collection.post"
           ]
         },
         {
@@ -350,7 +338,7 @@
           ],
           "pathPattern": "/migrate/locations",
           "permissionsRequired": [
-            "migration.locations.collection.post"
+            "location-storage.migration.locations.collection.post"
           ]
         },
         {
@@ -359,7 +347,7 @@
           ],
           "pathPattern": "/migrate/service-points",
           "permissionsRequired": [
-            "migration.service-points.collection.post"
+            "location-storage.migration.service-points.collection.post"
           ]
         },
         {
@@ -368,7 +356,7 @@
           ],
           "pathPattern": "/migrate/service-points-users",
           "permissionsRequired": [
-            "migration.service-points-users.collection.post"
+            "location-storage.migration.service-points-users.collection.post"
           ]
         }
       ]
@@ -409,7 +397,7 @@
   ],
   "permissionSets": [
     {
-      "permissionName": "location-units.institutions.collection.get",
+      "permissionName": "location-storage.institutions.collection.get",
       "displayName": "location units - get institution collection",
       "description": "Get institution collection",
       "replaces": [
@@ -417,7 +405,7 @@
       ]
     },
     {
-      "permissionName": "location-units.institutions.item.get",
+      "permissionName": "location-storage.institutions.item.get",
       "displayName": "location units - get individual institution",
       "description": "get individual institution",
       "replaces": [
@@ -425,7 +413,7 @@
       ]
     },
     {
-      "permissionName": "location-units.institutions.item.post",
+      "permissionName": "location-storage.institutions.item.post",
       "displayName": "location units - create individual institution",
       "description": "create individual instution",
       "replaces": [
@@ -433,7 +421,7 @@
       ]
     },
     {
-      "permissionName": "location-units.institutions.item.put",
+      "permissionName": "location-storage.institutions.item.put",
       "displayName": "location units - modify institution",
       "description": "modify institution",
       "replaces": [
@@ -441,7 +429,7 @@
       ]
     },
     {
-      "permissionName": "location-units.institutions.item.delete",
+      "permissionName": "location-storage.institutions.item.delete",
       "displayName": "location units - delete individual institution",
       "description": "delete individual institution",
       "replaces": [
@@ -449,7 +437,7 @@
       ]
     },
     {
-      "permissionName": "location-units.campuses.collection.get",
+      "permissionName": "location-storage.campuses.collection.get",
       "displayName": "location units - get campus collection",
       "description": "Get campus collection",
       "replaces": [
@@ -457,7 +445,7 @@
       ]
     },
     {
-      "permissionName": "location-units.campuses.item.get",
+      "permissionName": "location-storage.campuses.item.get",
       "displayName": "location units - get individual campus",
       "description": "get individual campus",
       "replaces": [
@@ -465,7 +453,7 @@
       ]
     },
     {
-      "permissionName": "location-units.campuses.item.post",
+      "permissionName": "location-storage.campuses.item.post",
       "displayName": "location units - create individual campus",
       "description": "create individual instution",
       "replaces": [
@@ -473,7 +461,7 @@
       ]
     },
     {
-      "permissionName": "location-units.campuses.item.put",
+      "permissionName": "location-storage.campuses.item.put",
       "displayName": "location units - modify campus",
       "description": "modify campus",
       "replaces": [
@@ -481,7 +469,7 @@
       ]
     },
     {
-      "permissionName": "location-units.campuses.item.delete",
+      "permissionName": "location-storage.campuses.item.delete",
       "displayName": "location units - delete individual campus",
       "description": "delete individual campus",
       "replaces": [
@@ -489,7 +477,7 @@
       ]
     },
     {
-      "permissionName": "location-units.libraries.collection.get",
+      "permissionName": "location-storage.libraries.collection.get",
       "displayName": "location units - get library collection",
       "description": "Get library collection",
       "replaces": [
@@ -497,7 +485,7 @@
       ]
     },
     {
-      "permissionName": "location-units.libraries.item.get",
+      "permissionName": "location-storage.libraries.item.get",
       "displayName": "location units - get individual library",
       "description": "get individual library",
       "replaces": [
@@ -505,7 +493,7 @@
       ]
     },
     {
-      "permissionName": "location-units.libraries.item.post",
+      "permissionName": "location-storage.libraries.item.post",
       "displayName": "location units - create individual library",
       "description": "create individual instution",
       "replaces": [
@@ -513,7 +501,7 @@
       ]
     },
     {
-      "permissionName": "location-units.libraries.item.put",
+      "permissionName": "location-storage.libraries.item.put",
       "displayName": "location units - modify library",
       "description": "modify library",
       "replaces": [
@@ -521,7 +509,7 @@
       ]
     },
     {
-      "permissionName": "location-units.libraries.item.delete",
+      "permissionName": "location-storage.libraries.item.delete",
       "displayName": "location units - delete individual library",
       "description": "delete individual library",
       "replaces": [
@@ -529,7 +517,7 @@
       ]
     },
     {
-      "permissionName": "locations.collection.get",
+      "permissionName": "location-storage.locations.collection.get",
       "displayName": "locations - get location collection",
       "description": "get location collection",
       "replaces": [
@@ -537,7 +525,7 @@
       ]
     },
     {
-      "permissionName": "locations.item.get",
+      "permissionName": "location-storage.locations.item.get",
       "displayName": "locations - get individual location",
       "description": "get individual location",
       "replaces": [
@@ -545,7 +533,7 @@
       ]
     },
     {
-      "permissionName": "locations.item.post",
+      "permissionName": "location-storage.locations.item.post",
       "displayName": "locations - create individual location",
       "description": "create individual location",
       "replaces": [
@@ -553,7 +541,7 @@
       ]
     },
     {
-      "permissionName": "locations.item.put",
+      "permissionName": "location-storage.locations.item.put",
       "displayName": "locations - modify location",
       "description": "modify location",
       "replaces": [
@@ -561,7 +549,7 @@
       ]
     },
     {
-      "permissionName": "locations.item.delete",
+      "permissionName": "location-storage.locations.item.delete",
       "displayName": "locations - delete individual location",
       "description": "delete individual location",
       "replaces": [
@@ -569,7 +557,7 @@
       ]
     },
     {
-      "permissionName": "service-points.collection.get",
+      "permissionName": "service-point-storage.service-points.collection.get",
       "displayName": "get service-point collection",
       "description": "get service-point collection from storage",
       "replaces": [
@@ -577,7 +565,7 @@
       ]
     },
     {
-      "permissionName": "service-points.item.get",
+      "permissionName": "service-point-storage.service-points.item.get",
       "displayName": "get individual service-point",
       "description": "get individual service-point from storage",
       "replaces": [
@@ -585,7 +573,7 @@
       ]
     },
     {
-      "permissionName": "service-points.item.post",
+      "permissionName": "service-point-storage.service-points.item.post",
       "displayName": "create individual service-point",
       "description": "create individual service-point in storage",
       "replaces": [
@@ -593,7 +581,7 @@
       ]
     },
     {
-      "permissionName": "service-points.item.put",
+      "permissionName": "service-point-storage.service-points.item.put",
       "displayName": "modify service-point",
       "description": "modify service-point in storage",
       "replaces": [
@@ -601,7 +589,7 @@
       ]
     },
     {
-      "permissionName": "service-points.item.delete",
+      "permissionName": "service-point-storage.service-points.item.delete",
       "displayName": "delete individual service-point",
       "description": "delete individual service-point from storage",
       "replaces": [
@@ -609,7 +597,7 @@
       ]
     },
     {
-      "permissionName": "service-points-users.collection.get",
+      "permissionName": "service-point-storage.service-points-users.collection.get",
       "displayName": "get service-point-users collection",
       "description": "get service-point-users collection from storage",
       "replaces": [
@@ -617,7 +605,7 @@
       ]
     },
     {
-      "permissionName": "service-points-users.item.get",
+      "permissionName": "service-point-storage.service-points-users.item.get",
       "displayName": "get individual service-points-user",
       "description": "get individual service-points-user from storage",
       "replaces": [
@@ -625,7 +613,7 @@
       ]
     },
     {
-      "permissionName": "service-points-users.item.post",
+      "permissionName": "service-point-storage.service-points-users.item.post",
       "displayName": "create individual service-points-user",
       "description": "create individual service-points-user in storage",
       "replaces": [
@@ -633,7 +621,7 @@
       ]
     },
     {
-      "permissionName": "service-points-users.item.put",
+      "permissionName": "service-point-storage.service-points-users.item.put",
       "displayName": "modify service-points-user",
       "description": "modify service-points-user in storage",
       "replaces": [
@@ -641,7 +629,7 @@
       ]
     },
     {
-      "permissionName": "service-points-users.item.delete",
+      "permissionName": "service-point-storage.service-points-users.item.delete",
       "displayName": "delete individual service-points-user",
       "description": "delete individual service-points-user from storage",
       "replaces": [
@@ -653,26 +641,26 @@
       "displayName": "locations - all permissions",
       "description": "Entire set of permissions needed to manage location units and locations",
       "subPermissions": [
-        "location-units.institutions.collection.get",
-        "location-units.institutions.item.get",
-        "location-units.institutions.item.post",
-        "location-units.institutions.item.put",
-        "location-units.institutions.item.delete",
-        "location-units.campuses.collection.get",
-        "location-units.campuses.item.get",
-        "location-units.campuses.item.post",
-        "location-units.campuses.item.put",
-        "location-units.campuses.item.delete",
-        "location-units.libraries.collection.get",
-        "location-units.libraries.item.get",
-        "location-units.libraries.item.post",
-        "location-units.libraries.item.put",
-        "location-units.libraries.item.delete",
-        "locations.collection.get",
-        "locations.item.get",
-        "locations.item.post",
-        "locations.item.put",
-        "locations.item.delete"
+        "location-storage.institutions.collection.get",
+        "location-storage.institutions.item.get",
+        "location-storage.institutions.item.post",
+        "location-storage.institutions.item.put",
+        "location-storage.institutions.item.delete",
+        "location-storage.campuses.collection.get",
+        "location-storage.campuses.item.get",
+        "location-storage.campuses.item.post",
+        "location-storage.campuses.item.put",
+        "location-storage.campuses.item.delete",
+        "location-storage.libraries.collection.get",
+        "location-storage.libraries.item.get",
+        "location-storage.libraries.item.post",
+        "location-storage.libraries.item.put",
+        "location-storage.libraries.item.delete",
+        "location-storage.locations.collection.get",
+        "location-storage.locations.item.get",
+        "location-storage.locations.item.post",
+        "location-storage.locations.item.put",
+        "location-storage.locations.item.delete"
       ]
     },
     {
@@ -680,59 +668,59 @@
       "displayName": "service points - all permissions",
       "description": "Entire set of permissions needed to manage service points and service points users",
       "subPermissions": [
-        "service-points.collection.get",
-        "service-points.item.get",
-        "service-points.item.post",
-        "service-points.item.put",
-        "service-points.item.delete",
-        "service-points-users.collection.get",
-        "service-points-users.item.get",
-        "service-points-users.item.post",
-        "service-points-users.item.put",
-        "service-points-users.item.delete"
+        "service-point-storage.service-points.collection.get",
+        "service-point-storage.service-points.item.get",
+        "service-point-storage.service-points.item.post",
+        "service-point-storage.service-points.item.put",
+        "service-point-storage.service-points.item.delete",
+        "service-point-storage.service-points-users.collection.get",
+        "service-point-storage.service-points-users.item.get",
+        "service-point-storage.service-points-users.item.post",
+        "service-point-storage.service-points-users.item.put",
+        "service-point-storage.service-points-users.item.delete"
       ]
     },
     {
-      "permissionName": "migration.institutions.collection.post",
+      "permissionName": "location-storage.migration.institutions.collection.post",
       "displayName": "migration - migrate institutions",
       "description": "Bulk upsert institutions from a legacy module"
     },
     {
-      "permissionName": "migration.campuses.collection.post",
+      "permissionName": "location-storage.migration.campuses.collection.post",
       "displayName": "migration - migrate campuses",
       "description": "Bulk upsert campuses from a legacy module"
     },
     {
-      "permissionName": "migration.libraries.collection.post",
+      "permissionName": "location-storage.migration.libraries.collection.post",
       "displayName": "migration - migrate libraries",
       "description": "Bulk upsert libraries from a legacy module"
     },
     {
-      "permissionName": "migration.locations.collection.post",
+      "permissionName": "location-storage.migration.locations.collection.post",
       "displayName": "migration - migrate locations",
       "description": "Bulk upsert locations from a legacy module"
     },
     {
-      "permissionName": "migration.service-points.collection.post",
+      "permissionName": "location-storage.migration.service-points.collection.post",
       "displayName": "migration - migrate service points",
       "description": "Bulk upsert service points from a legacy module"
     },
     {
-      "permissionName": "migration.service-points-users.collection.post",
+      "permissionName": "location-storage.migration.service-points-users.collection.post",
       "displayName": "migration - migrate service points users",
       "description": "Bulk upsert service points users from a legacy module"
     },
     {
-      "permissionName": "migration.all",
+      "permissionName": "location-storage.migration.all",
       "displayName": "migration - all permissions",
       "description": "Entire set of permissions needed to perform data migration",
       "subPermissions": [
-        "migration.institutions.collection.post",
-        "migration.campuses.collection.post",
-        "migration.libraries.collection.post",
-        "migration.locations.collection.post",
-        "migration.service-points.collection.post",
-        "migration.service-points-users.collection.post"
+        "location-storage.migration.institutions.collection.post",
+        "location-storage.migration.campuses.collection.post",
+        "location-storage.migration.libraries.collection.post",
+        "location-storage.migration.locations.collection.post",
+        "location-storage.migration.service-points.collection.post",
+        "location-storage.migration.service-points-users.collection.post"
       ]
     }
   ],

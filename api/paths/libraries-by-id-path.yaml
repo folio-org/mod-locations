@@ -1,7 +1,7 @@
 get:
   summary: Get library by id
   operationId: getLocationLibraryById
-  tags: [location-units]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:
@@ -14,7 +14,7 @@ get:
 put:
   summary: Update library by id
   operationId: updateLocationLibraryById
-  tags: [location-units]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   requestBody:
@@ -29,7 +29,7 @@ put:
 delete:
   summary: Delete library by id
   operationId: deleteLocationLibraryById
-  tags: [location-units]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:

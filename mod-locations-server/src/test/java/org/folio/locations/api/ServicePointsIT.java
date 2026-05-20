@@ -3,6 +3,8 @@ package org.folio.locations.api;
 import static org.folio.locations.service.validator.ServicePointValidator.ERR_HOLD_EXPIRY_WITHOUT_PICKUP;
 import static org.folio.locations.service.validator.ServicePointValidator.ERR_PICKUP_WITHOUT_HOLD_EXPIRY;
 import static org.folio.locations.support.ApiResourceUrls.servicePointsResource;
+import static org.folio.locations.support.TestFactoryHelper.holdShelfExpiry;
+import static org.folio.locations.support.TestFactoryHelper.servicePoint;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -11,9 +13,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.UUID;
-import org.folio.locations.domain.dto.HoldShelfExpiryPeriod;
 import org.folio.locations.domain.dto.HoldShelfExpiryPeriod.IntervalIdEnum;
-import org.folio.locations.domain.dto.ServicePoint;
 import org.folio.locations.domain.dto.ServicePointStaffSlip;
 import org.folio.locations.domain.entity.ServicePointEntity;
 import org.folio.locations.domain.entity.ServicePointStaffSlipEntity;
@@ -32,19 +32,7 @@ class ServicePointsIT extends BaseIT {
 
   @BeforeAll
   static void beforeAll() {
-    setUpTenant();
-  }
-
-  private static ServicePoint servicePoint(String name, String code) {
-    return new ServicePoint(name, code, "Display: " + name);
-  }
-
-  private static ServicePoint servicePoint(UUID id, String name, String code) {
-    return servicePoint(name, code).id(id);
-  }
-
-  private static HoldShelfExpiryPeriod holdShelfExpiry(int duration, IntervalIdEnum intervalId) {
-    return new HoldShelfExpiryPeriod(duration, intervalId);
+    setUpTenant(TENANT_ID);
   }
 
   @Nested
@@ -55,7 +43,7 @@ class ServicePointsIT extends BaseIT {
     void createServicePoint_positive_returnsCreatedWithLocation() throws Exception {
       var sp = servicePoint("Circ Desk 1", "cd1");
 
-      tryPost(servicePointsResource(), sp)
+      tryPost(servicePointsResource(), TENANT_ID, sp)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.id", notNullValue()))
         .andExpect(jsonPath("$.name", is("Circ Desk 1")))
@@ -69,7 +57,7 @@ class ServicePointsIT extends BaseIT {
         .pickupLocation(true)
         .holdShelfExpiryPeriod(holdShelfExpiry(3, IntervalIdEnum.MINUTES));
 
-      tryPost(servicePointsResource(), sp)
+      tryPost(servicePointsResource(), TENANT_ID, sp)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.holdShelfExpiryPeriod.duration", is(3)))
         .andExpect(jsonPath("$.holdShelfExpiryPeriod.intervalId", is("Minutes")));
@@ -85,7 +73,7 @@ class ServicePointsIT extends BaseIT {
         .addStaffSlipsItem(new ServicePointStaffSlip(UUID.fromString(slipIdTrue), true))
         .addStaffSlipsItem(new ServicePointStaffSlip(UUID.fromString(slipIdFalse), false));
 
-      tryPost(servicePointsResource(), sp)
+      tryPost(servicePointsResource(), TENANT_ID, sp)
         .andExpect(status().isCreated())
         .andExpect(jsonPath("$.staffSlips", hasSize(2)))
         .andExpect(jsonPath("$.staffSlips[*].id", hasItem(slipIdTrue)))
@@ -96,7 +84,7 @@ class ServicePointsIT extends BaseIT {
     void createServicePoint_negative_missingName() throws Exception {
       var body = "{\"code\":\"cd1\",\"discoveryDisplayName\":\"Desk\"}";
 
-      tryPost(servicePointsResource(), body)
+      tryPost(servicePointsResource(), TENANT_ID, body)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errors", hasSize(1)))
         .andExpect(jsonPath("$.errors[0].message", is("must not be null")))
@@ -109,7 +97,7 @@ class ServicePointsIT extends BaseIT {
     void createServicePoint_negative_missingCode() throws Exception {
       var body = "{\"name\":\"Circ Desk 1\",\"discoveryDisplayName\":\"Desk\"}";
 
-      tryPost(servicePointsResource(), body)
+      tryPost(servicePointsResource(), TENANT_ID, body)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errors", hasSize(1)))
         .andExpect(jsonPath("$.errors[0].message", is("must not be null")))
@@ -122,7 +110,7 @@ class ServicePointsIT extends BaseIT {
     void createServicePoint_negative_missingDiscoveryDisplayName() throws Exception {
       var body = "{\"name\":\"Circ Desk 1\",\"code\":\"cd1\"}";
 
-      tryPost(servicePointsResource(), body)
+      tryPost(servicePointsResource(), TENANT_ID, body)
         .andExpect(status().isBadRequest())
         .andExpect(jsonPath("$.errors", hasSize(1)))
         .andExpect(jsonPath("$.errors[0].message", is("must not be null")))
@@ -133,9 +121,9 @@ class ServicePointsIT extends BaseIT {
 
     @Test
     void createServicePoint_negative_duplicateName() throws Exception {
-      doPost(servicePointsResource(), servicePoint("Circ Desk Dup", "dup1"));
+      doPost(servicePointsResource(), TENANT_ID, servicePoint("Circ Desk Dup", "dup1"));
 
-      tryPost(servicePointsResource(), servicePoint("Circ Desk Dup", "dup2"))
+      tryPost(servicePointsResource(), TENANT_ID, servicePoint("Circ Desk Dup", "dup2"))
         .andExpect(status().isUnprocessableContent())
         .andExpect(jsonPath("$.errors", hasSize(1)))
         .andExpect(jsonPath("$.errors[0].code", is("constraint_violation")))
@@ -147,7 +135,7 @@ class ServicePointsIT extends BaseIT {
     void createServicePoint_negative_pickupLocationWithoutHoldShelfExpiry() throws Exception {
       var sp = servicePoint("Circ Desk 3", "cd3").pickupLocation(true);
 
-      tryPost(servicePointsResource(), sp)
+      tryPost(servicePointsResource(), TENANT_ID, sp)
         .andExpect(status().isUnprocessableContent())
         .andExpect(jsonPath("$.errors", hasSize(1)))
         .andExpect(jsonPath("$.errors[0].message", is(ERR_PICKUP_WITHOUT_HOLD_EXPIRY)));
@@ -159,7 +147,7 @@ class ServicePointsIT extends BaseIT {
         .pickupLocation(false)
         .holdShelfExpiryPeriod(holdShelfExpiry(2, IntervalIdEnum.DAYS));
 
-      tryPost(servicePointsResource(), sp)
+      tryPost(servicePointsResource(), TENANT_ID, sp)
         .andExpect(status().isUnprocessableContent())
         .andExpect(jsonPath("$.errors", hasSize(1)))
         .andExpect(jsonPath("$.errors[0].message", is(ERR_HOLD_EXPIRY_WITHOUT_PICKUP)));
@@ -170,7 +158,7 @@ class ServicePointsIT extends BaseIT {
       var sp = servicePoint("Circ Desk 5", "cd5")
         .holdShelfExpiryPeriod(holdShelfExpiry(2, IntervalIdEnum.DAYS));
 
-      tryPost(servicePointsResource(), sp)
+      tryPost(servicePointsResource(), TENANT_ID, sp)
         .andExpect(status().isUnprocessableContent())
         .andExpect(jsonPath("$.errors[0].message", is(ERR_HOLD_EXPIRY_WITHOUT_PICKUP)));
     }
@@ -183,10 +171,10 @@ class ServicePointsIT extends BaseIT {
 
     @Test
     void getServicePoints_positive_returnsAllRecords() throws Exception {
-      doPost(servicePointsResource(), servicePoint("Circ Desk A", "cda"));
-      doPost(servicePointsResource(), servicePoint("Circ Desk B", "cdb"));
+      doPost(servicePointsResource(), TENANT_ID, servicePoint("Circ Desk A", "cda"));
+      doPost(servicePointsResource(), TENANT_ID, servicePoint("Circ Desk B", "cdb"));
 
-      doGet(servicePointsResource())
+      doGet(servicePointsResource(), TENANT_ID)
         .andExpect(jsonPath("$.servicepoints", hasSize(2)))
         .andExpect(jsonPath("$.totalRecords", is(2)));
     }
@@ -194,16 +182,16 @@ class ServicePointsIT extends BaseIT {
     @Test
     void getServicePointById_positive_returnsRecord() throws Exception {
       var id = UUID.randomUUID();
-      doPost(servicePointsResource(), servicePoint(id, "Circ Desk X", "cdx"));
+      doPost(servicePointsResource(), TENANT_ID, servicePoint(id, "Circ Desk X", "cdx"));
 
-      doGet(ApiResourceUrls.servicePointResource(id))
+      doGet(ApiResourceUrls.servicePointResource(id), TENANT_ID)
         .andExpect(jsonPath("$.id", is(id.toString())))
         .andExpect(jsonPath("$.name", is("Circ Desk X")));
     }
 
     @Test
     void getServicePointById_negative_notFound() throws Exception {
-      tryGet(ApiResourceUrls.servicePointResource(UUID.randomUUID()))
+      tryGet(ApiResourceUrls.servicePointResource(UUID.randomUUID()), TENANT_ID)
         .andExpect(status().isNotFound());
     }
 
@@ -222,11 +210,11 @@ class ServicePointsIT extends BaseIT {
         .holdShelfExpiryPeriod(holdShelfExpiry(2, IntervalIdEnum.DAYS))
         .ecsRequestRouting(true);
 
-      doPost(servicePointsResource(), sp1);
-      doPost(servicePointsResource(), sp2);
-      doPost(servicePointsResource(), sp3);
+      doPost(servicePointsResource(), TENANT_ID, sp1);
+      doPost(servicePointsResource(), TENANT_ID, sp2);
+      doPost(servicePointsResource(), TENANT_ID, sp3);
 
-      var result = doGet(servicePointsResource() + params);
+      var result = doGet(servicePointsResource() + params, TENANT_ID);
       if (includeRouting) {
         result.andExpect(jsonPath("$.servicepoints[*].id", hasItem(sp3Id.toString())))
           .andExpect(jsonPath("$.totalRecords", is(3)));
@@ -243,12 +231,12 @@ class ServicePointsIT extends BaseIT {
     @Test
     void updateServicePoint_positive_updatesRecord() throws Exception {
       var id = UUID.randomUUID();
-      doPost(servicePointsResource(), servicePoint(id, "Circ Desk Old", "old1"));
+      doPost(servicePointsResource(), TENANT_ID, servicePoint(id, "Circ Desk Old", "old1"));
 
       var update = servicePoint(id, "Circ Desk New", "new1");
-      doPut(ApiResourceUrls.servicePointResource(id), update);
+      doPut(ApiResourceUrls.servicePointResource(id), TENANT_ID, update);
 
-      doGet(ApiResourceUrls.servicePointResource(id))
+      doGet(ApiResourceUrls.servicePointResource(id), TENANT_ID)
         .andExpect(jsonPath("$.name", is("Circ Desk New")))
         .andExpect(jsonPath("$.code", is("new1")))
         .andExpect(jsonPath("$.metadata.updatedDate", notNullValue()));
@@ -257,14 +245,14 @@ class ServicePointsIT extends BaseIT {
     @Test
     void updateServicePoint_positive_addHoldShelfExpiryWhenBecomingPickupLocation() throws Exception {
       var id = UUID.randomUUID();
-      doPost(servicePointsResource(), servicePoint(id, "Circ Desk 1", "cd1").pickupLocation(false));
+      doPost(servicePointsResource(), TENANT_ID, servicePoint(id, "Circ Desk 1", "cd1").pickupLocation(false));
 
       var update = servicePoint(id, "Circ Desk 2", "cd2")
         .pickupLocation(true)
         .holdShelfExpiryPeriod(holdShelfExpiry(5, IntervalIdEnum.WEEKS));
-      doPut(ApiResourceUrls.servicePointResource(id), update);
+      doPut(ApiResourceUrls.servicePointResource(id), TENANT_ID, update);
 
-      doGet(ApiResourceUrls.servicePointResource(id))
+      doGet(ApiResourceUrls.servicePointResource(id), TENANT_ID)
         .andExpect(jsonPath("$.pickupLocation", is(true)))
         .andExpect(jsonPath("$.holdShelfExpiryPeriod.duration", is(5)))
         .andExpect(jsonPath("$.holdShelfExpiryPeriod.intervalId", is("Weeks")));
@@ -273,13 +261,13 @@ class ServicePointsIT extends BaseIT {
     @Test
     void updateServicePoint_positive_removeHoldShelfExpiryWhenNoLongerPickupLocation() throws Exception {
       var id = UUID.randomUUID();
-      doPost(servicePointsResource(), servicePoint(id, "Circ Desk 1", "cd1")
+      doPost(servicePointsResource(), TENANT_ID, servicePoint(id, "Circ Desk 1", "cd1")
         .pickupLocation(true).holdShelfExpiryPeriod(holdShelfExpiry(2, IntervalIdEnum.DAYS)));
 
       var update = servicePoint(id, "Circ Desk 2", "cd2").pickupLocation(false);
-      doPut(ApiResourceUrls.servicePointResource(id), update);
+      doPut(ApiResourceUrls.servicePointResource(id), TENANT_ID, update);
 
-      doGet(ApiResourceUrls.servicePointResource(id))
+      doGet(ApiResourceUrls.servicePointResource(id), TENANT_ID)
         .andExpect(jsonPath("$.pickupLocation", is(false)))
         .andExpect(jsonPath("$.holdShelfExpiryPeriod").doesNotExist());
     }
@@ -288,7 +276,7 @@ class ServicePointsIT extends BaseIT {
     void updateServicePoint_positive_updateStaffSlips() throws Exception {
       var id = UUID.randomUUID();
       var slipId = UUID.randomUUID();
-      doPost(servicePointsResource(), servicePoint(id, "Circ Desk 1", "cd1")
+      doPost(servicePointsResource(), TENANT_ID, servicePoint(id, "Circ Desk 1", "cd1")
         .pickupLocation(true)
         .holdShelfExpiryPeriod(holdShelfExpiry(2, IntervalIdEnum.DAYS))
         .addStaffSlipsItem(new ServicePointStaffSlip(slipId, true)));
@@ -296,27 +284,27 @@ class ServicePointsIT extends BaseIT {
       var update = servicePoint(id, "Circ Desk 2", "cd2")
         .pickupLocation(false)
         .addStaffSlipsItem(new ServicePointStaffSlip(slipId, false));
-      doPut(ApiResourceUrls.servicePointResource(id), update);
+      doPut(ApiResourceUrls.servicePointResource(id), TENANT_ID, update);
 
-      doGet(ApiResourceUrls.servicePointResource(id))
+      doGet(ApiResourceUrls.servicePointResource(id), TENANT_ID)
         .andExpect(jsonPath("$.staffSlips[0].id", is(slipId.toString())))
         .andExpect(jsonPath("$.staffSlips[0].printByDefault", is(false)));
     }
 
     @Test
     void updateServicePoint_negative_notFound() throws Exception {
-      tryPut(ApiResourceUrls.servicePointResource(UUID.randomUUID()), servicePoint("Circ Desk X", "cdx"))
+      tryPut(ApiResourceUrls.servicePointResource(UUID.randomUUID()), servicePoint("Circ Desk X", "cdx"), TENANT_ID)
         .andExpect(status().isNotFound());
     }
 
     @Test
     void updateServicePoint_negative_pickupLocationWithoutHoldShelfExpiry() throws Exception {
       var id = UUID.randomUUID();
-      doPost(servicePointsResource(), servicePoint(id, "Circ Desk 1", "cd1")
+      doPost(servicePointsResource(), TENANT_ID, servicePoint(id, "Circ Desk 1", "cd1")
         .pickupLocation(true).holdShelfExpiryPeriod(holdShelfExpiry(2, IntervalIdEnum.DAYS)));
 
       var update = servicePoint(id, "Circ Desk 2", "cd2").pickupLocation(true);
-      tryPut(ApiResourceUrls.servicePointResource(id), update)
+      tryPut(ApiResourceUrls.servicePointResource(id), update, TENANT_ID)
         .andExpect(status().isUnprocessableContent())
         .andExpect(jsonPath("$.errors[0].message", is(ERR_PICKUP_WITHOUT_HOLD_EXPIRY)));
     }
@@ -324,13 +312,13 @@ class ServicePointsIT extends BaseIT {
     @Test
     void updateServicePoint_negative_holdShelfExpiryWithoutPickupLocation() throws Exception {
       var id = UUID.randomUUID();
-      doPost(servicePointsResource(), servicePoint(id, "Circ Desk 1", "cd1")
+      doPost(servicePointsResource(), TENANT_ID, servicePoint(id, "Circ Desk 1", "cd1")
         .pickupLocation(true).holdShelfExpiryPeriod(holdShelfExpiry(2, IntervalIdEnum.DAYS)));
 
       var update = servicePoint(id, "Circ Desk 2", "cd2")
         .pickupLocation(false)
         .holdShelfExpiryPeriod(holdShelfExpiry(2, IntervalIdEnum.DAYS));
-      tryPut(ApiResourceUrls.servicePointResource(id), update)
+      tryPut(ApiResourceUrls.servicePointResource(id), update, TENANT_ID)
         .andExpect(status().isUnprocessableContent())
         .andExpect(jsonPath("$.errors[0].message", is(ERR_HOLD_EXPIRY_WITHOUT_PICKUP)));
     }
@@ -343,17 +331,17 @@ class ServicePointsIT extends BaseIT {
     @Test
     void deleteServicePointById_positive_deletesRecord() throws Exception {
       var id = UUID.randomUUID();
-      doPost(servicePointsResource(), servicePoint(id, "Circ Desk Del", "del1"));
+      doPost(servicePointsResource(), TENANT_ID, servicePoint(id, "Circ Desk Del", "del1"));
 
-      doDelete(ApiResourceUrls.servicePointResource(id));
+      doDelete(ApiResourceUrls.servicePointResource(id), TENANT_ID);
 
-      tryGet(ApiResourceUrls.servicePointResource(id))
+      tryGet(ApiResourceUrls.servicePointResource(id), TENANT_ID)
         .andExpect(status().isNotFound());
     }
 
     @Test
     void deleteServicePointById_negative_notFound() throws Exception {
-      tryDelete(ApiResourceUrls.servicePointResource(UUID.randomUUID()))
+      tryDelete(ApiResourceUrls.servicePointResource(UUID.randomUUID()), TENANT_ID)
         .andExpect(status().isNotFound());
     }
   }
@@ -365,11 +353,11 @@ class ServicePointsIT extends BaseIT {
     @Test
     void deleteServicePointById_positive_deletesRecord() throws Exception {
       var id = UUID.randomUUID();
-      doPost(servicePointsResource(), servicePoint(id, "Circ Desk Del", "del1"));
+      doPost(servicePointsResource(), TENANT_ID, servicePoint(id, "Circ Desk Del", "del1"));
 
-      doDelete(servicePointsResource());
+      doDelete(servicePointsResource(), TENANT_ID);
 
-      tryGet(ApiResourceUrls.servicePointResource(id))
+      tryGet(ApiResourceUrls.servicePointResource(id), TENANT_ID)
         .andExpect(status().isNotFound());
     }
   }

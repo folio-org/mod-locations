@@ -7,8 +7,6 @@ import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -34,6 +32,7 @@ import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
+import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 
 /**
@@ -50,6 +49,13 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
  * Testcontainers {@code @EnableKafka} extension inherited from {@link BaseIT}.
  */
 @IntegrationTest
+@TestPropertySource(properties = {
+  // Enable the ECS TLR sync feature for these tests
+  "folio.features.ecs-tlr.enabled=true",
+
+  // Use a short Kafka listener poll timeout to speed up negative assertions
+//  "spring.kafka.consumer.max-poll-interval=100"
+})
 class ServicePointConsortiumSyncIT extends BaseIT {
 
   /**
@@ -120,12 +126,10 @@ class ServicePointConsortiumSyncIT extends BaseIT {
       var id = UUID.randomUUID();
       var sp = new ServicePoint("Sync Desk", "sd1", "Sync Desk Display").id(id);
 
-      doPost(ApiResourceUrls.servicePointsResource(), sp);
+      doPost(ApiResourceUrls.servicePointsResource(), CENTRAL_TENANT, sp);
 
       await().atMost(10, SECONDS).untilAsserted(() ->
-        mockMvc.perform(get(ApiResourceUrls.servicePointResource(id))
-            .headers(headersForTenant(MEMBER_TENANT)))
-          .andExpect(status().isOk())
+        doGet(ApiResourceUrls.servicePointResource(id), MEMBER_TENANT)
           .andExpect(jsonPath("$.id", is(id.toString())))
           .andExpect(jsonPath("$.name", is("Sync Desk")))
           .andExpect(jsonPath("$.code", is("sd1"))));
@@ -140,11 +144,10 @@ class ServicePointConsortiumSyncIT extends BaseIT {
         .holdShelfExpiryPeriod(new org.folio.locations.domain.dto.HoldShelfExpiryPeriod(
           3, org.folio.locations.domain.dto.HoldShelfExpiryPeriod.IntervalIdEnum.DAYS));
 
-      doPost(ApiResourceUrls.servicePointsResource(), sp);
+      doPost(ApiResourceUrls.servicePointsResource(), CENTRAL_TENANT, sp);
 
       await().atMost(10, SECONDS).untilAsserted(() ->
-        mockMvc.perform(get(ApiResourceUrls.servicePointResource(id))
-            .headers(headersForTenant(MEMBER_TENANT)))
+        doGet(ApiResourceUrls.servicePointResource(id), MEMBER_TENANT)
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.pickupLocation", is(true)))
           .andExpect(jsonPath("$.holdShelfExpiryPeriod.duration", is(3))));
@@ -164,20 +167,17 @@ class ServicePointConsortiumSyncIT extends BaseIT {
     void syncUpdate_positive_propagatesUpdateToMemberTenant() {
       var id = UUID.randomUUID();
       doPost(ApiResourceUrls.servicePointsResource(),
-        new ServicePoint("Desk Original", "do1", "Original Display").id(id));
+        CENTRAL_TENANT, new ServicePoint("Desk Original", "do1", "Original Display").id(id));
 
       // Wait for the initial create-sync to land in member
       await().atMost(10, SECONDS).untilAsserted(() ->
-        mockMvc.perform(get(ApiResourceUrls.servicePointResource(id))
-            .headers(headersForTenant(MEMBER_TENANT)))
-          .andExpect(status().isOk()));
+        doGet(ApiResourceUrls.servicePointResource(id), MEMBER_TENANT));
 
       doPut(ApiResourceUrls.servicePointResource(id),
-        new ServicePoint("Desk Updated", "du1", "Updated Display").id(id));
+        CENTRAL_TENANT, new ServicePoint("Desk Updated", "du1", "Updated Display").id(id));
 
       await().atMost(10, SECONDS).untilAsserted(() ->
-        mockMvc.perform(get(ApiResourceUrls.servicePointResource(id))
-            .headers(headersForTenant(MEMBER_TENANT)))
+        doGet(ApiResourceUrls.servicePointResource(id), MEMBER_TENANT)
           .andExpect(status().isOk())
           .andExpect(jsonPath("$.name", is("Desk Updated")))
           .andExpect(jsonPath("$.code", is("du1"))));
@@ -197,19 +197,16 @@ class ServicePointConsortiumSyncIT extends BaseIT {
     void syncDelete_positive_propagatesDeletionToMemberTenant() {
       var id = UUID.randomUUID();
       doPost(ApiResourceUrls.servicePointsResource(),
-        new ServicePoint("Desk To Delete", "dtd1", "Delete Desk Display").id(id));
+        CENTRAL_TENANT, new ServicePoint("Desk To Delete", "dtd1", "Delete Desk Display").id(id));
 
       // Wait for create-sync to land in member before issuing delete
       await().atMost(10, SECONDS).untilAsserted(() ->
-        mockMvc.perform(get(ApiResourceUrls.servicePointResource(id))
-            .headers(headersForTenant(MEMBER_TENANT)))
-          .andExpect(status().isOk()));
+        doGet(ApiResourceUrls.servicePointResource(id), MEMBER_TENANT));
 
-      doDelete(ApiResourceUrls.servicePointResource(id));
+      doDelete(ApiResourceUrls.servicePointResource(id), CENTRAL_TENANT);
 
       await().atMost(10, SECONDS).untilAsserted(() ->
-        mockMvc.perform(get(ApiResourceUrls.servicePointResource(id))
-            .headers(headersForTenant(MEMBER_TENANT)))
+        tryGet(ApiResourceUrls.servicePointResource(id), MEMBER_TENANT)
           .andExpect(status().isNotFound()));
     }
   }
@@ -224,20 +221,16 @@ class ServicePointConsortiumSyncIT extends BaseIT {
   class NoSyncForMemberTenantTests {
 
     @Test
-    void syncCreate_negative_doesNotPropagateMemberTenantEventToCentralTenant() throws Exception {
+    void syncCreate_negative_doesNotPropagateMemberTenantEventToCentralTenant() {
       var id = UUID.randomUUID();
       var sp = new ServicePoint("Member Only Desk", "mod1", "Member Only Display").id(id);
 
       // Create directly in member tenant — this fires a Kafka event from MEMBER_TENANT
-      mockMvc.perform(post(ApiResourceUrls.servicePointsResource())
-          .content(asJson(sp))
-          .headers(headersForTenant(MEMBER_TENANT)))
-        .andExpect(status().isCreated());
+      doPost(ApiResourceUrls.servicePointsResource(), MEMBER_TENANT, sp);
 
       // Allow time for the Kafka consumer to run; assert the record never appears in central
       await().pollDelay(3, SECONDS).atMost(5, SECONDS).untilAsserted(() ->
-        mockMvc.perform(get(ApiResourceUrls.servicePointResource(id))
-            .headers(defaultHeaders()))
+        tryGet(ApiResourceUrls.servicePointResource(id), CENTRAL_TENANT)
           .andExpect(status().isNotFound()));
     }
   }

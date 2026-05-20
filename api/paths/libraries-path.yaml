@@ -2,7 +2,7 @@ get:
   summary: Get libraries
   description: Return a list of libraries.
   operationId: getLocationLibraries
-  tags: [location-units]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/query-param.yaml'
     - $ref: '../parameters/limit-param.yaml'
@@ -18,7 +18,7 @@ get:
 post:
   summary: Create library
   operationId: createLocationLibrary
-  tags: [location-units]
+  tags: [ locations ]
   requestBody:
     required: true
     content:
@@ -35,7 +35,7 @@ post:
 delete:
   summary: Delete libraries
   operationId: deleteLocationLibraries
-  tags: [location-units]
+  tags: [ locations ]
   responses:
     '204':
       description: All libraries deleted.

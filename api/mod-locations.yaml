@@ -36,27 +36,27 @@ tags:
     description: Manage service points users.
 
 paths:
-  /locations:
+  /location-storage/locations:
     $ref: 'paths/locations-path.yaml'
-  /locations/{id}:
+  /location-storage/locations/{id}:
     $ref: 'paths/locations-by-id-path.yaml'
-  /location-units/institutions:
-    $ref: 'paths/location-units-institutions-path.yaml'
-  /location-units/institutions/{id}:
-    $ref: 'paths/location-units-institutions-by-id-path.yaml'
-  /location-units/campuses:
-    $ref: 'paths/location-units-campuses-path.yaml'
-  /location-units/campuses/{id}:
-    $ref: 'paths/location-units-campuses-by-id-path.yaml'
-  /location-units/libraries:
-    $ref: 'paths/location-units-libraries-path.yaml'
-  /location-units/libraries/{id}:
-    $ref: 'paths/location-units-libraries-by-id-path.yaml'
-  /service-points:
+  /location-storage/institutions:
+    $ref: 'paths/institutions-path.yaml'
+  /location-storage/institutions/{id}:
+    $ref: 'paths/institutions-by-id-path.yaml'
+  /location-storage/campuses:
+    $ref: 'paths/campuses-path.yaml'
+  /location-storage/campuses/{id}:
+    $ref: 'paths/campuses-by-id-path.yaml'
+  /location-storage/libraries:
+    $ref: 'paths/libraries-path.yaml'
+  /location-storage/libraries/{id}:
+    $ref: 'paths/libraries-by-id-path.yaml'
+  /service-point-storage/service-points:
     $ref: 'paths/service-points-path.yaml'
-  /service-points/{id}:
+  /service-point-storage/service-points/{id}:
     $ref: 'paths/service-points-by-id-path.yaml'
-  /service-points-users:
+  /service-point-storage/service-points-users:
     $ref: 'paths/service-points-users-path.yaml'
-  /service-points-users/{id}:
+  /service-point-storage/service-points-users/{id}:
     $ref: 'paths/service-points-users-by-id-path.yaml'

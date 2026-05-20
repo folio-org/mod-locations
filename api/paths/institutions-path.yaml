@@ -2,7 +2,7 @@ get:
   summary: Get institutions
   description: Return a list of institutions.
   operationId: getLocationInstitutions
-  tags: [location-units]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/query-param.yaml'
     - $ref: '../parameters/limit-param.yaml'
@@ -19,7 +19,7 @@ post:
   summary: Create institution
   description: Create a new institution.
   operationId: createLocationInstitution
-  tags: [location-units]
+  tags: [ locations ]
   requestBody:
     required: true
     content:
@@ -37,7 +37,7 @@ delete:
   summary: Delete institutions
   description: Delete all institutions.
   operationId: deleteLocationInstitutions
-  tags: [location-units]
+  tags: [ locations ]
   responses:
     '204':
       description: All institutions deleted.

@@ -2,7 +2,7 @@ get:
   summary: Get campuses
   description: Return a list of campuses.
   operationId: getLocationCampuses
-  tags: [location-units]
+  tags: [ locations ]
   parameters:
     - $ref: '../parameters/query-param.yaml'
     - $ref: '../parameters/limit-param.yaml'
@@ -18,7 +18,7 @@ get:
 post:
   summary: Create campus
   operationId: createLocationCampus
-  tags: [location-units]
+  tags: [ locations ]
   requestBody:
     required: true
     content:
@@ -35,7 +35,7 @@ post:
 delete:
   summary: Delete campuses
   operationId: deleteLocationCampuses
-  tags: [location-units]
+  tags: [ locations ]
   responses:
     '204':
       description: All campuses deleted.

@@ -1,7 +1,7 @@
 get:
   summary: Get campus by id
   operationId: getLocationCampusById
-  tags: [location-units]
+  tags: [locations]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:
@@ -14,7 +14,7 @@ get:
 put:
   summary: Update campus by id
   operationId: updateLocationCampusById
-  tags: [location-units]
+  tags: [locations]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   requestBody:
@@ -29,7 +29,7 @@ put:
 delete:
   summary: Delete campus by id
   operationId: deleteLocationCampusById
-  tags: [location-units]
+  tags: [locations]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:

@@ -1,7 +1,10 @@
 package org.folio.locations.api;
 
+import static org.folio.locations.support.ApiResourceUrls.campusResource;
 import static org.folio.locations.support.ApiResourceUrls.institutionResource;
 import static org.folio.locations.support.ApiResourceUrls.institutionsResource;
+import static org.folio.locations.support.ApiResourceUrls.libraryResource;
+import static org.folio.locations.support.ApiResourceUrls.locationResource;
 import static org.folio.locations.support.ApiResourceUrls.migrateCampusesResource;
 import static org.folio.locations.support.ApiResourceUrls.migrateInstitutionsResource;
 import static org.folio.locations.support.ApiResourceUrls.migrateLibrariesResource;
@@ -64,7 +67,7 @@ class MigrationIT extends BaseIT {
     void migrateInstitutions_positive_returnsNoContent() throws Exception {
       var dto = new Institution("Migrated Inst", "MI").id(UUID.randomUUID());
 
-      tryPost(migrateInstitutionsResource(), List.of(dto))
+      tryPost(migrateInstitutionsResource(), TENANT_ID, List.of(dto))
         .andExpect(status().isNoContent());
     }
 
@@ -73,9 +76,9 @@ class MigrationIT extends BaseIT {
       var id = UUID.randomUUID();
       var dto = new Institution("Persisted Inst", "PI").id(id);
 
-      doPost(migrateInstitutionsResource(), List.of(dto));
+      doPost(migrateInstitutionsResource(), TENANT_ID, List.of(dto));
 
-      doGet(institutionResource(id))
+      doGet(institutionResource(id), TENANT_ID)
         .andExpect(jsonPath("$.id", is(id.toString())))
         .andExpect(jsonPath("$.name", is("Persisted Inst")))
         .andExpect(jsonPath("$.code", is("PI")));
@@ -86,9 +89,9 @@ class MigrationIT extends BaseIT {
       var id = UUID.randomUUID();
       var dto = new Institution("Meta Inst", "META").id(id).metadata(legacyMetadata());
 
-      doPost(migrateInstitutionsResource(), List.of(dto));
+      doPost(migrateInstitutionsResource(), TENANT_ID, List.of(dto));
 
-      doGet(institutionResource(id))
+      doGet(institutionResource(id), TENANT_ID)
         .andExpect(jsonPath("$.metadata.createdDate", is(LEGACY_DATE_STR)));
     }
 
@@ -97,18 +100,18 @@ class MigrationIT extends BaseIT {
       var id1 = UUID.randomUUID();
       var id2 = UUID.randomUUID();
 
-      doPost(migrateInstitutionsResource(), List.of(
+      doPost(migrateInstitutionsResource(), TENANT_ID, List.of(
         new Institution("Inst A", "IA").id(id1),
         new Institution("Inst B", "IB").id(id2)
       ));
 
-      doGet(institutionsResource())
+      doGet(institutionsResource(), TENANT_ID)
         .andExpect(jsonPath("$.totalRecords", is(2)));
     }
 
     @Test
     void migrateInstitutions_positive_emptyListReturnsNoContent() throws Exception {
-      tryPost(migrateInstitutionsResource(), List.of())
+      tryPost(migrateInstitutionsResource(), TENANT_ID, List.of())
         .andExpect(status().isNoContent());
     }
 
@@ -117,10 +120,10 @@ class MigrationIT extends BaseIT {
       var id = UUID.randomUUID();
       var dto = new Institution("Idempotent Inst", "II").id(id);
 
-      doPost(migrateInstitutionsResource(), List.of(dto));
-      doPost(migrateInstitutionsResource(), List.of(dto));
+      doPost(migrateInstitutionsResource(), TENANT_ID, List.of(dto));
+      doPost(migrateInstitutionsResource(), TENANT_ID, List.of(dto));
 
-      doGet(institutionsResource())
+      doGet(institutionsResource(), TENANT_ID)
         .andExpect(jsonPath("$.totalRecords", is(1)));
     }
   }
@@ -135,12 +138,12 @@ class MigrationIT extends BaseIT {
     @Test
     void migrateCampuses_positive_recordIsPersisted() throws Exception {
       var instId = UUID.randomUUID();
-      doPost(migrateInstitutionsResource(), List.of(new Institution("Inst", "I").id(instId)));
+      doPost(migrateInstitutionsResource(), TENANT_ID, List.of(new Institution("Inst", "I").id(instId)));
 
       var campusId = UUID.randomUUID();
-      doPost(migrateCampusesResource(), List.of(new Campus("Migrated Campus", "MC", instId).id(campusId)));
+      doPost(migrateCampusesResource(), TENANT_ID, List.of(new Campus("Migrated Campus", "MC", instId).id(campusId)));
 
-      doGet("/location-units/campuses/" + campusId)
+      doGet(campusResource(campusId), TENANT_ID)
         .andExpect(jsonPath("$.id", is(campusId.toString())))
         .andExpect(jsonPath("$.name", is("Migrated Campus")));
     }
@@ -148,13 +151,13 @@ class MigrationIT extends BaseIT {
     @Test
     void migrateCampuses_positive_metadataPreserved() throws Exception {
       var instId = UUID.randomUUID();
-      doPost(migrateInstitutionsResource(), List.of(new Institution("Inst2", "I2").id(instId)));
+      doPost(migrateInstitutionsResource(), TENANT_ID, List.of(new Institution("Inst2", "I2").id(instId)));
 
       var campusId = UUID.randomUUID();
       doPost(migrateCampusesResource(),
-        List.of(new Campus("Meta Campus", "MCC", instId).id(campusId).metadata(legacyMetadata())));
+        TENANT_ID, List.of(new Campus("Meta Campus", "MCC", instId).id(campusId).metadata(legacyMetadata())));
 
-      doGet("/location-units/campuses/" + campusId)
+      doGet(campusResource(campusId), TENANT_ID)
         .andExpect(jsonPath("$.metadata.createdDate", is(LEGACY_DATE_STR)));
     }
   }
@@ -170,13 +173,13 @@ class MigrationIT extends BaseIT {
     void migrateLibraries_positive_recordIsPersisted() throws Exception {
       var instId = UUID.randomUUID();
       var campusId = UUID.randomUUID();
-      doPost(migrateInstitutionsResource(), List.of(new Institution("Inst", "I3").id(instId)));
-      doPost(migrateCampusesResource(), List.of(new Campus("Camp", "C3", instId).id(campusId)));
+      doPost(migrateInstitutionsResource(), TENANT_ID, List.of(new Institution("Inst", "I3").id(instId)));
+      doPost(migrateCampusesResource(), TENANT_ID, List.of(new Campus("Camp", "C3", instId).id(campusId)));
 
       var libId = UUID.randomUUID();
-      doPost(migrateLibrariesResource(), List.of(new Library("Migrated Lib", "ML", campusId).id(libId)));
+      doPost(migrateLibrariesResource(), TENANT_ID, List.of(new Library("Migrated Lib", "ML", campusId).id(libId)));
 
-      doGet("/location-units/libraries/" + libId)
+      doGet(libraryResource(libId), TENANT_ID)
         .andExpect(jsonPath("$.id", is(libId.toString())))
         .andExpect(jsonPath("$.name", is("Migrated Lib")));
     }
@@ -194,9 +197,9 @@ class MigrationIT extends BaseIT {
       var id = UUID.randomUUID();
       var dto = new ServicePoint("Migrated SP", "msp", "Migrated Service Point").id(id);
 
-      doPost(migrateServicePointsResource(), List.of(dto));
+      doPost(migrateServicePointsResource(), TENANT_ID, List.of(dto));
 
-      doGet(servicePointResource(id))
+      doGet(servicePointResource(id), TENANT_ID)
         .andExpect(jsonPath("$.id", is(id.toString())))
         .andExpect(jsonPath("$.name", is("Migrated SP")));
     }
@@ -209,9 +212,9 @@ class MigrationIT extends BaseIT {
         .id(id)
         .staffSlips(List.of(new ServicePointStaffSlip(slipId, true)));
 
-      doPost(migrateServicePointsResource(), List.of(dto));
+      doPost(migrateServicePointsResource(), TENANT_ID, List.of(dto));
 
-      doGet(servicePointResource(id))
+      doGet(servicePointResource(id), TENANT_ID)
         .andExpect(jsonPath("$.staffSlips", hasSize(1)))
         .andExpect(jsonPath("$.staffSlips[0].id", is(slipId.toString())))
         .andExpect(jsonPath("$.staffSlips[0].printByDefault", is(true)));
@@ -224,9 +227,9 @@ class MigrationIT extends BaseIT {
         .id(id)
         .metadata(legacyMetadata());
 
-      doPost(migrateServicePointsResource(), List.of(dto));
+      doPost(migrateServicePointsResource(), TENANT_ID, List.of(dto));
 
-      doGet(servicePointResource(id))
+      doGet(servicePointResource(id), TENANT_ID)
         .andExpect(jsonPath("$.metadata.createdDate", is(LEGACY_DATE_STR)));
     }
   }
@@ -243,24 +246,24 @@ class MigrationIT extends BaseIT {
 
     @Test
     void migrateLocations_positive_recordIsPersisted() throws Exception {
-      var spId = UUID.randomUUID();
-      var instId = UUID.randomUUID();
-      var campusId = UUID.randomUUID();
-      var libId = UUID.randomUUID();
+      final var spId = UUID.randomUUID();
+      final var instId = UUID.randomUUID();
+      final var campusId = UUID.randomUUID();
+      final var libId = UUID.randomUUID();
       doPost(migrateServicePointsResource(),
-        List.of(new ServicePoint("SP", "sp", "Display").id(spId)));
-      doPost(migrateInstitutionsResource(), List.of(new Institution("Inst", "I4").id(instId)));
-      doPost(migrateCampusesResource(), List.of(new Campus("Camp", "C4", instId).id(campusId)));
-      doPost(migrateLibrariesResource(), List.of(new Library("Lib", "L4", campusId).id(libId)));
+        TENANT_ID, List.of(new ServicePoint("SP", "sp", "Display").id(spId)));
+      doPost(migrateInstitutionsResource(), TENANT_ID, List.of(new Institution("Inst", "I4").id(instId)));
+      doPost(migrateCampusesResource(), TENANT_ID, List.of(new Campus("Camp", "C4", instId).id(campusId)));
+      doPost(migrateLibrariesResource(), TENANT_ID, List.of(new Library("Lib", "L4", campusId).id(libId)));
 
       var locId = UUID.randomUUID();
-      doPost(migrateLocationsResource(), List.of(
+      doPost(migrateLocationsResource(), TENANT_ID, List.of(
         new Location("Migrated Loc", "ML", instId, campusId, libId, spId)
           .id(locId)
           .servicePointIds(List.of(spId))
       ));
 
-      doGet("/locations/" + locId)
+      doGet(locationResource(locId), TENANT_ID)
         .andExpect(jsonPath("$.id", is(locId.toString())))
         .andExpect(jsonPath("$.name", is("Migrated Loc")));
     }
@@ -279,15 +282,15 @@ class MigrationIT extends BaseIT {
     void migrateServicePointsUsers_positive_recordIsPersisted() throws Exception {
       var spId = UUID.randomUUID();
       doPost(migrateServicePointsResource(),
-        List.of(new ServicePoint("SP for User", "spfu", "Display").id(spId)));
+        TENANT_ID, List.of(new ServicePoint("SP for User", "spfu", "Display").id(spId)));
 
       var userId = UUID.randomUUID();
       var spuId = UUID.randomUUID();
-      doPost(migrateServicePointsUsersResource(), List.of(
+      doPost(migrateServicePointsUsersResource(), TENANT_ID, List.of(
         new ServicePointsUser(userId).id(spuId).servicePointsIds(List.of(spId))
       ));
 
-      doGet(servicePointsUsersResource() + "?query=userId==\"" + userId + "\"")
+      doGet(servicePointsUsersResource() + "?query=userId==\"" + userId + "\"", TENANT_ID)
         .andExpect(jsonPath("$.totalRecords", is(1)))
         .andExpect(jsonPath("$.servicePointsUsers[0].id", is(spuId.toString())));
     }
@@ -296,15 +299,15 @@ class MigrationIT extends BaseIT {
     void migrateServicePointsUsers_positive_metadataPreserved() throws Exception {
       var spId = UUID.randomUUID();
       doPost(migrateServicePointsResource(),
-        List.of(new ServicePoint("SP for Meta User", "spmeta", "Display").id(spId)));
+        TENANT_ID, List.of(new ServicePoint("SP for Meta User", "spmeta", "Display").id(spId)));
 
       var userId = UUID.randomUUID();
       var spuId = UUID.randomUUID();
-      doPost(migrateServicePointsUsersResource(), List.of(
+      doPost(migrateServicePointsUsersResource(), TENANT_ID, List.of(
         new ServicePointsUser(userId).id(spuId).metadata(legacyMetadata())
       ));
 
-      doGet(servicePointsUsersResource() + "?query=userId==\"" + userId + "\"")
+      doGet(servicePointsUsersResource() + "?query=userId==\"" + userId + "\"", TENANT_ID)
         .andExpect(jsonPath("$.servicePointsUsers[0].metadata.createdDate", is(LEGACY_DATE_STR)));
     }
   }

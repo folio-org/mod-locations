@@ -39,29 +39,9 @@ public abstract class BaseIT {
   protected static MockMvc mockMvc;
   protected static ObjectMapper objectMapper = new ObjectMapper();
 
-  @BeforeAll
-  static void setUpMockMvc(@Autowired MockMvc mvc) {
-    mockMvc = mvc;
-    setUpTenant();
-  }
-
-  @AfterAll
-  static void tearDown() {
-    removeTenant();
-  }
-
-  protected static void setUpTenant() {
-    setUpTenant(TENANT_ID);
-  }
-
   protected static void setUpTenant(String tenantId) {
     var attrs = new TenantAttributes().moduleTo("mod-locations");
-    doPost("/_/tenant", attrs, headersForTenant(tenantId));
-  }
-
-  @SneakyThrows
-  protected static void removeTenant() {
-    removeTenant(TENANT_ID);
+    doPost("/_/tenant", tenantId, attrs);
   }
 
   @SneakyThrows
@@ -73,10 +53,6 @@ public abstract class BaseIT {
       .andDo(MockMvcResultHandlers.log());
   }
 
-  protected static HttpHeaders defaultHeaders() {
-    return headersForTenant(TENANT_ID);
-  }
-
   protected static HttpHeaders headersForTenant(String tenantId) {
     var headers = new HttpHeaders();
     headers.setContentType(MediaType.APPLICATION_JSON);
@@ -86,48 +62,47 @@ public abstract class BaseIT {
   }
 
   @SneakyThrows
-  protected static ResultActions tryPost(String uri, Object body) {
-    return perform(post(uri), body);
+  protected static ResultActions tryPost(String uri, String tenantId, Object body) {
+    return perform(post(uri), tenantId, body);
   }
 
   @SneakyThrows
-  protected static ResultActions doPost(String uri, Object body) {
-    return tryPost(uri, body).andExpect(status().is2xxSuccessful());
+  protected static ResultActions doPost(String uri, String tenantId, Object body) {
+    return tryPost(uri, tenantId, body)
+      .andExpect(status().is2xxSuccessful());
   }
 
   @SneakyThrows
-  protected static ResultActions doPost(String uri, Object body, HttpHeaders headers) {
-    return perform(post(uri), body, headers).andExpect(status().is2xxSuccessful());
+  protected static ResultActions tryGet(String uri, String tenantId) {
+    return perform(get(uri), tenantId, (Object) null);
   }
 
   @SneakyThrows
-  protected static ResultActions tryGet(String uri) {
-    return mockMvc.perform(get(uri).headers(defaultHeaders())).andDo(MockMvcResultHandlers.log());
+  protected static ResultActions doGet(String uri, String tenantId) {
+    return tryGet(uri, tenantId)
+      .andExpect(status().isOk());
   }
 
   @SneakyThrows
-  protected static ResultActions doGet(String uri) {
-    return tryGet(uri).andExpect(status().isOk());
+  protected static ResultActions tryPut(String uri, Object body, String tenantId) {
+    return perform(put(uri), tenantId, body);
   }
 
   @SneakyThrows
-  protected static ResultActions tryPut(String uri, Object body) {
-    return perform(put(uri), body);
+  protected static ResultActions doPut(String uri, String tenantId, Object body) {
+    return tryPut(uri, body, tenantId)
+      .andExpect(status().is2xxSuccessful());
   }
 
   @SneakyThrows
-  protected static ResultActions doPut(String uri, Object body) {
-    return tryPut(uri, body).andExpect(status().is2xxSuccessful());
+  protected static ResultActions tryDelete(String uri, String tenantId) {
+    return perform(delete(uri), tenantId, (Object) null);
   }
 
   @SneakyThrows
-  protected static ResultActions tryDelete(String uri) {
-    return mockMvc.perform(delete(uri).headers(defaultHeaders())).andDo(MockMvcResultHandlers.log());
-  }
-
-  @SneakyThrows
-  protected static ResultActions doDelete(String uri) {
-    return tryDelete(uri).andExpect(status().is2xxSuccessful());
+  protected static ResultActions doDelete(String uri, String tenantId) {
+    return tryDelete(uri, tenantId)
+      .andExpect(status().is2xxSuccessful());
   }
 
   @SneakyThrows
@@ -135,9 +110,20 @@ public abstract class BaseIT {
     return objectMapper.writeValueAsString(value);
   }
 
+  @BeforeAll
+  static void setUpMockMvc(@Autowired MockMvc mvc) {
+    mockMvc = mvc;
+    setUpTenant(TENANT_ID);
+  }
+
+  @AfterAll
+  static void tearDown() {
+    removeTenant(TENANT_ID);
+  }
+
   @SneakyThrows
-  private static ResultActions perform(MockHttpServletRequestBuilder builder, Object body) {
-    return perform(builder, body, defaultHeaders());
+  private static ResultActions perform(MockHttpServletRequestBuilder builder, String tenantId, Object body) {
+    return perform(builder, body, headersForTenant(tenantId));
   }
 
   @SneakyThrows
