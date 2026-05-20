@@ -80,12 +80,12 @@ class ServicePointConsortiumSyncServiceTest {
 
   @Test
   void syncEvent_propagatesCreateToAllMemberTenants() {
-    var sp = new ServicePoint().name("Desk 1").code("d1");
     when(consortiumTenantsService.isCentralTenantContext()).thenReturn(true);
     when(consortiumTenantsService.getConsortiumTenants(CENTRAL_TENANT))
       .thenReturn(List.of(MEMBER_TENANT_1, MEMBER_TENANT_2));
     when(context.getOkapiHeaders()).thenReturn(Map.of());
     when(context.getFolioModuleMetadata()).thenReturn(moduleMetadata);
+    var sp = new ServicePoint().name("Desk 1").code("d1");
 
     try (MockedConstruction<org.folio.spring.scope.FolioExecutionContextSetter> ignored =
            Mockito.mockConstruction(org.folio.spring.scope.FolioExecutionContextSetter.class)) {
@@ -102,12 +102,12 @@ class ServicePointConsortiumSyncServiceTest {
 
   @Test
   void syncEvent_propagatesUpdateToAllMemberTenants() {
-    var sp = new ServicePoint().name("Desk Updated").code("du");
     when(consortiumTenantsService.isCentralTenantContext()).thenReturn(true);
     when(consortiumTenantsService.getConsortiumTenants(CENTRAL_TENANT))
       .thenReturn(List.of(MEMBER_TENANT_1));
     when(context.getOkapiHeaders()).thenReturn(Map.of());
     when(context.getFolioModuleMetadata()).thenReturn(moduleMetadata);
+    var sp = new ServicePoint().name("Desk Updated").code("du");
 
     try (MockedConstruction<org.folio.spring.scope.FolioExecutionContextSetter> ignored =
            Mockito.mockConstruction(org.folio.spring.scope.FolioExecutionContextSetter.class)) {
@@ -124,12 +124,12 @@ class ServicePointConsortiumSyncServiceTest {
 
   @Test
   void syncEvent_propagatesDeleteToAllMemberTenants() {
-    var sp = new ServicePoint().name("Desk").code("d");
     when(consortiumTenantsService.isCentralTenantContext()).thenReturn(true);
     when(consortiumTenantsService.getConsortiumTenants(CENTRAL_TENANT))
       .thenReturn(List.of(MEMBER_TENANT_1));
     when(context.getOkapiHeaders()).thenReturn(Map.of());
     when(context.getFolioModuleMetadata()).thenReturn(moduleMetadata);
+    var sp = new ServicePoint().name("Desk").code("d");
 
     try (MockedConstruction<org.folio.spring.scope.FolioExecutionContextSetter> ignored =
            Mockito.mockConstruction(org.folio.spring.scope.FolioExecutionContextSetter.class)) {
@@ -146,12 +146,12 @@ class ServicePointConsortiumSyncServiceTest {
 
   @Test
   void syncEvent_continuesWithRemainingMembersWhenOneFails() {
-    var sp = new ServicePoint().name("Desk 1").code("d1");
     when(consortiumTenantsService.isCentralTenantContext()).thenReturn(true);
     when(consortiumTenantsService.getConsortiumTenants(CENTRAL_TENANT))
       .thenReturn(List.of(MEMBER_TENANT_1, MEMBER_TENANT_2));
     when(context.getOkapiHeaders()).thenReturn(Map.of());
     when(context.getFolioModuleMetadata()).thenReturn(moduleMetadata);
+    var sp = new ServicePoint().name("Desk 1").code("d1");
 
     try (MockedConstruction<org.folio.spring.scope.FolioExecutionContextSetter> ignored =
            Mockito.mockConstruction(org.folio.spring.scope.FolioExecutionContextSetter.class)) {

@@ -68,23 +68,23 @@ folio:
     topicPrefix: locations
     topics:
       - name: location
-        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_LOCATION_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_LOCATION_TOPIC_REPLICATION_FACTOR:}
       - name: service-point
-        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_SERVICE_POINT_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_SERVICE_POINT_TOPIC_REPLICATION_FACTOR:}
       - name: service-point-user
-        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_SERVICE_POINT_USER_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_SERVICE_POINT_USER_TOPIC_REPLICATION_FACTOR:}
       - name: institution
-        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_INSTITUTION_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_INSTITUTION_TOPIC_REPLICATION_FACTOR:}
       - name: campus
-        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_CAMPUS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_CAMPUS_TOPIC_REPLICATION_FACTOR:}
       - name: library
-        numPartitions: ${KAFKA_LOCATIONS_TOPIC_PARTITIONS:1}
-        replicationFactor: ${KAFKA_LOCATIONS_TOPIC_REPLICATION_FACTOR:}
+        numPartitions: ${KAFKA_LOCATIONS_LIBRARY_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_LIBRARY_TOPIC_REPLICATION_FACTOR:}
     listener:
       service-point:
         concurrency: ${KAFKA_SERVICE_POINT_CONSUMER_CONCURRENCY:1}
