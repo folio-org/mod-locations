@@ -1,0 +1,8 @@
+[general]
+ignore=body-min-length,body-is-missing
+extra-path=tools/gitlint
+contrib=contrib-title-conventional-commits
+
+[title-max-length]
+line-length=100
+

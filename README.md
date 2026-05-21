@@ -19,6 +19,7 @@ mod-locations is a FOLIO module for managing locations and service points.
 - Java 21
 - Maven 3.6+
 - Docker and Docker Compose (for local development)
+- [pre-commit](https://pre-commit.com/)
 
 ### Building the Module
 ```bash
@@ -73,11 +74,23 @@ mvn checkstyle:check
 The repository uses [pre-commit](https://pre-commit.com/) to run API linting before every push. Each developer needs to activate it once:
 
 ```bash
-pip install pre-commit
-pre-commit install --hook-type pre-push
+pipx install pre-commit
+pre-commit install --hook-type pre-push --hook-type commit-msg
 ```
 
-After that, `scripts/lint-api.sh` runs automatically on every `git push` and blocks the push if Spectral finds issues. The hook definition is committed to the repo (`.pre-commit-config.yaml`) and shared with the whole team — only the one-time install step is per-machine.
+After that:
+- `scripts/lint-api.sh` runs on every `git push` and blocks if Spectral finds issues
+- `mvn checkstyle:check` runs on every `git push` and blocks if there are code style violations
+- `gitlint` runs on every `git commit` and blocks if the commit message doesn't include a `Closes: MODLOC-<number>` footer line, or if a conventional commit scope is used that doesn't match a feature in `docs/features/`
+
+Example valid commit message:
+```
+fix(location-storage): correct campus 404 response
+
+Closes: MODLOC-123
+```
+
+Valid scopes are derived from filenames in `docs/features/` (e.g. `location-storage`, `service-point-storage`, `service-point-sync`). Adding a new feature doc automatically makes its name a valid scope. The hook definition is committed to the repo (`.pre-commit-config.yaml`) and shared with the whole team — only the one-time install step is per-machine.
 
 > **Note:** To make API linting a hard requirement on pull requests, enable branch protection on `master` and set the `Spectral Lint` GitHub Actions check as a required status check.
 
