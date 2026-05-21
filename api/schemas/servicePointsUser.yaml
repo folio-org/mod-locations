@@ -1,3 +1,4 @@
+title: "Service Points User"
 description: "The list of service points a user is allowed to work at, and the default service point for that user"
 type: object
 properties:

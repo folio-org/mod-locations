@@ -29,7 +29,7 @@ put:
           $ref: '../schemas/location.yaml'
   responses:
     '204':
-      description: Updated.
+      description: Location updated successfully.
     '400':
       $ref: '../responses/badRequestResponse.yaml'
     '404':
@@ -43,6 +43,6 @@ delete:
     - $ref: '../parameters/id-param.yaml'
   responses:
     '204':
-      description: Deleted.
+      description: Location deleted successfully.
     '404':
       $ref: '../responses/notFoundResponse.yaml'

@@ -17,6 +17,7 @@ get:
             $ref: '../schemas/librariesCollection.yaml'
 post:
   summary: Create library
+  description: Create a new library record.
   operationId: createLocationLibrary
   tags: [ locations ]
   requestBody:
@@ -34,6 +35,7 @@ post:
             $ref: '../schemas/library.yaml'
 delete:
   summary: Delete libraries
+  description: Delete all library records.
   operationId: deleteLocationLibraries
   tags: [ locations ]
   responses:

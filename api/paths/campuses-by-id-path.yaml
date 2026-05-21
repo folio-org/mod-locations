@@ -1,5 +1,6 @@
 get:
   summary: Get campus by id
+  description: Retrieve a single campus by its unique identifier.
   operationId: getLocationCampusById
   tags: [locations]
   parameters:
@@ -13,6 +14,7 @@ get:
             $ref: '../schemas/campus.yaml'
 put:
   summary: Update campus by id
+  description: Update an existing campus by its unique identifier.
   operationId: updateLocationCampusById
   tags: [locations]
   parameters:
@@ -25,13 +27,14 @@ put:
           $ref: '../schemas/campus.yaml'
   responses:
     '204':
-      description: Updated.
+      description: Campus updated successfully.
 delete:
   summary: Delete campus by id
+  description: Delete an existing campus by its unique identifier.
   operationId: deleteLocationCampusById
   tags: [locations]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:
     '204':
-      description: Deleted.
+      description: Campus deleted successfully.

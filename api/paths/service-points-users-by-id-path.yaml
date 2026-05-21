@@ -1,5 +1,6 @@
 get:
   summary: Get service points user by id
+  description: Retrieve a single service points user by their unique identifier.
   operationId: getServicePointsUserById
   tags: [ service-points-users ]
   parameters:
@@ -13,6 +14,7 @@ get:
             $ref: '../schemas/servicePointsUser.yaml'
 put:
   summary: Update service points user by id
+  description: Update an existing service points user by their unique identifier.
   operationId: updateServicePointsUserById
   tags: [ service-points-users ]
   parameters:
@@ -25,13 +27,14 @@ put:
           $ref: '../schemas/servicePointsUser.yaml'
   responses:
     '204':
-      description: Updated.
+      description: Service points user updated successfully.
 delete:
   summary: Delete service points user by id
+  description: Delete an existing service points user by their unique identifier.
   operationId: deleteServicePointsUserById
   tags: [ service-points-users ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:
     '204':
-      description: Deleted.
+      description: Service points user deleted successfully.

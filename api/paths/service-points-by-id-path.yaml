@@ -1,5 +1,6 @@
 get:
   summary: Get service point by id
+  description: Retrieve a single service point by its unique identifier.
   operationId: getServicePointById
   tags: [ service-points ]
   parameters:
@@ -13,6 +14,7 @@ get:
             $ref: '../schemas/servicePoint.yaml'
 put:
   summary: Update service point by id
+  description: Update an existing service point by its unique identifier.
   operationId: updateServicePointById
   tags: [ service-points ]
   parameters:
@@ -25,13 +27,14 @@ put:
           $ref: '../schemas/servicePoint.yaml'
   responses:
     '204':
-      description: Updated.
+      description: Service point updated successfully.
 delete:
   summary: Delete service point by id
+  description: Delete an existing service point by its unique identifier.
   operationId: deleteServicePointById
   tags: [ service-points ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:
     '204':
-      description: Deleted.
+      description: Service point deleted successfully.

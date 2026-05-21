@@ -1,3 +1,4 @@
+title: "Metadata"
 description: "Metadata about creation and changes to records"
 type: object
 readOnly: true

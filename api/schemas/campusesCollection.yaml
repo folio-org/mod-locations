@@ -1,3 +1,4 @@
+title: "Campuses Collection"
 description: "A collection of campuses (second-level location units)"
 type: object
 properties:

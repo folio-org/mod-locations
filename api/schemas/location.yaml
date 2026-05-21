@@ -1,3 +1,4 @@
+title: "Location"
 description: "Location: the forth-level location unit below institution, campus, and library"
 type: object
 properties:

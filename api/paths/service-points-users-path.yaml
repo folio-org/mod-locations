@@ -16,6 +16,7 @@ get:
             $ref: '../schemas/servicePointsUsersCollection.yaml'
 post:
   summary: Create service points user
+  description: Create a new service points user record.
   operationId: createServicePointsUser
   tags: [ service-points-users ]
   requestBody:
@@ -33,6 +34,7 @@ post:
             $ref: '../schemas/servicePointsUser.yaml'
 delete:
   summary: Delete service points users
+  description: Delete all service points user records.
   operationId: deleteServicePointsUsers
   tags: [ service-points-users ]
   responses:

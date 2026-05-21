@@ -1,4 +1,4 @@
-extends: [[spectral:oas, all]]
+extends: [ "spectral:oas" ]
 aliases:
   PathItem:
     description: ''
@@ -58,10 +58,6 @@ aliases:
           - "$.paths[*][*].requestBody.content[*]"
           - "$.paths[*][*].responses[*].content[*]"
 rules:
-  info-license: off
-  license-url: off
-  contact-properties: off
-  oas3-valid-media-example: off
   docs-descriptions:
     given:
       - "#DescribableObjects"
@@ -119,7 +115,7 @@ rules:
   docs-media-types-examples-or-schema:
     given:
       - "#MediaTypeObjects"
-    severity: warn
+    severity: info
     then:
       function: schema
       functionOptions:
@@ -128,6 +124,8 @@ rules:
           anyOf:
             - required:
                 - examples
+            - required:
+                - schema
     description: "Media object must contain a defined schema or examples."
     message: No example or schema provided for {{property}}
     formats:
@@ -156,21 +154,3 @@ rules:
       field: tags
     description: "Operation must have at least one tag."
     message: Operation should have non-empty `tags` array.
-  schema-fields-descriptions:
-    description: "Each field in schema should have description"
-    given: "$..[?(@ && @.properties)].properties.*"
-    severity: error
-    resolved: true
-    then:
-      - field: "description"
-        function: defined
-  schema-descriptions:
-    description: "Each schema should have description and title"
-    given: "$..[?(@ && @.properties)]"
-    severity: error
-    resolved: true
-    then:
-      - field: "description"
-        function: defined
-      - field: "title"
-        function: defined

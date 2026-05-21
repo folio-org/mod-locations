@@ -1,5 +1,6 @@
 get:
   summary: Get institution by id
+  description: Retrieve a single institution by its unique identifier.
   operationId: getLocationInstitutionById
   tags: [ locations ]
   parameters:
@@ -15,6 +16,7 @@ get:
       $ref: '../responses/notFoundResponse.yaml'
 put:
   summary: Update institution by id
+  description: Update an existing institution by its unique identifier.
   operationId: updateLocationInstitutionById
   tags: [ locations ]
   parameters:
@@ -27,13 +29,14 @@ put:
           $ref: '../schemas/institution.yaml'
   responses:
     '204':
-      description: Updated.
+      description: Institution updated successfully.
 delete:
   summary: Delete institution by id
+  description: Delete an existing institution by its unique identifier.
   operationId: deleteLocationInstitutionById
   tags: [ locations ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:
     '204':
-      description: Deleted.
+      description: Institution deleted successfully.

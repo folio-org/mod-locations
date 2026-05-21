@@ -1,5 +1,6 @@
 get:
   summary: Get library by id
+  description: Retrieve a single library by its unique identifier.
   operationId: getLocationLibraryById
   tags: [ locations ]
   parameters:
@@ -13,6 +14,7 @@ get:
             $ref: '../schemas/library.yaml'
 put:
   summary: Update library by id
+  description: Update an existing library by its unique identifier.
   operationId: updateLocationLibraryById
   tags: [ locations ]
   parameters:
@@ -25,13 +27,14 @@ put:
           $ref: '../schemas/library.yaml'
   responses:
     '204':
-      description: Updated.
+      description: Library updated successfully.
 delete:
   summary: Delete library by id
+  description: Delete an existing library by its unique identifier.
   operationId: deleteLocationLibraryById
   tags: [ locations ]
   parameters:
     - $ref: '../parameters/id-param.yaml'
   responses:
     '204':
-      description: Deleted.
+      description: Library deleted successfully.

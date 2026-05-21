@@ -7,7 +7,7 @@ info:
     name: Spitfire team
 
 servers:
-  - url: https://folio-{environment}.ci.folio.org/
+  - url: https://folio-{environment}.ci.folio.org
     description: Development environments.
     variables:
       environment:
@@ -15,7 +15,7 @@ servers:
         enum:
           - edev-spitfire-diku
           - edev-spitfire-consortium
-  - url: https://folio-{environment}.ci.folio.org/
+  - url: https://folio-{environment}.ci.folio.org
     description: Reference environments.
     variables:
       environment:
@@ -28,8 +28,6 @@ servers:
 tags:
   - name: locations
     description: Manage locations.
-  - name: location-units
-    description: Manage institutions, campuses, and libraries.
   - name: service-points
     description: Manage service points.
   - name: service-points-users

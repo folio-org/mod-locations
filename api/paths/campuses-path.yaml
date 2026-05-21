@@ -17,6 +17,7 @@ get:
             $ref: '../schemas/campusesCollection.yaml'
 post:
   summary: Create campus
+  description: Create a new campus record.
   operationId: createLocationCampus
   tags: [ locations ]
   requestBody:
@@ -34,6 +35,7 @@ post:
             $ref: '../schemas/campus.yaml'
 delete:
   summary: Delete campuses
+  description: Delete all campus records.
   operationId: deleteLocationCampuses
   tags: [ locations ]
   responses:

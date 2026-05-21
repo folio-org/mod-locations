@@ -1,3 +1,4 @@
+title: "Parameter"
 description: List of key/value parameters of an error
 type: object
 properties:

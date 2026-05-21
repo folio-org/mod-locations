@@ -1,3 +1,4 @@
+title: "Hold Shelf Expiry Period"
 description: "Expiration period for items on the hold shelf at the service point"
 type: object
 properties:

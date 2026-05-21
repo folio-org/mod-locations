@@ -23,6 +23,7 @@ get:
             $ref: '../schemas/servicePointsCollection.yaml'
 post:
   summary: Create service point
+  description: Create a new service point record.
   operationId: createServicePoint
   tags: [ service-points ]
   requestBody:
@@ -40,6 +41,7 @@ post:
             $ref: '../schemas/servicePoint.yaml'
 delete:
   summary: Delete service points
+  description: Delete all service point records.
   operationId: deleteServicePoints
   tags: [ service-points ]
   responses:
