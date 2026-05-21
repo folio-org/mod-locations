@@ -7,7 +7,8 @@
 * Requires `API_NAME vX.Y`
 
 ### Features
-* Description ([ISSUE](https://folio-org.atlassian.net/browse/ISSUE))
+* Implement all REST APIs: locations, location-units, service-points, service-points-users ([MODLOC-3](https://folio-org.atlassian.net/browse/MODLOC-3))
+* Implement locations-migration API for data migration from mod-inventory-storage ([MODLOC-3](https://folio-org.atlassian.net/browse/MODLOC-4))
 
 ### Bug fixes
 * Description ([ISSUE](https://folio-org.atlassian.net/browse/ISSUE))
