@@ -1,0 +1,21 @@
+title: "Hold Shelf Expiry Period"
+description: "Expiration period for items on the hold shelf at the service point"
+type: object
+properties:
+  duration:
+    description: "Duration interval"
+    type: integer
+  intervalId:
+    description: "Unit of time for the duration"
+    type: string
+    enum:
+      - Minutes
+      - Hours
+      - Days
+      - Weeks
+      - Months
+    default: Days
+additionalProperties: false
+required:
+  - duration
+  - intervalId

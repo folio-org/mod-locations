@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="MODLOCS-1@@schema-create-table-campus" author="pavlo_smahin">
+    <createTable tableName="campus">
+      <column name="id" type="uuid">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="code" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="institution_id" type="uuid">
+        <constraints nullable="false" referencedTableName="institution" referencedColumnNames="id" foreignKeyName="campus_institution_fkey"/>
+      </column>
+      <column name="is_shadow" type="boolean" defaultValueBoolean="false"/>
+      <column name="created_date" type="timestamp"/>
+      <column name="created_by_user_id" type="uuid"/>
+      <column name="updated_date" type="timestamp"/>
+      <column name="updated_by_user_id" type="uuid"/>
+    </createTable>
+    <createIndex indexName="campus_name_idx_unique" tableName="campus" unique="true">
+      <column name="lower(f_unaccent(name))" computed="true"/>
+    </createIndex>
+    <createIndex indexName="campus_code_idx_unique" tableName="campus" unique="true">
+      <column name="lower(f_unaccent(code))" computed="true"/>
+    </createIndex>
+    <createIndex indexName="campus_institutionid_idx" tableName="campus">
+      <column name="institution_id"/>
+    </createIndex>
+  </changeSet>
+
+</databaseChangeLog>

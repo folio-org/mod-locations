@@ -1,0 +1,46 @@
+get:
+  summary: Get library by id
+  description: Retrieve a single library by its unique identifier.
+  operationId: getLocationLibraryById
+  tags: [ locations ]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '200':
+      description: Library record.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/library.yaml'
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
+put:
+  summary: Update library by id
+  description: Update an existing library by its unique identifier.
+  operationId: updateLocationLibraryById
+  tags: [ locations ]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/library.yaml'
+  responses:
+    '204':
+      description: Library updated successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
+delete:
+  summary: Delete library by id
+  description: Delete an existing library by its unique identifier.
+  operationId: deleteLocationLibraryById
+  tags: [ locations ]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '204':
+      description: Library deleted successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'

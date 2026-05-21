@@ -1,0 +1,43 @@
+get:
+  summary: Get campuses
+  description: Return a list of campuses.
+  operationId: getLocationCampuses
+  tags: [ locations ]
+  parameters:
+    - $ref: '../parameters/query-param.yaml'
+    - $ref: '../parameters/limit-param.yaml'
+    - $ref: '../parameters/offset-param.yaml'
+    - $ref: '../parameters/include-shadow-param.yaml'
+  responses:
+    '200':
+      description: Collection of campuses.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/campusesCollection.yaml'
+post:
+  summary: Create campus
+  description: Create a new campus record.
+  operationId: createLocationCampus
+  tags: [ locations ]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/campus.yaml'
+  responses:
+    '201':
+      description: Created campus.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/campus.yaml'
+delete:
+  summary: Delete campuses
+  description: Delete all campus records.
+  operationId: deleteLocationCampuses
+  tags: [ locations ]
+  responses:
+    '204':
+      description: All campuses deleted.

@@ -1,0 +1,46 @@
+get:
+  summary: Get campus by id
+  description: Retrieve a single campus by its unique identifier.
+  operationId: getLocationCampusById
+  tags: [locations]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '200':
+      description: Campus record.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/campus.yaml'
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
+put:
+  summary: Update campus by id
+  description: Update an existing campus by its unique identifier.
+  operationId: updateLocationCampusById
+  tags: [locations]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/campus.yaml'
+  responses:
+    '204':
+      description: Campus updated successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
+delete:
+  summary: Delete campus by id
+  description: Delete an existing campus by its unique identifier.
+  operationId: deleteLocationCampusById
+  tags: [locations]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '204':
+      description: Campus deleted successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'

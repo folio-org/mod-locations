@@ -1,0 +1,15 @@
+title: "Service Points Collection"
+description: "Collection of service points"
+type: object
+properties:
+  servicepoints:
+    description: "List of service points"
+    type: array
+    items:
+      $ref: 'servicePoint.yaml'
+  totalRecords:
+    description: "Total number of records"
+    type: integer
+required:
+  - servicepoints
+  - totalRecords

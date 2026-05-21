@@ -1,0 +1,9 @@
+# Development profile for local development with Spring Boot Docker Compose support
+# Activate this profile: --spring.profiles.active=dev or SPRING_PROFILES_ACTIVE=dev
+
+spring:
+  docker:
+    compose:
+      enabled: true
+      file: ./docker/infra-docker-compose.yml
+

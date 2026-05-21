@@ -1,0 +1,15 @@
+title: "Institutions Collection"
+description: "A collection of institutions (top-level location units)"
+type: object
+properties:
+  locinsts:
+    description: "List of institution"
+    type: array
+    items:
+      $ref: 'institution.yaml'
+  totalRecords:
+    description: "Total number of records"
+    type: integer
+required:
+  - locinsts
+  - totalRecords

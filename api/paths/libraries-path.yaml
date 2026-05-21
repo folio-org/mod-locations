@@ -1,0 +1,43 @@
+get:
+  summary: Get libraries
+  description: Return a list of libraries.
+  operationId: getLocationLibraries
+  tags: [ locations ]
+  parameters:
+    - $ref: '../parameters/query-param.yaml'
+    - $ref: '../parameters/limit-param.yaml'
+    - $ref: '../parameters/offset-param.yaml'
+    - $ref: '../parameters/include-shadow-param.yaml'
+  responses:
+    '200':
+      description: Collection of libraries.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/librariesCollection.yaml'
+post:
+  summary: Create library
+  description: Create a new library record.
+  operationId: createLocationLibrary
+  tags: [ locations ]
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/library.yaml'
+  responses:
+    '201':
+      description: Created library.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/library.yaml'
+delete:
+  summary: Delete libraries
+  description: Delete all library records.
+  operationId: deleteLocationLibraries
+  tags: [ locations ]
+  responses:
+    '204':
+      description: All libraries deleted.

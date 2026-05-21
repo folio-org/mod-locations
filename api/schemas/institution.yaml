@@ -1,0 +1,24 @@
+title: "Institution"
+description: "Institution: highest-level location unit"
+type: object
+properties:
+  id:
+    description: "ID of institution"
+    type: string
+    format: uuid
+  name:
+    description: "Name of institution"
+    type: string
+  code:
+    description: "Distinct code for institution"
+    type: string
+  isShadow:
+    description: "Whether this is a shadow location. Shadow locations are used to represent virtual locations that no items are assignable to them. They only relate to external libraries and virtual items."
+    type: boolean
+    default: false
+  metadata:
+    $ref: 'common/metadata.yaml'
+additionalProperties: false
+required:
+  - name
+  - code

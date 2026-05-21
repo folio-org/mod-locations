@@ -1,0 +1,46 @@
+get:
+  summary: Get service point by id
+  description: Retrieve a single service point by its unique identifier.
+  operationId: getServicePointById
+  tags: [ service-points ]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '200':
+      description: Service point record.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/servicePoint.yaml'
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
+put:
+  summary: Update service point by id
+  description: Update an existing service point by its unique identifier.
+  operationId: updateServicePointById
+  tags: [ service-points ]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/servicePoint.yaml'
+  responses:
+    '204':
+      description: Service point updated successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
+delete:
+  summary: Delete service point by id
+  description: Delete an existing service point by its unique identifier.
+  operationId: deleteServicePointById
+  tags: [ service-points ]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '204':
+      description: Service point deleted successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'

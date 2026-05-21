@@ -1,0 +1,7 @@
+in: query
+name: includeShadow
+description: Whether to include shadow records in the response or not.
+required: false
+schema:
+  type: boolean
+  default: false

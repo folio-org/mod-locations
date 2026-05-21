@@ -1,0 +1,109 @@
+spring:
+  application:
+    name: @project.parent.artifactId@
+    version: @project.version@
+  threads:
+    virtual:
+      enabled: true
+  datasource:
+    hikari:
+      connectionTimeout: ${DB_CONNECTION_TIMEOUT:30000}
+      idleTimeout: ${DB_IDLE_TIMEOUT:600000}
+      keepaliveTime: ${DB_KEEPALIVE_TIME:0}
+      maxLifetime: ${DB_MAX_LIFETIME:1800000}
+      validationTimeout: ${DB_VALIDATION_TIMEOUT:5000}
+      maximumPoolSize: ${DB_MAXPOOLSIZE:10}
+      minimumIdle: ${DB_MINIMUM_IDLE:10}
+      initializationFailTimeout: ${DB_INITIALIZATION_FAIL_TIMEOUT:30000}
+      leakDetectionThreshold: ${DB_LEAK_DETECTION_THRESHOLD:60000}
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_DATABASE:modules}
+    password: ${DB_PASSWORD:folio_admin}
+    username: ${DB_USERNAME:folio_admin}
+  jpa:
+    open-in-view: false
+  liquibase:
+    change-log: classpath:db/changelog/changelog-master.xml
+  jackson:
+    default-property-inclusion: non_null
+    deserialization:
+      fail-on-unknown-properties: false
+      accept-single-value-as-array: true
+  kafka:
+    bootstrap-servers: ${KAFKA_HOST:localhost}:${KAFKA_PORT:29092}
+    consumer:
+      max-poll-records: ${KAFKA_CONSUMER_MAX_POLL_RECORDS:50}
+    security:
+      protocol: ${KAFKA_SECURITY_PROTOCOL:PLAINTEXT}
+    ssl:
+      key-store-password: ${KAFKA_SSL_KEYSTORE_PASSWORD:}
+      key-store-location: ${KAFKA_SSL_KEYSTORE_LOCATION:}
+      trust-store-password: ${KAFKA_SSL_TRUSTSTORE_PASSWORD:}
+      trust-store-location: ${KAFKA_SSL_TRUSTSTORE_LOCATION:}
+    producer:
+      acks: all
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JacksonJsonSerializer
+      properties:
+        linger.ms: 5
+        spring.json.add.type.headers: false
+
+
+folio:
+  environment: ${ENV:folio}
+  exchange:
+    enabled: true
+  features:
+    ecs-tlr:
+      enabled: ${ECS_TLR_FEATURE_ENABLED:false}
+  kafka:
+    topicPrefix: locations
+    topics:
+      - name: location
+        numPartitions: ${KAFKA_LOCATIONS_LOCATION_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_LOCATION_TOPIC_REPLICATION_FACTOR:}
+      - name: service-point
+        numPartitions: ${KAFKA_LOCATIONS_SERVICE_POINT_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_SERVICE_POINT_TOPIC_REPLICATION_FACTOR:}
+      - name: service-point-user
+        numPartitions: ${KAFKA_LOCATIONS_SERVICE_POINT_USER_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_SERVICE_POINT_USER_TOPIC_REPLICATION_FACTOR:}
+      - name: institution
+        numPartitions: ${KAFKA_LOCATIONS_INSTITUTION_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_INSTITUTION_TOPIC_REPLICATION_FACTOR:}
+      - name: campus
+        numPartitions: ${KAFKA_LOCATIONS_CAMPUS_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_CAMPUS_TOPIC_REPLICATION_FACTOR:}
+      - name: library
+        numPartitions: ${KAFKA_LOCATIONS_LIBRARY_TOPIC_PARTITIONS:1}
+        replicationFactor: ${KAFKA_LOCATIONS_LIBRARY_TOPIC_REPLICATION_FACTOR:}
+    listener:
+      service-point:
+        concurrency: ${KAFKA_SERVICE_POINT_CONSUMER_CONCURRENCY:1}
+        topic-pattern: (${folio.environment}\.)(.*\.)locations\.service-point
+        group-id: ${folio.environment}-mod-locations-service-point-group
+  logging:
+    request:
+      enabled: true
+    exchange:
+      enabled: true
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: info,health,liquibase,threaddump,heapdump,loggers
+      base-path: /admin
+  endpoint:
+    loggers:
+      access: unrestricted
+server.port: 8081
+
+
+logging:
+  level:
+    org.folio.spring.filter.IncomingRequestLoggingFilter: debug
+    org.apache.kafka.clients.consumer: warn
+    org.apache.kafka.common.config.AbstractConfig: warn
+    org.apache.kafka.common.metrics: warn
+    org.apache.kafka.common.utils.AppInfoParser: warn
+    org.apache.kafka.common.telemetry: warn

@@ -1,0 +1,62 @@
+title: "Service Point"
+description: "Service point"
+type: object
+properties:
+  id:
+    description: "ID of the service point"
+    type: string
+    format: uuid
+  name:
+    description: "Name of the service point"
+    type: string
+  code:
+    description: "Code of the service point"
+    type: string
+  discoveryDisplayName:
+    description: "Discovery display name of the service point"
+    type: string
+  description:
+    description: "Description of the service point"
+    type: string
+  shelvingLagTime:
+    description: "Shelving lag time"
+    type: integer
+  pickupLocation:
+    description: "Indicates whether or not the service point is a pickup location"
+    type: boolean
+  holdShelfExpiryPeriod:
+    $ref: 'holdShelfExpiryPeriod.yaml'
+  holdShelfClosedLibraryDateManagement:
+    description: "Closed library date management associated with hold shelf"
+    type: string
+    enum:
+      - Keep_the_current_due_date
+      - Move_to_the_end_of_the_previous_open_day
+      - Move_to_the_end_of_the_next_open_day
+      - Keep_the_current_due_date_time
+      - Move_to_end_of_current_service_point_hours
+      - Move_to_beginning_of_next_open_service_point_hours
+    default: Keep_the_current_due_date
+  defaultCheckInActionForUseAtLocation:
+    description: "Default action when checking in an item that is for use in the library (i.e. in reading room)"
+    type: string
+    enum:
+      - Keep_on_hold_shelf
+      - Close_loan_and_return_item
+      - Ask_for_action
+  staffSlips:
+    description: "List of staff slips for this service point"
+    type: array
+    items:
+      $ref: 'servicePointStaffSlip.yaml'
+  ecsRequestRouting:
+    description: "Indicates a service point used for the ECS functionality"
+    type: boolean
+    default: false
+  metadata:
+    $ref: 'common/metadata.yaml'
+additionalProperties: false
+required:
+  - name
+  - code
+  - discoveryDisplayName

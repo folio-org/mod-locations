@@ -1,0 +1,48 @@
+get:
+  summary: Get location by id
+  description: Retrieve a location by id.
+  operationId: getLocationById
+  tags: [ locations ]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '200':
+      description: Location record.
+      content:
+        application/json:
+          schema:
+            $ref: '../schemas/location.yaml'
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
+put:
+  summary: Update location by id
+  description: Update a location by id.
+  operationId: updateLocationById
+  tags: [ locations ]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  requestBody:
+    required: true
+    content:
+      application/json:
+        schema:
+          $ref: '../schemas/location.yaml'
+  responses:
+    '204':
+      description: Location updated successfully.
+    '400':
+      $ref: '../responses/badRequestResponse.yaml'
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
+delete:
+  summary: Delete location by id
+  description: Delete a location by id.
+  operationId: deleteLocationById
+  tags: [ locations ]
+  parameters:
+    - $ref: '../parameters/id-param.yaml'
+  responses:
+    '204':
+      description: Location deleted successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'

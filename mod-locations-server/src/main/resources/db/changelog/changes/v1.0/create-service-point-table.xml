@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                   https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+  <changeSet id="MODLOCS-1@@schema-create-table-service_point" author="pavlo_smahin">
+    <createTable tableName="service_point">
+      <column name="id" type="uuid">
+        <constraints primaryKey="true" nullable="false"/>
+      </column>
+      <column name="name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="code" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="discovery_display_name" type="varchar(255)">
+        <constraints nullable="false"/>
+      </column>
+      <column name="description" type="text"/>
+      <column name="shelving_lag_time" type="integer"/>
+      <column name="pickup_location" type="boolean"/>
+      <column name="hold_shelf_expiry_period_interval_id" type="varchar(255)"/>
+      <column name="hold_shelf_expiry_period_duration" type="integer"/>
+      <column name="hold_shelf_closed_library_date_management" type="varchar(255)"/>
+      <column name="default_check_in_action_for_use_at_location" type="varchar(255)"/>
+      <column name="ecs_request_routing" type="boolean" defaultValueBoolean="false"/>
+      <column name="created_date" type="timestamp"/>
+      <column name="created_by_user_id" type="uuid"/>
+      <column name="updated_date" type="timestamp"/>
+      <column name="updated_by_user_id" type="uuid"/>
+    </createTable>
+    <createIndex indexName="service_point_name_idx_unique" tableName="service_point" unique="true">
+      <column name="lower(f_unaccent(name))" computed="true"/>
+    </createIndex>
+    <createIndex indexName="service_point_code_idx_unique" tableName="service_point" unique="true">
+      <column name="lower(f_unaccent(code))" computed="true"/>
+    </createIndex>
+    <createIndex indexName="service_point_pickuplocation_idx" tableName="service_point">
+      <column name="pickup_location"/>
+    </createIndex>
+
+    <sql>
+      ALTER TABLE service_point
+        ADD CONSTRAINT chk_sp_hold_shelf_interval_id
+          CHECK (hold_shelf_expiry_period_interval_id IN ('Minutes', 'Hours', 'Days', 'Weeks', 'Months')
+                 OR hold_shelf_expiry_period_interval_id IS NULL);
+    </sql>
+    <sql>
+      ALTER TABLE service_point
+        ADD CONSTRAINT chk_sp_hold_shelf_closed_library_mgmt
+          CHECK (hold_shelf_closed_library_date_management IN (
+                   'Keep_the_current_due_date',
+                   'Move_to_the_end_of_the_previous_open_day',
+                   'Move_to_the_end_of_the_next_open_day',
+                   'Keep_the_current_due_date_time',
+                   'Move_to_end_of_current_service_point_hours',
+                   'Move_to_beginning_of_next_open_service_point_hours'
+                 ) OR hold_shelf_closed_library_date_management IS NULL);
+    </sql>
+    <sql>
+      ALTER TABLE service_point
+        ADD CONSTRAINT chk_sp_default_checkin_action
+          CHECK (default_check_in_action_for_use_at_location IN (
+                   'Keep_on_hold_shelf',
+                   'Close_loan_and_return_item',
+                   'Ask_for_action'
+                 ) OR default_check_in_action_for_use_at_location IS NULL);
+    </sql>
+  </changeSet>
+
+  <changeSet id="MODLOCS-1@@schema-create-table-service_point_staff_slip" author="pavlo_smahin">
+    <createTable tableName="service_point_staff_slip">
+      <column name="service_point_id" type="uuid">
+        <constraints nullable="false"
+                     referencedTableName="service_point"
+                     referencedColumnNames="id"
+                     foreignKeyName="sp_staff_slip_servicepoint_fkey"
+                     deleteCascade="true"/>
+      </column>
+      <column name="staff_slip_id" type="uuid">
+        <constraints nullable="false"/>
+      </column>
+      <column name="print_by_default" type="boolean">
+        <constraints nullable="false"/>
+      </column>
+    </createTable>
+    <addPrimaryKey tableName="service_point_staff_slip"
+                   columnNames="service_point_id, staff_slip_id"
+                   constraintName="service_point_staff_slip_pkey"/>
+  </changeSet>
+
+</databaseChangeLog>

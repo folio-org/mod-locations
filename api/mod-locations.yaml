@@ -7,7 +7,7 @@ info:
     name: Spitfire team
 
 servers:
-  - url: https://folio-{environment}.ci.folio.org/
+  - url: https://folio-{environment}.ci.folio.org
     description: Development environments.
     variables:
       environment:
@@ -15,7 +15,7 @@ servers:
         enum:
           - edev-spitfire-diku
           - edev-spitfire-consortium
-  - url: https://folio-{environment}.ci.folio.org/
+  - url: https://folio-{environment}.ci.folio.org
     description: Reference environments.
     variables:
       environment:
@@ -26,5 +26,35 @@ servers:
           - etesting-sprint-fs09000000
 
 tags:
+  - name: locations
+    description: Manage locations.
+  - name: service-points
+    description: Manage service points.
+  - name: service-points-users
+    description: Manage service points users.
 
 paths:
+  /location-storage/locations:
+    $ref: 'paths/locations-path.yaml'
+  /location-storage/locations/{id}:
+    $ref: 'paths/locations-by-id-path.yaml'
+  /location-storage/institutions:
+    $ref: 'paths/institutions-path.yaml'
+  /location-storage/institutions/{id}:
+    $ref: 'paths/institutions-by-id-path.yaml'
+  /location-storage/campuses:
+    $ref: 'paths/campuses-path.yaml'
+  /location-storage/campuses/{id}:
+    $ref: 'paths/campuses-by-id-path.yaml'
+  /location-storage/libraries:
+    $ref: 'paths/libraries-path.yaml'
+  /location-storage/libraries/{id}:
+    $ref: 'paths/libraries-by-id-path.yaml'
+  /service-point-storage/service-points:
+    $ref: 'paths/service-points-path.yaml'
+  /service-point-storage/service-points/{id}:
+    $ref: 'paths/service-points-by-id-path.yaml'
+  /service-point-storage/service-points-users:
+    $ref: 'paths/service-points-users-path.yaml'
+  /service-point-storage/service-points-users/{id}:
+    $ref: 'paths/service-points-users-by-id-path.yaml'

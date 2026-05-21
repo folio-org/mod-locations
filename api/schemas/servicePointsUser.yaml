@@ -1,0 +1,28 @@
+title: "Service Points User"
+description: "The list of service points a user is allowed to work at, and the default service point for that user"
+type: object
+properties:
+  id:
+    description: "ID of the service points user"
+    type: string
+    format: uuid
+  userId:
+    description: "ID of the user"
+    type: string
+    format: uuid
+  servicePointsIds:
+    description: "List of service points a user is allowed to work at"
+    type: array
+    items:
+      description: "ID of a service point"
+      type: string
+      format: uuid
+  defaultServicePointId:
+    description: "ID of the user's default service point"
+    type: string
+    format: uuid
+  metadata:
+    $ref: 'common/metadata.yaml'
+additionalProperties: false
+required:
+  - userId

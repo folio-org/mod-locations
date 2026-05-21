@@ -1,0 +1,19 @@
+title: "Error Collection"
+description: "Collection of errors"
+type: object
+properties:
+  errors:
+    description: "List of errors"
+    type: array
+    items:
+      $ref: 'error.yaml'
+  totalRecords:
+    description: "Total number of records"
+    type: integer
+example:
+  errors:
+    - message: Illegal argument error
+      type: IllegalArgumentException
+      code: unknown_error
+  total_records: 1
+
