@@ -101,8 +101,8 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
     return buildCollection(dtos, (int) page.getTotalElements());
   }
 
-  protected static String buildCql(@Nullable String query, boolean includeShadow) {
-    var shadowFilter = includeShadow ? null : "isShadow==false";
+  protected static String buildCql(@Nullable String query, @Nullable Boolean includeShadow) {
+    var shadowFilter = Boolean.TRUE.equals(includeShadow) ? null : "isShadow==false";
     if (query != null && shadowFilter != null) {
       return "(" + query + ") AND " + shadowFilter;
     }

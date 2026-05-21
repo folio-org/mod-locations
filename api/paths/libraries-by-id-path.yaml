@@ -12,6 +12,8 @@ get:
         application/json:
           schema:
             $ref: '../schemas/library.yaml'
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
 put:
   summary: Update library by id
   description: Update an existing library by its unique identifier.
@@ -28,6 +30,8 @@ put:
   responses:
     '204':
       description: Library updated successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
 delete:
   summary: Delete library by id
   description: Delete an existing library by its unique identifier.
@@ -38,3 +42,5 @@ delete:
   responses:
     '204':
       description: Library deleted successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'

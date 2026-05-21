@@ -30,6 +30,8 @@ put:
   responses:
     '204':
       description: Institution updated successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'
 delete:
   summary: Delete institution by id
   description: Delete an existing institution by its unique identifier.
@@ -40,3 +42,5 @@ delete:
   responses:
     '204':
       description: Institution deleted successfully.
+    '404':
+      $ref: '../responses/notFoundResponse.yaml'

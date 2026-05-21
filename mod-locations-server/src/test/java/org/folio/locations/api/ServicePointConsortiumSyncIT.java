@@ -52,9 +52,6 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 @TestPropertySource(properties = {
   // Enable the ECS TLR sync feature for these tests
   "folio.features.ecs-tlr.enabled=true",
-
-  // Use a short Kafka listener poll timeout to speed up negative assertions
-//  "spring.kafka.consumer.max-poll-interval=100"
 })
 class ServicePointConsortiumSyncIT extends BaseIT {
 
