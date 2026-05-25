@@ -25,7 +25,7 @@ In an ECS (Edge Computing Services / consortium) deployment a service point crea
 ## Business rules and constraints
 
 ### Feature activation
-- The sync feature is entirely inactive when `folio.features.ecs-tlr.enabled` is `false` (the default). No Kafka listener is registered and no consortium-related beans are created. Enabling the feature requires a restart.
+- The sync feature is entirely inactive when `folio.features.ecs-service-point-sync.enabled` is `false` (the default). No Kafka listener is registered and no consortium-related beans are created. Enabling the feature requires a restart.
 
 ### Central-tenant gate
 - Only events whose originating tenant is the consortium central tenant are propagated. Events from member tenants are silently discarded to prevent infinite re-propagation loops.
@@ -56,7 +56,7 @@ Stale cache entries mean that newly added member tenants may not receive synced 
 ## Configuration
 | Variable                                   | Default | Purpose                                                           |
 |--------------------------------------------|---------|-------------------------------------------------------------------|
-| `ECS_TLR_FEATURE_ENABLED`                  | `false` | Enables or disables the sync feature entirely                     |
+| `ECS_SERVICE_POINT_SYNC_FEATURE_ENABLED`                  | `false` | Enables or disables the sync feature entirely                     |
 | `KAFKA_SERVICE_POINT_CONSUMER_CONCURRENCY` | `1`     | Number of concurrent Kafka listener threads                       |
 | `ENV`                                      | `folio` | Environment prefix used when resolving the consumer topic pattern |
 

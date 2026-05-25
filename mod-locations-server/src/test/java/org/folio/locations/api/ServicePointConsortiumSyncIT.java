@@ -51,7 +51,7 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 @IntegrationTest
 @TestPropertySource(properties = {
   // Enable the ECS TLR sync feature for these tests
-  "folio.features.ecs-tlr.enabled=true",
+  "folio.features.ecs-service-point-sync.enabled=true",
 })
 class ServicePointConsortiumSyncIT extends BaseIT {
 

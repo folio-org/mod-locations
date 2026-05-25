@@ -399,242 +399,152 @@
     {
       "permissionName": "location-storage.institutions.collection.get",
       "displayName": "location units - get institution collection",
-      "description": "Get institution collection",
-      "replaces": [
-        "inventory-storage.location-units.institutions.collection.get"
-      ]
+      "description": "Get institution collection"
     },
     {
       "permissionName": "location-storage.institutions.item.get",
       "displayName": "location units - get individual institution",
-      "description": "get individual institution",
-      "replaces": [
-        "inventory-storage.location-units.institutions.item.get"
-      ]
+      "description": "get individual institution"
     },
     {
       "permissionName": "location-storage.institutions.item.post",
       "displayName": "location units - create individual institution",
-      "description": "create individual instution",
-      "replaces": [
-        "inventory-storage.location-units.institutions.item.post"
-      ]
+      "description": "create individual institution"
     },
     {
       "permissionName": "location-storage.institutions.item.put",
       "displayName": "location units - modify institution",
-      "description": "modify institution",
-      "replaces": [
-        "inventory-storage.location-units.institutions.item.put"
-      ]
+      "description": "modify institution"
     },
     {
       "permissionName": "location-storage.institutions.item.delete",
       "displayName": "location units - delete individual institution",
-      "description": "delete individual institution",
-      "replaces": [
-        "inventory-storage.location-units.institutions.item.delete"
-      ]
+      "description": "delete individual institution"
     },
     {
       "permissionName": "location-storage.campuses.collection.get",
       "displayName": "location units - get campus collection",
-      "description": "Get campus collection",
-      "replaces": [
-        "inventory-storage.location-units.campuses.collection.get"
-      ]
+      "description": "Get campus collection"
     },
     {
       "permissionName": "location-storage.campuses.item.get",
       "displayName": "location units - get individual campus",
-      "description": "get individual campus",
-      "replaces": [
-        "inventory-storage.location-units.campuses.item.get"
-      ]
+      "description": "get individual campus"
     },
     {
       "permissionName": "location-storage.campuses.item.post",
       "displayName": "location units - create individual campus",
-      "description": "create individual instution",
-      "replaces": [
-        "inventory-storage.location-units.campuses.item.post"
-      ]
+      "description": "create individual institution"
     },
     {
       "permissionName": "location-storage.campuses.item.put",
       "displayName": "location units - modify campus",
-      "description": "modify campus",
-      "replaces": [
-        "inventory-storage.location-units.campuses.item.put"
-      ]
+      "description": "modify campus"
     },
     {
       "permissionName": "location-storage.campuses.item.delete",
       "displayName": "location units - delete individual campus",
-      "description": "delete individual campus",
-      "replaces": [
-        "inventory-storage.location-units.campuses.item.delete"
-      ]
+      "description": "delete individual campus"
     },
     {
       "permissionName": "location-storage.libraries.collection.get",
       "displayName": "location units - get library collection",
-      "description": "Get library collection",
-      "replaces": [
-        "inventory-storage.location-units.libraries.collection.get"
-      ]
+      "description": "Get library collection"
     },
     {
       "permissionName": "location-storage.libraries.item.get",
       "displayName": "location units - get individual library",
-      "description": "get individual library",
-      "replaces": [
-        "inventory-storage.location-units.libraries.item.get"
-      ]
+      "description": "get individual library"
     },
     {
       "permissionName": "location-storage.libraries.item.post",
       "displayName": "location units - create individual library",
-      "description": "create individual instution",
-      "replaces": [
-        "inventory-storage.location-units.libraries.item.post"
-      ]
+      "description": "create individual institution"
     },
     {
       "permissionName": "location-storage.libraries.item.put",
       "displayName": "location units - modify library",
-      "description": "modify library",
-      "replaces": [
-        "inventory-storage.location-units.libraries.item.put"
-      ]
+      "description": "modify library"
     },
     {
       "permissionName": "location-storage.libraries.item.delete",
       "displayName": "location units - delete individual library",
-      "description": "delete individual library",
-      "replaces": [
-        "inventory-storage.location-units.libraries.item.delete"
-      ]
+      "description": "delete individual library"
     },
     {
       "permissionName": "location-storage.locations.collection.get",
       "displayName": "locations - get location collection",
-      "description": "get location collection",
-      "replaces": [
-        "inventory-storage.locations.collection.get"
-      ]
+      "description": "get location collection"
     },
     {
       "permissionName": "location-storage.locations.item.get",
       "displayName": "locations - get individual location",
-      "description": "get individual location",
-      "replaces": [
-        "inventory-storage.locations.item.get"
-      ]
+      "description": "get individual location"
     },
     {
       "permissionName": "location-storage.locations.item.post",
       "displayName": "locations - create individual location",
-      "description": "create individual location",
-      "replaces": [
-        "inventory-storage.locations.item.post"
-      ]
+      "description": "create individual location"
     },
     {
       "permissionName": "location-storage.locations.item.put",
       "displayName": "locations - modify location",
-      "description": "modify location",
-      "replaces": [
-        "inventory-storage.locations.item.put"
-      ]
+      "description": "modify location"
     },
     {
       "permissionName": "location-storage.locations.item.delete",
       "displayName": "locations - delete individual location",
-      "description": "delete individual location",
-      "replaces": [
-        "inventory-storage.locations.item.delete"
-      ]
+      "description": "delete individual location"
     },
     {
       "permissionName": "service-point-storage.service-points.collection.get",
       "displayName": "get service-point collection",
-      "description": "get service-point collection from storage",
-      "replaces": [
-        "inventory-storage.service-points.collection.get"
-      ]
+      "description": "get service-point collection from storage"
     },
     {
       "permissionName": "service-point-storage.service-points.item.get",
       "displayName": "get individual service-point",
-      "description": "get individual service-point from storage",
-      "replaces": [
-        "inventory-storage.service-points.item.get"
-      ]
+      "description": "get individual service-point from storage"
     },
     {
       "permissionName": "service-point-storage.service-points.item.post",
       "displayName": "create individual service-point",
-      "description": "create individual service-point in storage",
-      "replaces": [
-        "inventory-storage.service-points.item.post"
-      ]
+      "description": "create individual service-point in storage"
     },
     {
       "permissionName": "service-point-storage.service-points.item.put",
       "displayName": "modify service-point",
-      "description": "modify service-point in storage",
-      "replaces": [
-        "inventory-storage.service-points.item.put"
-      ]
+      "description": "modify service-point in storage"
     },
     {
       "permissionName": "service-point-storage.service-points.item.delete",
       "displayName": "delete individual service-point",
-      "description": "delete individual service-point from storage",
-      "replaces": [
-        "inventory-storage.service-points.item.delete"
-      ]
+      "description": "delete individual service-point from storage"
     },
     {
       "permissionName": "service-point-storage.service-points-users.collection.get",
       "displayName": "get service-point-users collection",
-      "description": "get service-point-users collection from storage",
-      "replaces": [
-        "inventory-storage.service-points-users.collection.get"
-      ]
+      "description": "get service-point-users collection from storage"
     },
     {
       "permissionName": "service-point-storage.service-points-users.item.get",
       "displayName": "get individual service-points-user",
-      "description": "get individual service-points-user from storage",
-      "replaces": [
-        "inventory-storage.service-points-users.item.get"
-      ]
+      "description": "get individual service-points-user from storage"
     },
     {
       "permissionName": "service-point-storage.service-points-users.item.post",
       "displayName": "create individual service-points-user",
-      "description": "create individual service-points-user in storage",
-      "replaces": [
-        "inventory-storage.service-points-users.item.post"
-      ]
+      "description": "create individual service-points-user in storage"
     },
     {
       "permissionName": "service-point-storage.service-points-users.item.put",
       "displayName": "modify service-points-user",
-      "description": "modify service-points-user in storage",
-      "replaces": [
-        "inventory-storage.service-points-users.item.put"
-      ]
+      "description": "modify service-points-user in storage"
     },
     {
       "permissionName": "service-point-storage.service-points-users.item.delete",
       "displayName": "delete individual service-points-user",
-      "description": "delete individual service-points-user from storage",
-      "replaces": [
-        "inventory-storage.service-points-users.item.delete"
-      ]
+      "description": "delete individual service-points-user from storage"
     },
     {
       "permissionName": "locations.all",
@@ -817,7 +727,7 @@
         "value": "1"
       },
       {
-        "name": "ECS_TLR_FEATURE_ENABLED",
+        "name": "ECS_SERVICE_POINT_SYNC_FEATURE_ENABLED",
         "value": "false"
       }
     ]
