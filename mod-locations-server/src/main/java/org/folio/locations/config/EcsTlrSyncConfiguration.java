@@ -18,13 +18,13 @@ import tools.jackson.core.type.TypeReference;
  *
  * <p>All beans in this class — and all {@code @Service}/{@code @Component} classes
  * in the {@code consortium} package — are only created when the feature is enabled.
- * Set the {@code ECS_TLR_FEATURE_ENABLED} environment variable to {@code true} to activate.
+ * Set the {@code ECS_SERVICE_POINT_SYNC_FEATURE_ENABLED} environment variable to {@code true} to activate.
  */
 @Configuration
 @ConditionalOnProperty(name = EcsTlrSyncConfiguration.PROPERTY, havingValue = "true")
 public class EcsTlrSyncConfiguration {
 
-  public static final String PROPERTY = "folio.features.ecs-tlr.enabled";
+  public static final String PROPERTY = "folio.features.ecs-service-point-sync.enabled";
 
   @Bean
   public ConsumerFactory<String, DomainEvent<ServicePoint>> servicePointEventConsumerFactory(
