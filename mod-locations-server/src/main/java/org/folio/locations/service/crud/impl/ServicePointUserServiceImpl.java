@@ -11,6 +11,7 @@ import org.folio.locations.service.crud.AbstractCrudService;
 import org.folio.locations.service.crud.GetAllContext;
 import org.folio.locations.service.crud.ServicePointUserService;
 import org.folio.locations.service.event.DomainEventPublisher;
+import org.folio.locations.util.CqlUtils;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -31,7 +32,7 @@ public class ServicePointUserServiceImpl
   }
 
   protected String buildCqlFromContext(GetAllContext ctx) {
-    return buildCql(ctx.query(), true);
+    return CqlUtils.normalize(ctx.query());
   }
 
   @Override

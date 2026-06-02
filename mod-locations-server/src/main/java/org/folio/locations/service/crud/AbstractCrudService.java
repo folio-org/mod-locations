@@ -2,7 +2,6 @@ package org.folio.locations.service.crud;
 
 import java.time.OffsetDateTime;
 import java.util.List;
-import java.util.Objects;
 import java.util.UUID;
 import org.folio.locations.domain.entity.AbstractEntity;
 import org.folio.locations.domain.event.DomainEvent;
@@ -11,6 +10,7 @@ import org.folio.locations.domain.type.ResourceType;
 import org.folio.locations.mapper.EntityMapper;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.DtoValidator;
+import org.folio.locations.util.CqlUtils;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.cql.JpaCqlRepository;
 import org.folio.spring.data.OffsetRequest;
@@ -27,8 +27,6 @@ import org.springframework.transaction.annotation.Transactional;
  */
 @NullMarked
 public abstract class AbstractCrudService<D, E extends AbstractEntity<UUID>> {
-
-  protected static final String ALL_RECORDS_CQL = "cql.allRecords=1";
 
   protected final JpaCqlRepository<E, UUID> repository;
   protected final EntityMapper<D, E> mapper;
@@ -117,35 +115,10 @@ public abstract class AbstractCrudService<D, E extends AbstractEntity<UUID>> {
   }
 
   protected static String buildCql(@Nullable String query, @Nullable Boolean includeShadow) {
-    String sortBy = null;
-    String baseQuery = query;
-
-    if (query != null) {
-      int sortByIndex = query.toLowerCase().lastIndexOf(" sortby ");
-      if (sortByIndex >= 0) {
-        sortBy = query.substring(sortByIndex);
-        baseQuery = query.substring(0, sortByIndex).strip();
-        if (baseQuery.isEmpty()) {
-          baseQuery = null;
-        }
-      }
+    if (Boolean.TRUE.equals(includeShadow)) {
+      return CqlUtils.normalize(query);
     }
-
-    var shadowFilter = Boolean.TRUE.equals(includeShadow) ? null : "isShadow==false";
-    String result;
-    if (baseQuery != null && shadowFilter != null) {
-      result = "(" + baseQuery + ") AND " + shadowFilter;
-    } else if (baseQuery != null) {
-      result = "(" + baseQuery + ")";
-    } else {
-      result = Objects.requireNonNullElse(shadowFilter, ALL_RECORDS_CQL);
-    }
-
-    return sortBy != null ? result + sortBy : result;
-  }
-
-  private ResourceCollection<D> buildCollection(List<D> dtos, int totalRecords) {
-    return new ResourceCollection<>(dtos, totalRecords);
+    return CqlUtils.appendAndFilter(query, "isShadow", String.valueOf(false));
   }
 
   protected abstract NotFoundException notFound(UUID id);
@@ -155,6 +128,10 @@ public abstract class AbstractCrudService<D, E extends AbstractEntity<UUID>> {
   protected void beforeCreate(D dto, E entity) { }
 
   protected void beforeUpdate(D dto, E entity) { }
+
+  private ResourceCollection<D> buildCollection(List<D> dtos, int totalRecords) {
+    return new ResourceCollection<>(dtos, totalRecords);
+  }
 
   private DomainEvent<D> buildEvent(DomainEventType type, UUID resourceId,
                                     @Nullable D oldEntity, @Nullable D newEntity) {

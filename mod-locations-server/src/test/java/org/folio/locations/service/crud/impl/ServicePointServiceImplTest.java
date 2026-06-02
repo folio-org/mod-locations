@@ -63,7 +63,7 @@ class ServicePointServiceImplTest {
     var entity = new ServicePointEntity();
     final var dto = new ServicePoint();
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("cql.allRecords=1 NOT ecsRequestRouting = true", OffsetRequest.of(0, 10)))
+    when(repository.findByCql("(cql.allRecords = 1) not (ecsRequestRouting = true)", OffsetRequest.of(0, 10)))
       .thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
@@ -79,7 +79,7 @@ class ServicePointServiceImplTest {
     var entity = new ServicePointEntity();
     final var dto = new ServicePoint();
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("(name==\"test\")", OffsetRequest.of(5, 20))).thenReturn(page);
+    when(repository.findByCql("name == test", OffsetRequest.of(5, 20))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
     var result = service.getAll(new ServicePointFilterContext("name==\"test\"", 20, 5, true));

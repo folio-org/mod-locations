@@ -57,7 +57,7 @@ class ServicePointUserServiceImplTest {
     var entity = new ServicePointUserEntity();
     final var dto = new ServicePointsUser(USER_ID);
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("cql.allRecords=1", OffsetRequest.of(0, 10))).thenReturn(page);
+    when(repository.findByCql("cql.allRecords = 1", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
     var result = service.getAll(new GetAllContext(null, 10, 0));
@@ -72,7 +72,7 @@ class ServicePointUserServiceImplTest {
     var entity = new ServicePointUserEntity();
     final var dto = new ServicePointsUser(USER_ID);
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("(userId==\"" + USER_ID + "\")", OffsetRequest.of(0, 5))).thenReturn(page);
+    when(repository.findByCql("userId == " + USER_ID, OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
     var result = service.getAll(new GetAllContext("userId==\"" + USER_ID + "\"", 5, 0));

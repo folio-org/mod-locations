@@ -14,6 +14,7 @@ import org.folio.locations.service.crud.ServicePointFilterContext;
 import org.folio.locations.service.crud.ServicePointService;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.ServicePointValidator;
+import org.folio.locations.util.CqlUtils;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,6 @@ import org.springframework.stereotype.Service;
 public class ServicePointServiceImpl
   extends AbstractCrudService<ServicePoint, ServicePointEntity>
   implements ServicePointService {
-
-  private static final String ECS_ROUTING_FILTER = " NOT ecsRequestRouting = true";
 
   public ServicePointServiceImpl(ServicePointRepository repository, ServicePointMapper mapper,
                                  FolioExecutionContext context, ServicePointValidator validator,
@@ -38,9 +37,11 @@ public class ServicePointServiceImpl
 
   protected String buildCqlFromContext(GetAllContext ctx) {
     var spCtx = ctx instanceof ServicePointFilterContext s ? s : null;
-    var base = ctx.query() != null ? "(" + ctx.query() + ")" : ALL_RECORDS_CQL;
     var includeRouting = spCtx != null && Boolean.TRUE.equals(spCtx.includeRoutingServicePoints());
-    return includeRouting ? base : base + ECS_ROUTING_FILTER;
+    if (includeRouting) {
+      return CqlUtils.normalize(ctx.query());
+    }
+    return CqlUtils.appendNotFilter(ctx.query(), "ecsRequestRouting", "true");
   }
 
   @Override
