@@ -30,7 +30,7 @@ public class ServicePointUserServiceImpl
 
   @Override
   @Transactional(readOnly = true)
-  public ServicePointsUsersCollection getServicePointsUsers(@Nullable String query, Integer limit, Integer offset) {
+  public ServicePointsUsersCollection getAll(@Nullable String query, Integer limit, Integer offset) {
     var cql = buildCql(query, true);
     return getCollection(cql, limit, offset);
   }

@@ -18,6 +18,11 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * @param <D> DTO type
+ * @param <C> DTO collection type
+ * @param <E> entity type
+ */
 @NullMarked
 public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> {
 

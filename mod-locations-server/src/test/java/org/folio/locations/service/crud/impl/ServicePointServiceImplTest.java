@@ -57,7 +57,7 @@ class ServicePointServiceImplTest {
   // ── getServicePoints ─────────────────────────────────────────────────────────
 
   @Test
-  void getServicePoints_positive_allRecordsWithoutRoutingFilter() {
+  void getAll_positive_allRecordsWithoutRoutingFilter() {
     var service = newService();
     var entity = new ServicePointEntity();
     final var dto = new ServicePoint();
@@ -66,14 +66,14 @@ class ServicePointServiceImplTest {
       .thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getServicePoints(null, 10, 0, false);
+    var result = service.getAll(null, 10, 0, false);
 
     assertThat(result.getServicepoints()).containsExactly(dto);
     assertThat(result.getTotalRecords()).isEqualTo(1);
   }
 
   @Test
-  void getServicePoints_positive_customQueryWithRoutingServicePoints() {
+  void getServicePoints_positive_customQueryWithRoutingAll() {
     var service = newService();
     var entity = new ServicePointEntity();
     final var dto = new ServicePoint();
@@ -81,7 +81,7 @@ class ServicePointServiceImplTest {
     when(repository.findByCql("(name==\"test\")", OffsetRequest.of(5, 20))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getServicePoints("name==\"test\"", 20, 5, true);
+    var result = service.getAll("name==\"test\"", 20, 5, true);
 
     assertThat(result.getServicepoints()).containsExactly(dto);
   }

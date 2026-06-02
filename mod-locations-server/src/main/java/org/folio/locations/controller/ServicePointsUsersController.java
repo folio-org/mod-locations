@@ -22,7 +22,7 @@ public class ServicePointsUsersController implements ServicePointsUsersApi {
   @Override
   public ResponseEntity<ServicePointsUsersCollection> getServicePointsUsers(@Nullable String query, Integer limit,
                                                                             Integer offset) {
-    return ResponseEntity.ok(service.getServicePointsUsers(query, limit, offset));
+    return ResponseEntity.ok(service.getAll(query, limit, offset));
   }
 
   @Override

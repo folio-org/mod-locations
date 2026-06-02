@@ -51,7 +51,7 @@ class ServicePointUserServiceImplTest {
   // ── getServicePointsUsers ─────────────────────────────────────────────────────
 
   @Test
-  void getServicePointsUsers_positive_allRecords() {
+  void getAll_positive_allRecords() {
     var service = newService();
     var entity = new ServicePointUserEntity();
     final var dto = new ServicePointsUser(USER_ID);
@@ -59,14 +59,14 @@ class ServicePointUserServiceImplTest {
     when(repository.findByCql("cql.allRecords=1", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getServicePointsUsers(null, 10, 0);
+    var result = service.getAll(null, 10, 0);
 
     assertThat(result.getServicePointsUsers()).containsExactly(dto);
     assertThat(result.getTotalRecords()).isEqualTo(1);
   }
 
   @Test
-  void getServicePointsUsers_positive_customQuery() {
+  void getAll_positive_customQuery() {
     var service = newService();
     var entity = new ServicePointUserEntity();
     final var dto = new ServicePointsUser(USER_ID);
@@ -74,7 +74,7 @@ class ServicePointUserServiceImplTest {
     when(repository.findByCql("(userId==\"" + USER_ID + "\")", OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getServicePointsUsers("userId==\"" + USER_ID + "\"", 5, 0);
+    var result = service.getAll("userId==\"" + USER_ID + "\"", 5, 0);
 
     assertThat(result.getServicePointsUsers()).containsExactly(dto);
   }

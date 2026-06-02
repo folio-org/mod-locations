@@ -7,7 +7,7 @@ import org.jspecify.annotations.Nullable;
 
 public interface ServicePointUserService {
 
-  ServicePointsUsersCollection getServicePointsUsers(@Nullable String query, Integer limit, Integer offset);
+  ServicePointsUsersCollection getAll(@Nullable String query, Integer limit, Integer offset);
 
   ServicePointsUser getById(UUID id);
 

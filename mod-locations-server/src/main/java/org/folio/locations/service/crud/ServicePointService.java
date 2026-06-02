@@ -7,8 +7,8 @@ import org.jspecify.annotations.Nullable;
 
 public interface ServicePointService {
 
-  ServicePointsCollection getServicePoints(@Nullable String query, Integer limit, Integer offset,
-                                           Boolean includeRoutingServicePoints);
+  ServicePointsCollection getAll(@Nullable String query, Integer limit, Integer offset,
+                                 Boolean includeRoutingServicePoints);
 
   ServicePoint getById(UUID id);
 

@@ -35,8 +35,8 @@ public class ServicePointServiceImpl
 
   @Override
   @Transactional(readOnly = true)
-  public ServicePointsCollection getServicePoints(@Nullable String query, Integer limit, Integer offset,
-                                                  Boolean includeRoutingServicePoints) {
+  public ServicePointsCollection getAll(@Nullable String query, Integer limit, Integer offset,
+                                        Boolean includeRoutingServicePoints) {
     var base = query != null ? "(" + query + ")" : ALL_RECORDS_CQL;
     var cql = Boolean.TRUE.equals(includeRoutingServicePoints) ? base : base + ECS_ROUTING_FILTER;
     return getCollection(cql, limit, offset);

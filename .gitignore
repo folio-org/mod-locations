@@ -33,3 +33,4 @@ mod-locations-server/target
 .project
 .settings/
 /.idea/
+AGENTS.md

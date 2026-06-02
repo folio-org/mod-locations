@@ -22,7 +22,7 @@ public class ServicePointsController implements ServicePointsApi {
   @Override
   public ResponseEntity<ServicePointsCollection> getServicePoints(@Nullable String query, Integer limit, Integer offset,
                                                                   Boolean includeRoutingServicePoints) {
-    return ResponseEntity.ok(service.getServicePoints(query, limit, offset, includeRoutingServicePoints));
+    return ResponseEntity.ok(service.getAll(query, limit, offset, includeRoutingServicePoints));
   }
 
   @Override
