@@ -67,8 +67,8 @@ class CampusServiceImplTest {
 
     var result = service.getAll(new ShadowFilterContext(null, 10, 0, false));
 
-    assertThat(result.getLoccamps()).containsExactly(dto);
-    assertThat(result.getTotalRecords()).isEqualTo(1);
+    assertThat(result.resources()).containsExactly(dto);
+    assertThat(result.totalRecords()).isEqualTo(1);
   }
 
   @Test
@@ -83,7 +83,7 @@ class CampusServiceImplTest {
 
     var result = service.getAll(new ShadowFilterContext("institutionId==\"" + INSTITUTION_ID + "\"", 5, 0, false));
 
-    assertThat(result.getLoccamps()).containsExactly(dto);
+    assertThat(result.resources()).containsExactly(dto);
   }
 
   // ── getById ──────────────────────────────────────────────────────────────────

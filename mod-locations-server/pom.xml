@@ -210,12 +210,12 @@
               <enablePostProcessFile>true</enablePostProcessFile>
               <openapiNormalizer>REF_AS_PARENT_IN_ALLOF=true</openapiNormalizer>
               <configOptions>
-                <dateLibrary>java8</dateLibrary>
                 <interfaceOnly>true</interfaceOnly>
                 <useTags>true</useTags>
-                <library>spring-boot</library>
-                <useSpringBoot3>true</useSpringBoot3>
                 <sourceFolder>api</sourceFolder>
+                <useSpringBoot4>true</useSpringBoot4>
+                <useJackson3>true</useJackson3>
+                <useJspecify>true</useJspecify>
               </configOptions>
             </configuration>
           </execution>

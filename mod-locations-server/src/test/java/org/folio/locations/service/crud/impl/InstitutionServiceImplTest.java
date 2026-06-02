@@ -62,8 +62,8 @@ class InstitutionServiceImplTest {
 
     var result = service.getAll(new ShadowFilterContext(null, 10, 0, false));
 
-    assertThat(result.getLocinsts()).containsExactly(dto);
-    assertThat(result.getTotalRecords()).isEqualTo(1);
+    assertThat(result.resources()).containsExactly(dto);
+    assertThat(result.totalRecords()).isEqualTo(1);
   }
 
   @Test
@@ -77,7 +77,7 @@ class InstitutionServiceImplTest {
 
     var result = service.getAll(new ShadowFilterContext("name==\"Main\"", 5, 0, false));
 
-    assertThat(result.getLocinsts()).containsExactly(dto);
+    assertThat(result.resources()).containsExactly(dto);
   }
 
   // ── getById ──────────────────────────────────────────────────────────────────

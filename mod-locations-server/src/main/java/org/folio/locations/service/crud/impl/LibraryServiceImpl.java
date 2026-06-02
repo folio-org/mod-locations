@@ -1,8 +1,6 @@
 package org.folio.locations.service.crud.impl;
 
-import java.util.List;
 import java.util.UUID;
-import org.folio.locations.domain.dto.LibrariesCollection;
 import org.folio.locations.domain.dto.Library;
 import org.folio.locations.domain.entity.LibraryEntity;
 import org.folio.locations.domain.type.ResourceType;
@@ -20,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class LibraryServiceImpl
-  extends AbstractCrudService<Library, LibrariesCollection, LibraryEntity>
+  extends AbstractCrudService<Library, LibraryEntity>
   implements LibraryService {
 
   public LibraryServiceImpl(LibraryRepository repository, LibraryMapper mapper,
@@ -36,11 +34,6 @@ public class LibraryServiceImpl
   protected String buildCqlFromContext(GetAllContext ctx) {
     var shadowCtx = ctx instanceof ShadowFilterContext s ? s : null;
     return buildCql(ctx.query(), shadowCtx != null ? shadowCtx.includeShadow() : null);
-  }
-
-  @Override
-  protected LibrariesCollection buildCollection(List<Library> dtos, int totalRecords) {
-    return new LibrariesCollection(dtos, totalRecords);
   }
 
   @Override

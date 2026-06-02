@@ -22,11 +22,10 @@ import org.springframework.transaction.annotation.Transactional;
  * Abstract base class providing common CRUD operations for location-related services.
  *
  * @param <D> DTO type
- * @param <C> DTO collection type
  * @param <E> entity type
  */
 @NullMarked
-public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> {
+public abstract class AbstractCrudService<D, E extends AbstractEntity<UUID>> {
 
   protected static final String ALL_RECORDS_CQL = "cql.allRecords=1";
 
@@ -103,14 +102,14 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
   }
 
   @Transactional(readOnly = true)
-  public C getAll(GetAllContext ctx) {
+  public ResourceCollection<D> getAll(GetAllContext ctx) {
     var cql = buildCqlFromContext(ctx);
     return getCollection(cql, ctx.limit(), ctx.offset());
   }
 
   protected abstract String buildCqlFromContext(GetAllContext ctx);
 
-  protected C getCollection(String cql, Integer limit, Integer offset) {
+  protected ResourceCollection<D> getCollection(String cql, Integer limit, Integer offset) {
     var page = repository.findByCql(cql, OffsetRequest.of(offset, limit));
     var dtos = page.getContent().stream().map(mapper::toDto).toList();
     return buildCollection(dtos, (int) page.getTotalElements());
@@ -130,7 +129,9 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
     return ALL_RECORDS_CQL;
   }
 
-  protected abstract C buildCollection(List<D> dtos, int totalRecords);
+  private ResourceCollection<D> buildCollection(List<D> dtos, int totalRecords) {
+    return new ResourceCollection<>(dtos, totalRecords);
+  }
 
   protected abstract NotFoundException notFound(UUID id);
 

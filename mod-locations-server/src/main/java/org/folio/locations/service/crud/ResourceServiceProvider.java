@@ -6,13 +6,13 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class RecordServiceProvider {
+public class ResourceServiceProvider {
 
-  private final List<CrudService<?, ?>> services;
+  private final List<ResourceService<?>> services;
 
   @SuppressWarnings("unchecked")
-  public <D> CrudService<D, ?> getByDtoClass(Class<D> dtoClass) {
-    return (CrudService<D, ?>) services.stream()
+  public <D> ResourceService<D> getByDtoClass(Class<D> dtoClass) {
+    return (ResourceService<D>) services.stream()
       .filter(s -> s.getDtoClass().equals(dtoClass))
       .findFirst()
       .orElseThrow(() -> new IllegalArgumentException("No CrudService found for DTO class: " + dtoClass.getName()));

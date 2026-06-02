@@ -9,7 +9,7 @@ import org.folio.locations.domain.dto.Institution;
 import org.folio.locations.domain.dto.Library;
 import org.folio.locations.domain.dto.Location;
 import org.folio.locations.domain.dto.ServicePoint;
-import org.folio.locations.service.crud.RecordServiceProvider;
+import org.folio.locations.service.crud.ResourceServiceProvider;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Service;
@@ -22,7 +22,7 @@ public class DataLoadService {
 
   private final JsonMapper jsonMapper;
   private final ResourcePatternResolver resourcePatternResolver;
-  private final RecordServiceProvider serviceProvider;
+  private final ResourceServiceProvider serviceProvider;
 
   public void loadReferenceData() {
     loadEntities("classpath:reference-data/service-points/*.json", ServicePoint.class,

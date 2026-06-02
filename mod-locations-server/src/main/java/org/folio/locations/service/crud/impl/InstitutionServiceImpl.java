@@ -1,9 +1,7 @@
 package org.folio.locations.service.crud.impl;
 
-import java.util.List;
 import java.util.UUID;
 import org.folio.locations.domain.dto.Institution;
-import org.folio.locations.domain.dto.InstitutionsCollection;
 import org.folio.locations.domain.entity.InstitutionEntity;
 import org.folio.locations.domain.type.ResourceType;
 import org.folio.locations.exception.InstitutionNotFoundException;
@@ -20,7 +18,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class InstitutionServiceImpl
-  extends AbstractCrudService<Institution, InstitutionsCollection, InstitutionEntity>
+  extends AbstractCrudService<Institution, InstitutionEntity>
   implements InstitutionService {
 
   public InstitutionServiceImpl(InstitutionRepository repository, InstitutionMapper mapper,
@@ -36,11 +34,6 @@ public class InstitutionServiceImpl
   protected String buildCqlFromContext(GetAllContext ctx) {
     var shadowCtx = ctx instanceof ShadowFilterContext s ? s : null;
     return buildCql(ctx.query(), shadowCtx != null ? shadowCtx.includeShadow() : null);
-  }
-
-  @Override
-  protected InstitutionsCollection buildCollection(List<Institution> dtos, int totalRecords) {
-    return new InstitutionsCollection(dtos, totalRecords);
   }
 
   @Override

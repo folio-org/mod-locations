@@ -22,7 +22,7 @@ import org.folio.locations.service.crud.CampusService;
 import org.folio.locations.service.crud.InstitutionService;
 import org.folio.locations.service.crud.LibraryService;
 import org.folio.locations.service.crud.LocationService;
-import org.folio.locations.service.crud.RecordServiceProvider;
+import org.folio.locations.service.crud.ResourceServiceProvider;
 import org.folio.locations.service.crud.ServicePointService;
 import org.folio.locations.service.crud.ServicePointUserService;
 import org.folio.spring.testing.type.UnitTest;
@@ -192,7 +192,7 @@ class DataLoadServiceTest {
     lenient().when(locationService.getDtoClass()).thenReturn(Location.class);
     lenient().when(servicePointService.getDtoClass()).thenReturn(ServicePoint.class);
     lenient().when(servicePointUserService.getDtoClass()).thenReturn(ServicePointsUser.class);
-    var recordServiceProvider = new RecordServiceProvider(
+    var recordServiceProvider = new ResourceServiceProvider(
       List.of(institutionService, campusService, libraryService, locationService,
         servicePointService, servicePointUserService));
     return new DataLoadService(jsonMapper, resourcePatternResolver, recordServiceProvider);

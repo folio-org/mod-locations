@@ -3,16 +3,15 @@ package org.folio.locations.service.crud;
 import java.util.UUID;
 
 /**
- * Generic CRUD service interface for location-related domain objects.
+ * Generic CRUD service interface for domain objects.
  *
  * @param <D> DTO type
- * @param <C> DTO collection type
  */
-public interface CrudService<D, C> {
+public interface ResourceService<D> {
 
   Class<D> getDtoClass();
 
-  C getAll(GetAllContext context);
+  ResourceCollection<D> getAll(GetAllContext context);
 
   D getById(UUID id);
 

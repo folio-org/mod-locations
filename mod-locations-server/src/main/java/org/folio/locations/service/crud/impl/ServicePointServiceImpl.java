@@ -1,9 +1,7 @@
 package org.folio.locations.service.crud.impl;
 
-import java.util.List;
 import java.util.UUID;
 import org.folio.locations.domain.dto.ServicePoint;
-import org.folio.locations.domain.dto.ServicePointsCollection;
 import org.folio.locations.domain.entity.ServicePointEntity;
 import org.folio.locations.domain.entity.ServicePointStaffSlipId;
 import org.folio.locations.domain.type.ResourceType;
@@ -22,7 +20,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ServicePointServiceImpl
-  extends AbstractCrudService<ServicePoint, ServicePointsCollection, ServicePointEntity>
+  extends AbstractCrudService<ServicePoint, ServicePointEntity>
   implements ServicePointService {
 
   private static final String ECS_ROUTING_FILTER = " NOT ecsRequestRouting = true";
@@ -43,11 +41,6 @@ public class ServicePointServiceImpl
     var base = ctx.query() != null ? "(" + ctx.query() + ")" : ALL_RECORDS_CQL;
     var includeRouting = spCtx != null && Boolean.TRUE.equals(spCtx.includeRoutingServicePoints());
     return includeRouting ? base : base + ECS_ROUTING_FILTER;
-  }
-
-  @Override
-  protected ServicePointsCollection buildCollection(List<ServicePoint> dtos, int totalRecords) {
-    return new ServicePointsCollection(dtos, totalRecords);
   }
 
   @Override

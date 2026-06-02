@@ -70,8 +70,8 @@ class LocationServiceImplTest {
 
     var result = service.getAll(new ShadowFilterContext(null, 10, 0, false));
 
-    assertThat(result.getLocations()).containsExactly(dto);
-    assertThat(result.getTotalRecords()).isEqualTo(1);
+    assertThat(result.resources()).containsExactly(dto);
+    assertThat(result.totalRecords()).isEqualTo(1);
   }
 
   @Test
@@ -85,7 +85,7 @@ class LocationServiceImplTest {
 
     var result = service.getAll(new ShadowFilterContext("name==\"Main\"", 5, 0, false));
 
-    assertThat(result.getLocations()).containsExactly(dto);
+    assertThat(result.resources()).containsExactly(dto);
   }
 
   @Test
@@ -99,7 +99,7 @@ class LocationServiceImplTest {
 
     var result = service.getAll(new ShadowFilterContext("name==\"Shadow\"", 10, 0, true));
 
-    assertThat(result.getLocations()).containsExactly(dto);
+    assertThat(result.resources()).containsExactly(dto);
   }
 
   // ── getById ──────────────────────────────────────────────────────────────────

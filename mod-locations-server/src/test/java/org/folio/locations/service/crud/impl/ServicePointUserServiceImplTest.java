@@ -62,8 +62,8 @@ class ServicePointUserServiceImplTest {
 
     var result = service.getAll(new GetAllContext(null, 10, 0));
 
-    assertThat(result.getServicePointsUsers()).containsExactly(dto);
-    assertThat(result.getTotalRecords()).isEqualTo(1);
+    assertThat(result.resources()).containsExactly(dto);
+    assertThat(result.totalRecords()).isEqualTo(1);
   }
 
   @Test
@@ -77,7 +77,7 @@ class ServicePointUserServiceImplTest {
 
     var result = service.getAll(new GetAllContext("userId==\"" + USER_ID + "\"", 5, 0));
 
-    assertThat(result.getServicePointsUsers()).containsExactly(dto);
+    assertThat(result.resources()).containsExactly(dto);
   }
 
   // ── getById ──────────────────────────────────────────────────────────────────

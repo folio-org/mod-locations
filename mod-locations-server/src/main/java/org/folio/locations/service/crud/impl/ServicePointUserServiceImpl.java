@@ -1,9 +1,7 @@
 package org.folio.locations.service.crud.impl;
 
-import java.util.List;
 import java.util.UUID;
 import org.folio.locations.domain.dto.ServicePointsUser;
-import org.folio.locations.domain.dto.ServicePointsUsersCollection;
 import org.folio.locations.domain.entity.ServicePointUserEntity;
 import org.folio.locations.domain.type.ResourceType;
 import org.folio.locations.exception.ServicePointUserNotFoundException;
@@ -19,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class ServicePointUserServiceImpl
-  extends AbstractCrudService<ServicePointsUser, ServicePointsUsersCollection, ServicePointUserEntity>
+  extends AbstractCrudService<ServicePointsUser, ServicePointUserEntity>
   implements ServicePointUserService {
 
   public ServicePointUserServiceImpl(ServicePointUserRepository repository, ServicePointUserMapper mapper,
@@ -34,11 +32,6 @@ public class ServicePointUserServiceImpl
 
   protected String buildCqlFromContext(GetAllContext ctx) {
     return buildCql(ctx.query(), true);
-  }
-
-  @Override
-  protected ServicePointsUsersCollection buildCollection(List<ServicePointsUser> dtos, int totalRecords) {
-    return new ServicePointsUsersCollection(dtos, totalRecords);
   }
 
   @Override
