@@ -11,14 +11,14 @@ import org.folio.locations.exception.ServicePointNotFoundException;
 import org.folio.locations.mapper.ServicePointMapper;
 import org.folio.locations.repository.ServicePointRepository;
 import org.folio.locations.service.crud.AbstractCrudService;
+import org.folio.locations.service.crud.GetAllContext;
+import org.folio.locations.service.crud.ServicePointFilterContext;
 import org.folio.locations.service.crud.ServicePointService;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.ServicePointValidator;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ServicePointServiceImpl
@@ -34,12 +34,15 @@ public class ServicePointServiceImpl
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public ServicePointsCollection getAll(@Nullable String query, Integer limit, Integer offset,
-                                        Boolean includeRoutingServicePoints) {
-    var base = query != null ? "(" + query + ")" : ALL_RECORDS_CQL;
-    var cql = Boolean.TRUE.equals(includeRoutingServicePoints) ? base : base + ECS_ROUTING_FILTER;
-    return getCollection(cql, limit, offset);
+  public Class<ServicePoint> getDtoClass() {
+    return ServicePoint.class;
+  }
+
+  protected String buildCqlFromContext(GetAllContext ctx) {
+    var spCtx = ctx instanceof ServicePointFilterContext s ? s : null;
+    var base = ctx.query() != null ? "(" + ctx.query() + ")" : ALL_RECORDS_CQL;
+    var includeRouting = spCtx != null && Boolean.TRUE.equals(spCtx.includeRoutingServicePoints());
+    return includeRouting ? base : base + ECS_ROUTING_FILTER;
   }
 
   @Override

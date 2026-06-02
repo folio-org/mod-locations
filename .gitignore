@@ -34,3 +34,4 @@ mod-locations-server/target
 .settings/
 /.idea/
 AGENTS.md
+/tools/gitlint/__pycache__/

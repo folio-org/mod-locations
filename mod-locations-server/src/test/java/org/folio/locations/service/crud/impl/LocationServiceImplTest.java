@@ -15,6 +15,7 @@ import org.folio.locations.domain.entity.LocationEntity;
 import org.folio.locations.exception.LocationNotFoundException;
 import org.folio.locations.mapper.LocationMapper;
 import org.folio.locations.repository.LocationRepository;
+import org.folio.locations.service.crud.ShadowFilterContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.LocationValidator;
 import org.folio.spring.FolioExecutionContext;
@@ -67,7 +68,7 @@ class LocationServiceImplTest {
     when(repository.findByCql("isShadow==false", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll(null, 10, 0, false);
+    var result = service.getAll(new ShadowFilterContext(null, 10, 0, false));
 
     assertThat(result.getLocations()).containsExactly(dto);
     assertThat(result.getTotalRecords()).isEqualTo(1);
@@ -82,7 +83,7 @@ class LocationServiceImplTest {
     when(repository.findByCql("(name==\"Main\") AND isShadow==false", OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll("name==\"Main\"", 5, 0, false);
+    var result = service.getAll(new ShadowFilterContext("name==\"Main\"", 5, 0, false));
 
     assertThat(result.getLocations()).containsExactly(dto);
   }
@@ -96,7 +97,7 @@ class LocationServiceImplTest {
     when(repository.findByCql("(name==\"Shadow\")", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll("name==\"Shadow\"", 10, 0, true);
+    var result = service.getAll(new ShadowFilterContext("name==\"Shadow\"", 10, 0, true));
 
     assertThat(result.getLocations()).containsExactly(dto);
   }

@@ -1,6 +1,5 @@
 package org.folio.locations.service.system;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.function.Consumer;
 import lombok.RequiredArgsConstructor;
@@ -14,19 +13,20 @@ import org.folio.locations.service.crud.RecordServiceProvider;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternResolver;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.json.JsonMapper;
 
 @Log4j2
 @Service
 @RequiredArgsConstructor
 public class DataLoadService {
 
-  private final ObjectMapper objectMapper;
+  private final JsonMapper jsonMapper;
   private final ResourcePatternResolver resourcePatternResolver;
   private final RecordServiceProvider serviceProvider;
 
   public void loadReferenceData() {
     loadEntities("classpath:reference-data/service-points/*.json", ServicePoint.class,
-      servicePoint -> serviceProvider.getServicePointService().create(servicePoint));
+      servicePoint -> serviceProvider.getByDtoClass(ServicePoint.class).create(servicePoint));
   }
 
   /**
@@ -35,13 +35,13 @@ public class DataLoadService {
    */
   public void loadSampleData() {
     loadEntities("classpath:sample-data/institutions/*.json", Institution.class,
-      institution -> serviceProvider.getInstitutionService().create(institution));
+      institution -> serviceProvider.getByDtoClass(Institution.class).create(institution));
     loadEntities("classpath:sample-data/campuses/*.json", Campus.class,
-      campus -> serviceProvider.getCampusService().create(campus));
+      campus -> serviceProvider.getByDtoClass(Campus.class).create(campus));
     loadEntities("classpath:sample-data/libraries/*.json", Library.class,
-      library -> serviceProvider.getLibraryService().create(library));
+      library -> serviceProvider.getByDtoClass(Library.class).create(library));
     loadEntities("classpath:sample-data/locations/*.json", Location.class,
-      location -> serviceProvider.getLocationService().create(location));
+      location -> serviceProvider.getByDtoClass(Location.class).create(location));
   }
 
   private <T> void loadEntities(String pattern, Class<T> type, Consumer<T> creator) {
@@ -55,7 +55,7 @@ public class DataLoadService {
 
     for (Resource resource : resources) {
       try {
-        var entity = objectMapper.readValue(resource.getInputStream(), type);
+        var entity = jsonMapper.readValue(resource.getInputStream(), type);
         creator.accept(entity);
         log.info("Loaded {} from {}", type.getSimpleName(), resource.getFilename());
       } catch (Exception e) {

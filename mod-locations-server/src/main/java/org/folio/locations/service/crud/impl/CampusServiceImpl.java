@@ -11,12 +11,12 @@ import org.folio.locations.mapper.CampusMapper;
 import org.folio.locations.repository.CampusRepository;
 import org.folio.locations.service.crud.AbstractCrudService;
 import org.folio.locations.service.crud.CampusService;
+import org.folio.locations.service.crud.GetAllContext;
+import org.folio.locations.service.crud.ShadowFilterContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class CampusServiceImpl
@@ -29,10 +29,13 @@ public class CampusServiceImpl
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public CampusesCollection getAll(@Nullable String query, Integer limit, Integer offset, Boolean includeShadow) {
-    var cql = buildCql(query, includeShadow);
-    return getCollection(cql, limit, offset);
+  public Class<Campus> getDtoClass() {
+    return Campus.class;
+  }
+
+  protected String buildCqlFromContext(GetAllContext ctx) {
+    var shadowCtx = ctx instanceof ShadowFilterContext s ? s : null;
+    return buildCql(ctx.query(), shadowCtx != null ? shadowCtx.includeShadow() : null);
   }
 
   @Override

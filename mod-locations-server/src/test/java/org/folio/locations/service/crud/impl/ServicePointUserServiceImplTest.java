@@ -14,6 +14,7 @@ import org.folio.locations.domain.entity.ServicePointUserEntity;
 import org.folio.locations.exception.ServicePointUserNotFoundException;
 import org.folio.locations.mapper.ServicePointUserMapper;
 import org.folio.locations.repository.ServicePointUserRepository;
+import org.folio.locations.service.crud.GetAllContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.data.OffsetRequest;
@@ -59,7 +60,7 @@ class ServicePointUserServiceImplTest {
     when(repository.findByCql("cql.allRecords=1", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll(null, 10, 0);
+    var result = service.getAll(new GetAllContext(null, 10, 0));
 
     assertThat(result.getServicePointsUsers()).containsExactly(dto);
     assertThat(result.getTotalRecords()).isEqualTo(1);
@@ -74,7 +75,7 @@ class ServicePointUserServiceImplTest {
     when(repository.findByCql("(userId==\"" + USER_ID + "\")", OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll("userId==\"" + USER_ID + "\"", 5, 0);
+    var result = service.getAll(new GetAllContext("userId==\"" + USER_ID + "\"", 5, 0));
 
     assertThat(result.getServicePointsUsers()).containsExactly(dto);
   }

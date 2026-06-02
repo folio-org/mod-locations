@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.folio.locations.domain.dto.ServicePoint;
 import org.folio.locations.domain.dto.ServicePointsCollection;
 import org.folio.locations.rest.resource.ServicePointsApi;
+import org.folio.locations.service.crud.ServicePointFilterContext;
 import org.folio.locations.service.crud.ServicePointService;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,8 @@ public class ServicePointsController implements ServicePointsApi {
   @Override
   public ResponseEntity<ServicePointsCollection> getServicePoints(@Nullable String query, Integer limit, Integer offset,
                                                                   Boolean includeRoutingServicePoints) {
-    return ResponseEntity.ok(service.getAll(query, limit, offset, includeRoutingServicePoints));
+    return ResponseEntity.ok(
+      service.getAll(new ServicePointFilterContext(query, limit, offset, includeRoutingServicePoints)));
   }
 
   @Override

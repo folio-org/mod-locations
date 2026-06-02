@@ -17,6 +17,7 @@ import org.folio.locations.domain.type.ResourceType;
 import org.folio.locations.exception.CampusNotFoundException;
 import org.folio.locations.mapper.CampusMapper;
 import org.folio.locations.repository.CampusRepository;
+import org.folio.locations.service.crud.ShadowFilterContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.data.OffsetRequest;
@@ -64,7 +65,7 @@ class CampusServiceImplTest {
     when(repository.findByCql("isShadow==false", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll(null, 10, 0, false);
+    var result = service.getAll(new ShadowFilterContext(null, 10, 0, false));
 
     assertThat(result.getLoccamps()).containsExactly(dto);
     assertThat(result.getTotalRecords()).isEqualTo(1);
@@ -80,7 +81,7 @@ class CampusServiceImplTest {
       "(institutionId==\"" + INSTITUTION_ID + "\") AND isShadow==false", OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll("institutionId==\"" + INSTITUTION_ID + "\"", 5, 0, false);
+    var result = service.getAll(new ShadowFilterContext("institutionId==\"" + INSTITUTION_ID + "\"", 5, 0, false));
 
     assertThat(result.getLoccamps()).containsExactly(dto);
   }

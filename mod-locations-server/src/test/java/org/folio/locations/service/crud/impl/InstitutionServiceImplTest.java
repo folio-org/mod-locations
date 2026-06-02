@@ -14,6 +14,7 @@ import org.folio.locations.domain.entity.InstitutionEntity;
 import org.folio.locations.exception.InstitutionNotFoundException;
 import org.folio.locations.mapper.InstitutionMapper;
 import org.folio.locations.repository.InstitutionRepository;
+import org.folio.locations.service.crud.ShadowFilterContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.data.OffsetRequest;
@@ -59,7 +60,7 @@ class InstitutionServiceImplTest {
     when(repository.findByCql("isShadow==false", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll(null, 10, 0, false);
+    var result = service.getAll(new ShadowFilterContext(null, 10, 0, false));
 
     assertThat(result.getLocinsts()).containsExactly(dto);
     assertThat(result.getTotalRecords()).isEqualTo(1);
@@ -74,7 +75,7 @@ class InstitutionServiceImplTest {
     when(repository.findByCql("(name==\"Main\") AND isShadow==false", OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll("name==\"Main\"", 5, 0, false);
+    var result = service.getAll(new ShadowFilterContext("name==\"Main\"", 5, 0, false));
 
     assertThat(result.getLocinsts()).containsExactly(dto);
   }

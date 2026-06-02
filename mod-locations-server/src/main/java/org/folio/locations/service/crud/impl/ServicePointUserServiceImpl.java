@@ -10,13 +10,12 @@ import org.folio.locations.exception.ServicePointUserNotFoundException;
 import org.folio.locations.mapper.ServicePointUserMapper;
 import org.folio.locations.repository.ServicePointUserRepository;
 import org.folio.locations.service.crud.AbstractCrudService;
+import org.folio.locations.service.crud.GetAllContext;
 import org.folio.locations.service.crud.ServicePointUserService;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ServicePointUserServiceImpl
@@ -29,10 +28,12 @@ public class ServicePointUserServiceImpl
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public ServicePointsUsersCollection getAll(@Nullable String query, Integer limit, Integer offset) {
-    var cql = buildCql(query, true);
-    return getCollection(cql, limit, offset);
+  public Class<ServicePointsUser> getDtoClass() {
+    return ServicePointsUser.class;
+  }
+
+  protected String buildCqlFromContext(GetAllContext ctx) {
+    return buildCql(ctx.query(), true);
   }
 
   @Override

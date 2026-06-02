@@ -19,6 +19,8 @@ import org.jspecify.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
 /**
+ * Abstract base class providing common CRUD operations for location-related services.
+ *
  * @param <D> DTO type
  * @param <C> DTO collection type
  * @param <E> entity type
@@ -99,6 +101,14 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
     repository.deleteAll(entities);
     snapshots.forEach(publisher::publish);
   }
+
+  @Transactional(readOnly = true)
+  public C getAll(GetAllContext ctx) {
+    var cql = buildCqlFromContext(ctx);
+    return getCollection(cql, ctx.limit(), ctx.offset());
+  }
+
+  protected abstract String buildCqlFromContext(GetAllContext ctx);
 
   protected C getCollection(String cql, Integer limit, Integer offset) {
     var page = repository.findByCql(cql, OffsetRequest.of(offset, limit));

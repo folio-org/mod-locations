@@ -18,6 +18,7 @@ import org.folio.locations.domain.entity.ServicePointStaffSlipEntity;
 import org.folio.locations.exception.ServicePointNotFoundException;
 import org.folio.locations.mapper.ServicePointMapper;
 import org.folio.locations.repository.ServicePointRepository;
+import org.folio.locations.service.crud.ServicePointFilterContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.ServicePointValidator;
 import org.folio.spring.FolioExecutionContext;
@@ -66,7 +67,7 @@ class ServicePointServiceImplTest {
       .thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll(null, 10, 0, false);
+    var result = service.getAll(new ServicePointFilterContext(null, 10, 0, false));
 
     assertThat(result.getServicepoints()).containsExactly(dto);
     assertThat(result.getTotalRecords()).isEqualTo(1);
@@ -81,7 +82,7 @@ class ServicePointServiceImplTest {
     when(repository.findByCql("(name==\"test\")", OffsetRequest.of(5, 20))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll("name==\"test\"", 20, 5, true);
+    var result = service.getAll(new ServicePointFilterContext("name==\"test\"", 20, 5, true));
 
     assertThat(result.getServicepoints()).containsExactly(dto);
   }

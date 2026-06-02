@@ -10,14 +10,14 @@ import org.folio.locations.exception.LocationNotFoundException;
 import org.folio.locations.mapper.LocationMapper;
 import org.folio.locations.repository.LocationRepository;
 import org.folio.locations.service.crud.AbstractCrudService;
+import org.folio.locations.service.crud.GetAllContext;
 import org.folio.locations.service.crud.LocationService;
+import org.folio.locations.service.crud.ShadowFilterContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.LocationValidator;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class LocationServiceImpl
@@ -31,9 +31,13 @@ public class LocationServiceImpl
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public LocationsCollection getAll(@Nullable String query, Integer limit, Integer offset, Boolean includeShadow) {
-    return getCollection(buildCql(query, includeShadow), limit, offset);
+  public Class<Location> getDtoClass() {
+    return Location.class;
+  }
+
+  protected String buildCqlFromContext(GetAllContext ctx) {
+    var shadowCtx = ctx instanceof ShadowFilterContext s ? s : null;
+    return buildCql(ctx.query(), shadowCtx != null ? shadowCtx.includeShadow() : null);
   }
 
   @Override

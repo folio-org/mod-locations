@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.folio.locations.domain.dto.ServicePointsUser;
 import org.folio.locations.domain.dto.ServicePointsUsersCollection;
 import org.folio.locations.rest.resource.ServicePointsUsersApi;
+import org.folio.locations.service.crud.GetAllContext;
 import org.folio.locations.service.crud.ServicePointUserService;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
@@ -22,7 +23,7 @@ public class ServicePointsUsersController implements ServicePointsUsersApi {
   @Override
   public ResponseEntity<ServicePointsUsersCollection> getServicePointsUsers(@Nullable String query, Integer limit,
                                                                             Integer offset) {
-    return ResponseEntity.ok(service.getAll(query, limit, offset));
+    return ResponseEntity.ok(service.getAll(new GetAllContext(query, limit, offset)));
   }
 
   @Override
