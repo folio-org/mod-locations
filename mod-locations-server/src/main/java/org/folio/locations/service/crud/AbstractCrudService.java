@@ -2,6 +2,7 @@ package org.folio.locations.service.crud;
 
 import java.time.OffsetDateTime;
 import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 import org.folio.locations.domain.entity.AbstractEntity;
 import org.folio.locations.domain.event.DomainEvent;
@@ -116,17 +117,31 @@ public abstract class AbstractCrudService<D, E extends AbstractEntity<UUID>> {
   }
 
   protected static String buildCql(@Nullable String query, @Nullable Boolean includeShadow) {
-    var shadowFilter = Boolean.TRUE.equals(includeShadow) ? null : "isShadow==false";
-    if (query != null && shadowFilter != null) {
-      return "(" + query + ") AND " + shadowFilter;
-    }
+    String sortBy = null;
+    String baseQuery = query;
+
     if (query != null) {
-      return "(" + query + ")";
+      int sortByIndex = query.toLowerCase().lastIndexOf(" sortby ");
+      if (sortByIndex >= 0) {
+        sortBy = query.substring(sortByIndex);
+        baseQuery = query.substring(0, sortByIndex).strip();
+        if (baseQuery.isEmpty()) {
+          baseQuery = null;
+        }
+      }
     }
-    if (shadowFilter != null) {
-      return shadowFilter;
+
+    var shadowFilter = Boolean.TRUE.equals(includeShadow) ? null : "isShadow==false";
+    String result;
+    if (baseQuery != null && shadowFilter != null) {
+      result = "(" + baseQuery + ") AND " + shadowFilter;
+    } else if (baseQuery != null) {
+      result = "(" + baseQuery + ")";
+    } else {
+      result = Objects.requireNonNullElse(shadowFilter, ALL_RECORDS_CQL);
     }
-    return ALL_RECORDS_CQL;
+
+    return sortBy != null ? result + sortBy : result;
   }
 
   private ResourceCollection<D> buildCollection(List<D> dtos, int totalRecords) {
