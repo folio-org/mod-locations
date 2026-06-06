@@ -274,7 +274,7 @@ class LocationIT extends BaseIT {
       createLocation("Alpha", "ALPHA", instId, campusId, libraryId, spId, TENANT_ID);
       createLocation("Beta", "BETA", instId, campusId, libraryId, spId, TENANT_ID);
 
-      doGet(locationsResource() + "?query=code==\"ALPHA\"", TENANT_ID)
+      doGet(locationsResource() + "?query=code==\"ALPHA\" sortby name", TENANT_ID)
         .andExpect(jsonPath("$.totalRecords", is(1)))
         .andExpect(jsonPath("$.locations[0].name", is("Alpha")));
     }

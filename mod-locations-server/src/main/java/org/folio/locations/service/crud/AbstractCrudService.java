@@ -10,6 +10,7 @@ import org.folio.locations.domain.type.ResourceType;
 import org.folio.locations.mapper.EntityMapper;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.DtoValidator;
+import org.folio.locations.util.CqlUtils;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.cql.JpaCqlRepository;
 import org.folio.spring.data.OffsetRequest;
@@ -18,10 +19,14 @@ import org.jspecify.annotations.NullMarked;
 import org.jspecify.annotations.Nullable;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Abstract base class providing common CRUD operations for location-related services.
+ *
+ * @param <D> DTO type
+ * @param <E> entity type
+ */
 @NullMarked
-public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> {
-
-  protected static final String ALL_RECORDS_CQL = "cql.allRecords=1";
+public abstract class AbstractCrudService<D, E extends AbstractEntity<UUID>> {
 
   protected final JpaCqlRepository<E, UUID> repository;
   protected final EntityMapper<D, E> mapper;
@@ -95,27 +100,26 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
     snapshots.forEach(publisher::publish);
   }
 
-  protected C getCollection(String cql, Integer limit, Integer offset) {
+  @Transactional(readOnly = true)
+  public ResourceCollection<D> getAll(GetAllContext ctx) {
+    var cql = buildCqlFromContext(ctx);
+    return getCollection(cql, ctx.limit(), ctx.offset());
+  }
+
+  protected abstract String buildCqlFromContext(GetAllContext ctx);
+
+  protected ResourceCollection<D> getCollection(String cql, Integer limit, Integer offset) {
     var page = repository.findByCql(cql, OffsetRequest.of(offset, limit));
     var dtos = page.getContent().stream().map(mapper::toDto).toList();
     return buildCollection(dtos, (int) page.getTotalElements());
   }
 
   protected static String buildCql(@Nullable String query, @Nullable Boolean includeShadow) {
-    var shadowFilter = Boolean.TRUE.equals(includeShadow) ? null : "isShadow==false";
-    if (query != null && shadowFilter != null) {
-      return "(" + query + ") AND " + shadowFilter;
+    if (Boolean.TRUE.equals(includeShadow)) {
+      return CqlUtils.normalize(query);
     }
-    if (query != null) {
-      return "(" + query + ")";
-    }
-    if (shadowFilter != null) {
-      return shadowFilter;
-    }
-    return ALL_RECORDS_CQL;
+    return CqlUtils.appendAndFilter(query, "isShadow", String.valueOf(false));
   }
-
-  protected abstract C buildCollection(List<D> dtos, int totalRecords);
 
   protected abstract NotFoundException notFound(UUID id);
 
@@ -124,6 +128,10 @@ public abstract class AbstractCrudService<D, C, E extends AbstractEntity<UUID>> 
   protected void beforeCreate(D dto, E entity) { }
 
   protected void beforeUpdate(D dto, E entity) { }
+
+  private ResourceCollection<D> buildCollection(List<D> dtos, int totalRecords) {
+    return new ResourceCollection<>(dtos, totalRecords);
+  }
 
   private DomainEvent<D> buildEvent(DomainEventType type, UUID resourceId,
                                     @Nullable D oldEntity, @Nullable D newEntity) {

@@ -18,6 +18,7 @@ import org.folio.locations.domain.entity.ServicePointStaffSlipEntity;
 import org.folio.locations.exception.ServicePointNotFoundException;
 import org.folio.locations.mapper.ServicePointMapper;
 import org.folio.locations.repository.ServicePointRepository;
+import org.folio.locations.service.crud.ServicePointFilterContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.ServicePointValidator;
 import org.folio.spring.FolioExecutionContext;
@@ -57,33 +58,33 @@ class ServicePointServiceImplTest {
   // ── getServicePoints ─────────────────────────────────────────────────────────
 
   @Test
-  void getServicePoints_positive_allRecordsWithoutRoutingFilter() {
+  void getAll_positive_allRecordsWithoutRoutingFilter() {
     var service = newService();
     var entity = new ServicePointEntity();
     final var dto = new ServicePoint();
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("cql.allRecords=1 NOT ecsRequestRouting = true", OffsetRequest.of(0, 10)))
+    when(repository.findByCql("(cql.allRecords = 1) not (ecsRequestRouting = true)", OffsetRequest.of(0, 10)))
       .thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getServicePoints(null, 10, 0, false);
+    var result = service.getAll(new ServicePointFilterContext(null, 10, 0, false));
 
-    assertThat(result.getServicepoints()).containsExactly(dto);
-    assertThat(result.getTotalRecords()).isEqualTo(1);
+    assertThat(result.resources()).containsExactly(dto);
+    assertThat(result.totalRecords()).isEqualTo(1);
   }
 
   @Test
-  void getServicePoints_positive_customQueryWithRoutingServicePoints() {
+  void getServicePoints_positive_customQueryWithRoutingAll() {
     var service = newService();
     var entity = new ServicePointEntity();
     final var dto = new ServicePoint();
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("(name==\"test\")", OffsetRequest.of(5, 20))).thenReturn(page);
+    when(repository.findByCql("name == test", OffsetRequest.of(5, 20))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getServicePoints("name==\"test\"", 20, 5, true);
+    var result = service.getAll(new ServicePointFilterContext("name==\"test\"", 20, 5, true));
 
-    assertThat(result.getServicepoints()).containsExactly(dto);
+    assertThat(result.resources()).containsExactly(dto);
   }
 
   // ── getById ──────────────────────────────────────────────────────────────────

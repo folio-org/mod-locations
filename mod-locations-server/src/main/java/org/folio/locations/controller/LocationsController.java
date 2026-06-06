@@ -15,6 +15,7 @@ import org.folio.locations.service.crud.CampusService;
 import org.folio.locations.service.crud.InstitutionService;
 import org.folio.locations.service.crud.LibraryService;
 import org.folio.locations.service.crud.LocationService;
+import org.folio.locations.service.crud.ShadowFilterContext;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -112,7 +113,8 @@ public class LocationsController implements LocationsApi {
   @Override
   public ResponseEntity<CampusesCollection> getLocationCampuses(@Nullable String query, Integer limit, Integer offset,
                                                                 Boolean includeShadow) {
-    return ResponseEntity.ok(campusService.getAll(query, limit, offset, includeShadow));
+    var resourceCollection = campusService.getAll(new ShadowFilterContext(query, limit, offset, includeShadow));
+    return ResponseEntity.ok(new CampusesCollection(resourceCollection.resources(), resourceCollection.totalRecords()));
   }
 
   @Override
@@ -123,13 +125,17 @@ public class LocationsController implements LocationsApi {
   @Override
   public ResponseEntity<InstitutionsCollection> getLocationInstitutions(@Nullable String query, Integer limit,
                                                                         Integer offset, Boolean includeShadow) {
-    return ResponseEntity.ok(institutionService.getAll(query, limit, offset, includeShadow));
+    var resourceCollection = institutionService.getAll(new ShadowFilterContext(query, limit, offset, includeShadow));
+    return ResponseEntity.ok(
+      new InstitutionsCollection(resourceCollection.resources(), resourceCollection.totalRecords()));
   }
 
   @Override
   public ResponseEntity<LibrariesCollection> getLocationLibraries(@Nullable String query, Integer limit,
                                                                   Integer offset, Boolean includeShadow) {
-    return ResponseEntity.ok(libraryService.getAll(query, limit, offset, includeShadow));
+    var resourceCollection = libraryService.getAll(new ShadowFilterContext(query, limit, offset, includeShadow));
+    return ResponseEntity.ok(
+      new LibrariesCollection(resourceCollection.resources(), resourceCollection.totalRecords()));
   }
 
   @Override
@@ -140,7 +146,9 @@ public class LocationsController implements LocationsApi {
   @Override
   public ResponseEntity<LocationsCollection> getLocations(@Nullable String query, Integer limit, Integer offset,
                                                           Boolean includeShadow) {
-    return ResponseEntity.ok(service.getAll(query, limit, offset, includeShadow));
+    var resourceCollection = service.getAll(new ShadowFilterContext(query, limit, offset, includeShadow));
+    return ResponseEntity.ok(
+      new LocationsCollection(resourceCollection.resources(), resourceCollection.totalRecords()));
   }
 
   @Override

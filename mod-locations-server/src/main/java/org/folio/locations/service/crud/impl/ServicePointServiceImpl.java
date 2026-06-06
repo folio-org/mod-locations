@@ -1,9 +1,7 @@
 package org.folio.locations.service.crud.impl;
 
-import java.util.List;
 import java.util.UUID;
 import org.folio.locations.domain.dto.ServicePoint;
-import org.folio.locations.domain.dto.ServicePointsCollection;
 import org.folio.locations.domain.entity.ServicePointEntity;
 import org.folio.locations.domain.entity.ServicePointStaffSlipId;
 import org.folio.locations.domain.type.ResourceType;
@@ -11,21 +9,20 @@ import org.folio.locations.exception.ServicePointNotFoundException;
 import org.folio.locations.mapper.ServicePointMapper;
 import org.folio.locations.repository.ServicePointRepository;
 import org.folio.locations.service.crud.AbstractCrudService;
+import org.folio.locations.service.crud.GetAllContext;
+import org.folio.locations.service.crud.ServicePointFilterContext;
 import org.folio.locations.service.crud.ServicePointService;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.locations.service.validator.ServicePointValidator;
+import org.folio.locations.util.CqlUtils;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.exception.NotFoundException;
-import org.jspecify.annotations.Nullable;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ServicePointServiceImpl
-  extends AbstractCrudService<ServicePoint, ServicePointsCollection, ServicePointEntity>
+  extends AbstractCrudService<ServicePoint, ServicePointEntity>
   implements ServicePointService {
-
-  private static final String ECS_ROUTING_FILTER = " NOT ecsRequestRouting = true";
 
   public ServicePointServiceImpl(ServicePointRepository repository, ServicePointMapper mapper,
                                  FolioExecutionContext context, ServicePointValidator validator,
@@ -34,17 +31,17 @@ public class ServicePointServiceImpl
   }
 
   @Override
-  @Transactional(readOnly = true)
-  public ServicePointsCollection getServicePoints(@Nullable String query, Integer limit, Integer offset,
-                                                  Boolean includeRoutingServicePoints) {
-    var base = query != null ? "(" + query + ")" : ALL_RECORDS_CQL;
-    var cql = Boolean.TRUE.equals(includeRoutingServicePoints) ? base : base + ECS_ROUTING_FILTER;
-    return getCollection(cql, limit, offset);
+  public Class<ServicePoint> getDtoClass() {
+    return ServicePoint.class;
   }
 
-  @Override
-  protected ServicePointsCollection buildCollection(List<ServicePoint> dtos, int totalRecords) {
-    return new ServicePointsCollection(dtos, totalRecords);
+  protected String buildCqlFromContext(GetAllContext ctx) {
+    var spCtx = ctx instanceof ServicePointFilterContext s ? s : null;
+    var includeRouting = spCtx != null && Boolean.TRUE.equals(spCtx.includeRoutingServicePoints());
+    if (includeRouting) {
+      return CqlUtils.normalize(ctx.query());
+    }
+    return CqlUtils.appendNotFilter(ctx.query(), "ecsRequestRouting", "true");
   }
 
   @Override

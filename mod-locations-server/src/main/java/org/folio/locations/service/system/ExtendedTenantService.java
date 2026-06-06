@@ -15,19 +15,34 @@ public class ExtendedTenantService extends TenantService {
 
   private final KafkaAdminService kafkaAdminService;
   private final FolioExecutionContext executionContext;
+  private final DataLoadService dataLoadService;
 
   public ExtendedTenantService(JdbcTemplate jdbcTemplate,
                                FolioExecutionContext executionContext,
                                FolioSpringLiquibase folioSpringLiquibase,
-                               KafkaAdminService kafkaAdminService) {
+                               KafkaAdminService kafkaAdminService,
+                               DataLoadService dataLoadService) {
     super(jdbcTemplate, executionContext, folioSpringLiquibase);
     this.kafkaAdminService = kafkaAdminService;
     this.executionContext = executionContext;
+    this.dataLoadService = dataLoadService;
   }
 
   @Override
   protected void afterTenantUpdate(TenantAttributes tenantAttributes) {
     kafkaAdminService.createTopics(executionContext.getTenantId());
     kafkaAdminService.restartEventListeners();
+  }
+
+  @Override
+  public void loadReferenceData() {
+    super.loadReferenceData();
+    dataLoadService.loadReferenceData();
+  }
+
+  @Override
+  public void loadSampleData() {
+    super.loadSampleData();
+    dataLoadService.loadSampleData();
   }
 }

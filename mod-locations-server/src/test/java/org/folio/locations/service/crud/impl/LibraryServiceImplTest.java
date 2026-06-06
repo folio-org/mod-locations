@@ -14,6 +14,7 @@ import org.folio.locations.domain.entity.LibraryEntity;
 import org.folio.locations.exception.LibraryNotFoundException;
 import org.folio.locations.mapper.LibraryMapper;
 import org.folio.locations.repository.LibraryRepository;
+import org.folio.locations.service.crud.ShadowFilterContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.data.OffsetRequest;
@@ -57,13 +58,13 @@ class LibraryServiceImplTest {
     var entity = new LibraryEntity();
     var dto = new Library("Main Library", "ML", CAMPUS_ID);
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("isShadow==false", OffsetRequest.of(0, 10))).thenReturn(page);
+    when(repository.findByCql("(cql.allRecords = 1) and (isShadow = false)", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll(null, 10, 0, false);
+    var result = service.getAll(new ShadowFilterContext(null, 10, 0, false));
 
-    assertThat(result.getLoclibs()).containsExactly(dto);
-    assertThat(result.getTotalRecords()).isEqualTo(1);
+    assertThat(result.resources()).containsExactly(dto);
+    assertThat(result.totalRecords()).isEqualTo(1);
   }
 
   @Test
@@ -73,12 +74,12 @@ class LibraryServiceImplTest {
     var dto = new Library("Main Library", "ML", CAMPUS_ID);
     var page = new PageImpl<>(List.of(entity));
     when(repository.findByCql(
-      "(campusId==\"" + CAMPUS_ID + "\") AND isShadow==false", OffsetRequest.of(0, 5))).thenReturn(page);
+      "(campusId == " + CAMPUS_ID + ") and (isShadow = false)", OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getAll("campusId==\"" + CAMPUS_ID + "\"", 5, 0, false);
+    var result = service.getAll(new ShadowFilterContext("campusId==\"" + CAMPUS_ID + "\"", 5, 0, false));
 
-    assertThat(result.getLoclibs()).containsExactly(dto);
+    assertThat(result.resources()).containsExactly(dto);
   }
 
   // ── getById ──────────────────────────────────────────────────────────────────

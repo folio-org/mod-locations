@@ -14,6 +14,7 @@ import org.folio.locations.domain.entity.ServicePointUserEntity;
 import org.folio.locations.exception.ServicePointUserNotFoundException;
 import org.folio.locations.mapper.ServicePointUserMapper;
 import org.folio.locations.repository.ServicePointUserRepository;
+import org.folio.locations.service.crud.GetAllContext;
 import org.folio.locations.service.event.DomainEventPublisher;
 import org.folio.spring.FolioExecutionContext;
 import org.folio.spring.data.OffsetRequest;
@@ -51,32 +52,32 @@ class ServicePointUserServiceImplTest {
   // ── getServicePointsUsers ─────────────────────────────────────────────────────
 
   @Test
-  void getServicePointsUsers_positive_allRecords() {
+  void getAll_positive_allRecords() {
     var service = newService();
     var entity = new ServicePointUserEntity();
     final var dto = new ServicePointsUser(USER_ID);
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("cql.allRecords=1", OffsetRequest.of(0, 10))).thenReturn(page);
+    when(repository.findByCql("cql.allRecords = 1", OffsetRequest.of(0, 10))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getServicePointsUsers(null, 10, 0);
+    var result = service.getAll(new GetAllContext(null, 10, 0));
 
-    assertThat(result.getServicePointsUsers()).containsExactly(dto);
-    assertThat(result.getTotalRecords()).isEqualTo(1);
+    assertThat(result.resources()).containsExactly(dto);
+    assertThat(result.totalRecords()).isEqualTo(1);
   }
 
   @Test
-  void getServicePointsUsers_positive_customQuery() {
+  void getAll_positive_customQuery() {
     var service = newService();
     var entity = new ServicePointUserEntity();
     final var dto = new ServicePointsUser(USER_ID);
     var page = new PageImpl<>(List.of(entity));
-    when(repository.findByCql("(userId==\"" + USER_ID + "\")", OffsetRequest.of(0, 5))).thenReturn(page);
+    when(repository.findByCql("userId == " + USER_ID, OffsetRequest.of(0, 5))).thenReturn(page);
     when(mapper.toDto(entity)).thenReturn(dto);
 
-    var result = service.getServicePointsUsers("userId==\"" + USER_ID + "\"", 5, 0);
+    var result = service.getAll(new GetAllContext("userId==\"" + USER_ID + "\"", 5, 0));
 
-    assertThat(result.getServicePointsUsers()).containsExactly(dto);
+    assertThat(result.resources()).containsExactly(dto);
   }
 
   // ── getById ──────────────────────────────────────────────────────────────────

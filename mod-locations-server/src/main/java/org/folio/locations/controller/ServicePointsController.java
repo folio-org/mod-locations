@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.folio.locations.domain.dto.ServicePoint;
 import org.folio.locations.domain.dto.ServicePointsCollection;
 import org.folio.locations.rest.resource.ServicePointsApi;
+import org.folio.locations.service.crud.ServicePointFilterContext;
 import org.folio.locations.service.crud.ServicePointService;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
@@ -20,25 +21,8 @@ public class ServicePointsController implements ServicePointsApi {
   private final ServicePointService service;
 
   @Override
-  public ResponseEntity<ServicePointsCollection> getServicePoints(@Nullable String query, Integer limit, Integer offset,
-                                                                  Boolean includeRoutingServicePoints) {
-    return ResponseEntity.ok(service.getServicePoints(query, limit, offset, includeRoutingServicePoints));
-  }
-
-  @Override
-  public ResponseEntity<ServicePoint> getServicePointById(UUID id) {
-    return ResponseEntity.ok(service.getById(id));
-  }
-
-  @Override
   public ResponseEntity<ServicePoint> createServicePoint(ServicePoint servicePoint) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.create(servicePoint));
-  }
-
-  @Override
-  public ResponseEntity<Void> updateServicePointById(UUID id, ServicePoint servicePoint) {
-    service.update(id, servicePoint);
-    return ResponseEntity.noContent().build();
   }
 
   @Override
@@ -50,6 +34,26 @@ public class ServicePointsController implements ServicePointsApi {
   @Override
   public ResponseEntity<Void> deleteServicePoints() {
     service.deleteAll();
+    return ResponseEntity.noContent().build();
+  }
+
+  @Override
+  public ResponseEntity<ServicePoint> getServicePointById(UUID id) {
+    return ResponseEntity.ok(service.getById(id));
+  }
+
+  @Override
+  public ResponseEntity<ServicePointsCollection> getServicePoints(@Nullable String query, Integer limit, Integer offset,
+                                                                  Boolean includeRoutingServicePoints) {
+    var resourceCollection = service.getAll(
+      new ServicePointFilterContext(query, limit, offset, includeRoutingServicePoints));
+    return ResponseEntity.ok(
+      new ServicePointsCollection(resourceCollection.resources(), resourceCollection.totalRecords()));
+  }
+
+  @Override
+  public ResponseEntity<Void> updateServicePointById(UUID id, ServicePoint servicePoint) {
+    service.update(id, servicePoint);
     return ResponseEntity.noContent().build();
   }
 }

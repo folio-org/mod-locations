@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.folio.locations.domain.dto.ServicePointsUser;
 import org.folio.locations.domain.dto.ServicePointsUsersCollection;
 import org.folio.locations.rest.resource.ServicePointsUsersApi;
+import org.folio.locations.service.crud.GetAllContext;
 import org.folio.locations.service.crud.ServicePointUserService;
 import org.jspecify.annotations.Nullable;
 import org.springframework.http.HttpStatus;
@@ -20,25 +21,8 @@ public class ServicePointsUsersController implements ServicePointsUsersApi {
   private final ServicePointUserService service;
 
   @Override
-  public ResponseEntity<ServicePointsUsersCollection> getServicePointsUsers(@Nullable String query, Integer limit,
-                                                                            Integer offset) {
-    return ResponseEntity.ok(service.getServicePointsUsers(query, limit, offset));
-  }
-
-  @Override
-  public ResponseEntity<ServicePointsUser> getServicePointsUserById(UUID id) {
-    return ResponseEntity.ok(service.getById(id));
-  }
-
-  @Override
   public ResponseEntity<ServicePointsUser> createServicePointsUser(ServicePointsUser servicePointsUser) {
     return ResponseEntity.status(HttpStatus.CREATED).body(service.create(servicePointsUser));
-  }
-
-  @Override
-  public ResponseEntity<Void> updateServicePointsUserById(UUID id, ServicePointsUser servicePointsUser) {
-    service.update(id, servicePointsUser);
-    return ResponseEntity.noContent().build();
   }
 
   @Override
@@ -50,6 +34,25 @@ public class ServicePointsUsersController implements ServicePointsUsersApi {
   @Override
   public ResponseEntity<Void> deleteServicePointsUsers() {
     service.deleteAll();
+    return ResponseEntity.noContent().build();
+  }
+
+  @Override
+  public ResponseEntity<ServicePointsUser> getServicePointsUserById(UUID id) {
+    return ResponseEntity.ok(service.getById(id));
+  }
+
+  @Override
+  public ResponseEntity<ServicePointsUsersCollection> getServicePointsUsers(@Nullable String query, Integer limit,
+                                                                            Integer offset) {
+    var resourceCollection = service.getAll(new GetAllContext(query, limit, offset));
+    return ResponseEntity.ok(
+      new ServicePointsUsersCollection(resourceCollection.resources(), resourceCollection.totalRecords()));
+  }
+
+  @Override
+  public ResponseEntity<Void> updateServicePointsUserById(UUID id, ServicePointsUser servicePointsUser) {
+    service.update(id, servicePointsUser);
     return ResponseEntity.noContent().build();
   }
 }
