@@ -26,7 +26,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
-    <spring-boot.version>4.0.6</spring-boot.version>
+    <spring-boot.version>4.1.0</spring-boot.version>
     <folio-spring-support.version>10.0.0</folio-spring-support.version>
     <folio-service-tools.version>6.0.0</folio-service-tools.version>
     <lombok.version>1.18.46</lombok.version>
@@ -35,11 +35,11 @@
     <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
     <guava.version>33.6.0-jre</guava.version>
     <commons-text.version>1.15.0</commons-text.version>
-    <swagger-annotations.version>2.2.50</swagger-annotations.version>
+    <swagger-annotations.version>2.2.51</swagger-annotations.version>
 
     <!-- Plugin properties-->
     <openapi.input.file>api/mod-locations.yaml</openapi.input.file>
-    <openapi-generator.version>7.22.0</openapi-generator.version>
+    <openapi-generator.version>7.23.0</openapi-generator.version>
     <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
     <versions-maven-plugin.version>2.21.0</versions-maven-plugin.version>
     <build-helper-maven-plugin.version>3.6.1</build-helper-maven-plugin.version>
