@@ -35,7 +35,7 @@
     <jackson-databind-nullable.version>0.2.10</jackson-databind-nullable.version>
     <guava.version>33.6.0-jre</guava.version>
     <commons-text.version>1.15.0</commons-text.version>
-    <swagger-annotations.version>2.2.51</swagger-annotations.version>
+    <swagger-annotations.version>2.2.52</swagger-annotations.version>
 
     <!-- Plugin properties-->
     <openapi.input.file>api/mod-locations.yaml</openapi.input.file>
