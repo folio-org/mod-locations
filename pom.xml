@@ -39,7 +39,7 @@
 
     <!-- Plugin properties-->
     <openapi.input.file>api/mod-locations.yaml</openapi.input.file>
-    <openapi-generator.version>7.25.0</openapi-generator.version>
+    <openapi-generator.version>7.26.0</openapi-generator.version>
     <copy-rename-maven-plugin.version>1.0.1</copy-rename-maven-plugin.version>
     <versions-maven-plugin.version>2.22.0</versions-maven-plugin.version>
     <build-helper-maven-plugin.version>3.6.2</build-helper-maven-plugin.version>
